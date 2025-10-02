@@ -9,7 +9,7 @@ public record EnderecoRequestDto (
     String bairro,
     int numero,
     String complemento,
-    float latitude,
-    float longitude
+    double latitude,
+    double longitude
 
 ){}

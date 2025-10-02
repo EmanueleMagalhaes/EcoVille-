@@ -48,10 +48,10 @@ public class Endereco {
     private String complemento;
 
     @Column(nullable = false)
-    private float latitude;
+    private double latitude;
 
     @Column(nullable = false)
-    private float longitude;
+    private double longitude;
 
     @OneToOne(mappedBy = "endereco")
     private Usuario usuario;

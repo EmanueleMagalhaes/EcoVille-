@@ -1,14 +1,18 @@
 package com.ecoville.entities;
 
+import java.util.List;
+
 import com.ecoville.enums.Perfil;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -34,18 +38,22 @@ public class Usuario {
     private String nome;
 
     @Column(name = "nome_usuario", length = 50, unique = true)
-    private String NomeUsuario;
+    private String nomeUsuario;
 
     @Column(nullable = false, length = 64)
     private String email;
 
-    @Column(nullable =  false, length = 6)
+    @Column(nullable =  false)
     private String senha;
 
     @Column(nullable = false)
+    @Enumerated
     private Perfil perfil;
     
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
     private Endereco endereco;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemColeta> itemColeta;
 }
