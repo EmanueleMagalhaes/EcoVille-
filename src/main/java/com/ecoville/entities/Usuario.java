@@ -2,11 +2,13 @@ package com.ecoville.entities;
 
 import com.ecoville.enums.Perfil;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -42,8 +44,8 @@ public class Usuario {
 
     @Column(nullable = false)
     private Perfil perfil;
-
-    @Column(nullable = false)
-    @OneToOne
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
     private Endereco endereco;
 }
