@@ -15,6 +15,7 @@ public interface EnderecoMapper {
 
     public EnderecoResponseDto praDto(Endereco endereco);
 
-    public List<EnderecoResponseDto> listaDto(List<EnderecoResponseDto>endereco);
+    public List<EnderecoResponseDto> listaDto(List<Endereco>endereco);
     
 }
+
