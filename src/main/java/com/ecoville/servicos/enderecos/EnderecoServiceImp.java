@@ -2,6 +2,7 @@ package com.ecoville.servicos.enderecos;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecoville.dtos.endereco.EnderecoRequestDto;
@@ -19,8 +20,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EnderecoServiceImp implements EnderecosService{
 
+    @Autowired
     private final EnderecoRepositorio repositorio;
 
+    @Autowired
     private final EnderecoMapper mapper;
 
 
