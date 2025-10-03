@@ -15,5 +15,5 @@ public interface UsuarioMapper {
 
     public UsuarioResponseDto praDto(Usuario usuario);
 
-    public List<UsuarioResponseDto> dtoList(List<Usuario>usuarios);
+    public List<UsuarioResponseDto> listaDto(List<Usuario>usuarios);
 } 

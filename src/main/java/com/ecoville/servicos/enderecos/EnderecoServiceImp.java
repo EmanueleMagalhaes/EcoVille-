@@ -2,7 +2,6 @@ package com.ecoville.servicos.enderecos;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecoville.dtos.endereco.EnderecoRequestDto;
@@ -20,15 +19,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EnderecoServiceImp implements EnderecosService{
 
-    @Autowired
     private final EnderecoRepositorio repositorio;
 
-    @Autowired
     private final EnderecoMapper mapper;
 
 
     @Override
-    public EnderecoResponseDto criar(EnderecoRequestDto dto) {
+    public Endereco criar(EnderecoRequestDto dto) {
 
         if(dto == null){
             throw new BadRequestException("endereço vazio não é permitido");
@@ -37,7 +34,7 @@ public class EnderecoServiceImp implements EnderecosService{
         Endereco endereco = mapper.praEntidade(dto);
         endereco = repositorio.save(endereco);
 
-        return mapper.praDto(endereco);
+        return endereco;
     }
 
     @Override

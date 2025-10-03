@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.ecoville.dtos.endereco.EnderecoRequestDto;
 import com.ecoville.dtos.endereco.EnderecoResponseDto;
+import com.ecoville.entities.Endereco;
 
 public interface EnderecosService {
     
-    public EnderecoResponseDto criar(EnderecoRequestDto endereco);
+    public Endereco criar(EnderecoRequestDto endereco);
 
     public EnderecoResponseDto porId(Long id);
 
