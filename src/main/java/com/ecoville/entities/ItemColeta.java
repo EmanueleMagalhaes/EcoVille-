@@ -35,7 +35,11 @@ public class ItemColeta {
     @Enumerated
     private Estado estado;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private Usuario usuario;*/
+
+    @ManyToOne
+    @JoinColumn(name = "solicitacao_coleta_id", nullable = false)
+    private SolicitacaoColeta solicitacaoColeta;
 }
