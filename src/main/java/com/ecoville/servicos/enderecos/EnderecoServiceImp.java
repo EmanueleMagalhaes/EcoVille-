@@ -21,9 +21,6 @@ public class EnderecoServiceImp implements EnderecosService{
 
     private final EnderecoRepositorio repositorio;
 
-    private final EnderecoMapper mapper;
-
-
     @Override
     public Endereco criar(EnderecoRequestDto dto) {
 
@@ -31,7 +28,7 @@ public class EnderecoServiceImp implements EnderecosService{
             throw new BadRequestException("endereço vazio não é permitido");
         }
 
-        Endereco endereco = mapper.praEntidade(dto);
+        Endereco endereco = EnderecoMapper.praEntidade(dto);
         endereco = repositorio.save(endereco);
 
         return endereco;
@@ -40,14 +37,14 @@ public class EnderecoServiceImp implements EnderecosService{
     @Override
     public List<EnderecoResponseDto> todos(){
 
-        return mapper.listaDto(repositorio.findAll());
+        return EnderecoMapper.listaDto(repositorio.findAll());
     };
 
     @Override
     public EnderecoResponseDto porId(Long id){
 
         if(repositorio.existsById(id)){
-            return mapper.praDto(repositorio.findById(id).get());
+            return EnderecoMapper.praDto(repositorio.findById(id).get());
         }
 
         throw new NotFoundException("endereço id " + id + " não encontrado");
@@ -60,12 +57,12 @@ public class EnderecoServiceImp implements EnderecosService{
             throw new BadRequestException("endereço vazio não é permitido");
         }
 
-        Endereco endereco = mapper.praEntidade(dto);
+        Endereco endereco = EnderecoMapper.praEntidade(dto);
         endereco.setId(id);
 
         endereco = repositorio.save(endereco);
 
-        return mapper.praDto(endereco);
+        return EnderecoMapper.praDto(endereco);
         
     }
 

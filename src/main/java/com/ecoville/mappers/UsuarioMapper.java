@@ -2,21 +2,47 @@ package com.ecoville.mappers;
 
 import java.util.List;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
 import com.ecoville.dtos.usuario.UsuarioRequestDto;
 import com.ecoville.dtos.usuario.UsuarioResponseDto;
 import com.ecoville.entities.Usuario;
 
-@Mapper(componentModel = "spring", uses = { EnderecoMapper.class })
-public interface UsuarioMapper {
+public class UsuarioMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "itemColeta", ignore = true)
-    public Usuario praEntidade(UsuarioRequestDto dto);
+    private UsuarioMapper(){};
 
-    public UsuarioResponseDto praDto(Usuario usuario);
 
-    public List<UsuarioResponseDto> listaDto(List<Usuario> usuarios);
+    public static Usuario praEntidade(UsuarioRequestDto dto){
+
+        Usuario usuario = new Usuario();
+
+        usuario.setNome(dto.nome());
+        usuario.setNomeUsuario(dto.nomeUsuario());
+        usuario.setSenha(dto.senha());
+        usuario.setEmail(dto.email());
+        usuario.setPerfil(dto.perfil());
+
+        return usuario;
+    }
+
+    public static UsuarioResponseDto praDto(Usuario usuario){{
+        return new UsuarioResponseDto(
+            usuario.getId(),
+            usuario.getNome(),
+            usuario.getNomeUsuario(),
+            usuario.getEmail(),
+            usuario.getSenha(),
+            usuario.getPerfil(),
+            EnderecoMapper.praDto(usuario.getEndereco())
+        );
+    }
+    }
+
+    public static List<UsuarioResponseDto> listaDtos(List<Usuario>usuarios){
+
+        return usuarios.stream()
+        .map(UsuarioMapper::praDto)
+        .toList();
+
+} 
+
 }
