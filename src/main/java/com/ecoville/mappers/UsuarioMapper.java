@@ -16,6 +16,7 @@ public class UsuarioMapper {
         Usuario usuario = new Usuario();
 
         usuario.setNome(dto.nome());
+        //usuario.setEndereco(EnderecoMapper.praEntidade(dto.endereco()));
         usuario.setNomeUsuario(dto.nomeUsuario());
         usuario.setSenha(dto.senha());
         usuario.setEmail(dto.email());
@@ -30,7 +31,6 @@ public class UsuarioMapper {
             usuario.getNome(),
             usuario.getNomeUsuario(),
             usuario.getEmail(),
-            usuario.getSenha(),
             usuario.getPerfil(),
             EnderecoMapper.praDto(usuario.getEndereco())
         );
@@ -42,44 +42,7 @@ public class UsuarioMapper {
         return usuarios.stream()
         .map(UsuarioMapper::praDto)
         .toList();
-    }
-
-
-    public static Usuario praEntidade(UsuarioRequestDto dto){
-
-        Usuario usuario = new Usuario();
-
-        usuario.setNome(dto.nome());
-        usuario.setEndereco(EnderecoMapper.praEntidade(dto.endereco()));
-        usuario.setNomeUsuario(dto.nomeUsuario());
-        usuario.setSenha(dto.senha());
-
-        return usuario;
-    }
-
-    public static UsuarioResponseDto praDto(Usuario usuario){{
-        return new UsuarioResponseDto(
-            usuario.getId(),
-            usuario.getNome(),
-            usuario.getNomeUsuario(),
-            usuario.getEmail(),
-            usuario.getSenha(),
-            usuario.getPerfil(),
-            EnderecoMapper.praDto(usuario.getEndereco())
-        );
-    }
-    }
-
-    public static List<UsuarioResponseDto> dtoList(List<Usuario>usuarios){
-
-        return usuarios.stream()
-        .map(UsuarioMapper::praDto)
-        .toList();
 
 } 
 
 }
-
-
-}
-
