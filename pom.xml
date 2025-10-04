@@ -26,10 +26,7 @@
 		<tag/>
 		<url/>
 	</scm>
-	<properties>
-		<java.version>21</java.version>
-		<org.mapstruct.version>1.6.3</org.mapstruct.version>
-	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -70,7 +67,6 @@
 			<version>${org.mapstruct.version}</version>
 		</dependency>
 
-		<dependency>
     	<groupId>jakarta.validation</groupId>
     	<artifactId>jakarta.validation-api</artifactId>
     	<version>3.0.2</version>
@@ -110,7 +106,6 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-
 
 
 				</configuration>
