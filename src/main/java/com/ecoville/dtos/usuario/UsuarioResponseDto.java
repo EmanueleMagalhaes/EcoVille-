@@ -8,7 +8,6 @@ public record UsuarioResponseDto (
     String nome,
     String nomeUsuario,
     String email,
-    String senha,
     Perfil perfil,
     EnderecoResponseDto endereco
 ){}
