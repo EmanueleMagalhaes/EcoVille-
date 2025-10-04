@@ -9,9 +9,24 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+
+
+@Getter
+@Setter
+
+
+@NoArgsConstructor
+@AllArgsConstructor
+
 
 @Entity
 @Table(name = "item_coleta")
@@ -34,10 +49,6 @@ public class ItemColeta {
     @Column(nullable = false)
     @Enumerated
     private Estado estado;
-
-    /*@ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;*/
 
     @ManyToOne
     @JoinColumn(name = "solicitacao_coleta_id", nullable = false)

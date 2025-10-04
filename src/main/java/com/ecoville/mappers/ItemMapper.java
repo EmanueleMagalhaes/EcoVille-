@@ -2,18 +2,40 @@ package com.ecoville.mappers;
 
 import java.util.List;
 
-import org.mapstruct.Mapper;
-
 import com.ecoville.dtos.itemColeta.ItemRequestDto;
 import com.ecoville.dtos.itemColeta.ItemResponseDto;
 import com.ecoville.entities.ItemColeta;
 
-@Mapper(componentModel = "spring")
-public interface ItemMapper {
+public class ItemMapper {
+
+    private ItemMapper(){};
     
-    public ItemColeta praEntidade(ItemRequestDto item);
+    public static ItemColeta praEntidade(ItemRequestDto dto){
+      
+        ItemColeta item = new ItemColeta();
+        item.setTipo(dto.tipo());
+        item.setEstado(dto.estado());
+        item.setQuantEstimada(dto.quantEstimada());
+        item.setQuantReal(dto.quantReal());
 
-    public ItemResponseDto praDto(ItemColeta item);
+        return item;
+    };
 
-    public List<ItemResponseDto> praLista(List<ItemColeta>lista);
+    public static ItemResponseDto praDto(ItemColeta item){
+      
+        return new ItemResponseDto(
+            item.getId(),
+            item.getTipo(),
+            item.getQuantEstimada(),
+            item.getQuantReal(),
+            item.getEstado()
+        );
+
+    };
+
+    public static List<ItemResponseDto> praLista(List<ItemColeta>lista){
+        return lista.stream()
+        .map(ItemMapper::praDto)
+        .toList();
+    };
 }
