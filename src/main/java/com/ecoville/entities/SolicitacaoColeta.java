@@ -26,7 +26,7 @@ public class SolicitacaoColeta {
 
     private Status status;
     @Column
-    private LocalDateTime dataSolicitacao;
+    private LocalDateTime dataSolicitacao = LocalDateTime.now();
 
     @Column
     private LocalDate dataAgendada;
