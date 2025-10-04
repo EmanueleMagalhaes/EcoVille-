@@ -29,7 +29,13 @@ public class EnderecoServiceImp implements EnderecosService{
         }
 
         Endereco endereco = EnderecoMapper.praEntidade(dto);
-        endereco = repositorio.save(endereco);
+
+        try {
+            endereco = repositorio.save(endereco);
+        } catch (Exception e) {
+            throw new BadRequestException("problema no endereço");
+        }
+        
 
         return endereco;
     }
