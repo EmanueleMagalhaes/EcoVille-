@@ -1,5 +1,7 @@
 package com.ecoville.dtos.solicitacaoColetas;
 
+import com.ecoville.dtos.itemColeta.ItemResponseDto;
+import com.ecoville.dtos.usuario.UsuarioResponseDto;
 import com.ecoville.entities.ItemColeta;
 import com.ecoville.entities.Usuario;
 import com.ecoville.enums.Status;
@@ -15,8 +17,8 @@ public record SolicitacaoColetaResponse(
         LocalDate dataAgendada,
         String observacoes,
         String feedback,
-        Usuario usuarioResidencial,
-        Usuario coletor,
-        List<ItemColeta> itensColeta
+        UsuarioResponseDto usuarioResidencial,
+        UsuarioResponseDto coletor,
+        List<ItemResponseDto> itensColeta
 ) {
 }
