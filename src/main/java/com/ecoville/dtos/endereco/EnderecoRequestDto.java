@@ -3,10 +3,12 @@ package com.ecoville.dtos.endereco;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+
 public record EnderecoRequestDto (
 
     @NotNull(message = "cep vazio")
-    Integer cep,
+    String cep,
     
     @NotNull(message = "logradouro vazio")
     String logradouro,
@@ -21,15 +23,15 @@ public record EnderecoRequestDto (
     String bairro,
 
     @NotNull(message = "numero vazio")
-    Integer numero,
+    String numero,
 
     @NotBlank(message = "complemento vazio")
     String complemento,
 
     @NotNull(message = "latitude vazio")
-    Double latitude,
+    BigDecimal latitude,
 
     @NotNull(message = "longitude vazio")
-    Double longitude
+    BigDecimal longitude
 
 ){}

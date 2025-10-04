@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 
@@ -27,9 +29,9 @@ public class Endereco {
     private Long id;
 
     @Column(length = 8, nullable = false)
-    private int cep;
+    private String cep;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String logradouro;
 
     @Column(length = 2, nullable = false)
@@ -42,16 +44,16 @@ public class Endereco {
     private String bairro;
 
     @Column(nullable = false, length = 10)
-    private int numero;
+    private String numero;
 
     @Column(length = 100)
     private String complemento;
 
     @Column(nullable = false)
-    private double latitude;
+    private BigDecimal latitude;
 
     @Column(nullable = false)
-    private double longitude;
+    private BigDecimal longitude;
 
     @OneToOne(mappedBy = "endereco") 
     private Usuario usuario;

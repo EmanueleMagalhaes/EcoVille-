@@ -3,15 +3,7 @@ package com.ecoville.entities;
 import com.ecoville.enums.Estado;
 import com.ecoville.enums.Tipo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -38,7 +30,7 @@ public class ItemColeta {
     private Long id;
     
     @Column(nullable = false)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Tipo tipo;
 
     @Column
