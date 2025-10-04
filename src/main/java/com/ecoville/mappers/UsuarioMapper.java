@@ -8,12 +8,42 @@ import com.ecoville.entities.Usuario;
 
 public class UsuarioMapper {
 
-<<<<<<< HEAD
-    @Mapping(target = "id", ignore = true)
-    public Usuario praEntidade(UsuarioRequestDto dto);
-=======
     private UsuarioMapper(){};
->>>>>>> 90acb117c925bd9f4b5921a6b153e773ffe1d49e
+
+
+    public static Usuario praEntidade(UsuarioRequestDto dto){
+
+        Usuario usuario = new Usuario();
+
+        usuario.setNome(dto.nome());
+        usuario.setNomeUsuario(dto.nomeUsuario());
+        usuario.setSenha(dto.senha());
+        usuario.setEmail(dto.email());
+        usuario.setPerfil(dto.perfil());
+
+        return usuario;
+    }
+
+    public static UsuarioResponseDto praDto(Usuario usuario){{
+        return new UsuarioResponseDto(
+            usuario.getId(),
+            usuario.getNome(),
+            usuario.getNomeUsuario(),
+            usuario.getEmail(),
+            usuario.getSenha(),
+            usuario.getPerfil(),
+            EnderecoMapper.praDto(usuario.getEndereco())
+        );
+    }
+    }
+
+    public static List<UsuarioResponseDto> listaDtos(List<Usuario>usuarios){
+
+        return usuarios.stream()
+        .map(UsuarioMapper::praDto)
+        .toList();
+    }
+
 
     public static Usuario praEntidade(UsuarioRequestDto dto){
 
@@ -49,10 +79,7 @@ public class UsuarioMapper {
 } 
 
 }
-<<<<<<< HEAD
- 
-=======
+
 
 }
 
->>>>>>> 90acb117c925bd9f4b5921a6b153e773ffe1d49e

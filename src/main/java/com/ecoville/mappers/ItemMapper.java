@@ -11,18 +11,26 @@ public class ItemMapper {
     private ItemMapper(){};
     
     public static ItemColeta praEntidade(ItemRequestDto dto){
+      
         ItemColeta item = new ItemColeta();
-
+        item.setTipo(dto.tipo());
         item.setEstado(dto.estado());
         item.setQuantEstimada(dto.quantEstimada());
         item.setQuantReal(dto.quantReal());
-        item.setTipo(dto.tipo());
 
         return item;
     };
 
     public static ItemResponseDto praDto(ItemColeta item){
-        return new ItemResponseDto();
+      
+        return new ItemResponseDto(
+            item.getId(),
+            item.getTipo(),
+            item.getQuantEstimada(),
+            item.getQuantReal(),
+            item.getEstado()
+        );
+
     };
 
     public static List<ItemResponseDto> praLista(List<ItemColeta>lista){
