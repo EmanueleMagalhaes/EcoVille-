@@ -17,7 +17,8 @@ public class GlobalAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        String message= ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
+        var allErrors = ex.getBindingResult().getAllErrors();
+        String message = allErrors.isEmpty() ? ex.getMessage() : allErrors.get(0).getDefaultMessage();
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

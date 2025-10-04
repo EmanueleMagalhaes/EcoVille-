@@ -3,15 +3,15 @@ package com.ecoville.entities;
 
 import com.ecoville.enums.Perfil;
 
-import jakarta.persistence.CascadeType;
+//import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+//import jakarta.persistence.OneToOne;
+//import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,8 +48,10 @@ public class Usuario {
     @Enumerated
     private Perfil perfil;
     
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
+    /*
+     * @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Endereco endereco;
+     */
+
 
 }
