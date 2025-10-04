@@ -19,8 +19,6 @@ public class UsuarioMapper {
         usuario.setNomeUsuario(dto.nomeUsuario());
         usuario.setSenha(dto.senha());
 
-
-
         return usuario;
     }
 
@@ -37,7 +35,7 @@ public class UsuarioMapper {
     }
     }
 
-    public List<UsuarioResponseDto> dtoList(List<Usuario>usuarios){
+    public static List<UsuarioResponseDto> dtoList(List<Usuario>usuarios){
 
         return usuarios.stream()
         .map(UsuarioMapper::praDto)
@@ -46,3 +44,6 @@ public class UsuarioMapper {
 } 
 
 }
+
+}
+

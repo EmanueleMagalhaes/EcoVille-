@@ -23,7 +23,6 @@ public class EnderecoMapper {
 
         return endereco;
     }
-
     public static EnderecoResponseDto praDto(Endereco endereco){
         return new EnderecoResponseDto(
             endereco.getId(),
@@ -44,6 +43,6 @@ public class EnderecoMapper {
         .map(EnderecoMapper::praDto)
         .toList();
     };
-    
 
 }
+
