@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -25,7 +26,7 @@ public class SolicitacaoColeta {
 
     private Status status;
     @Column
-    private LocalDate dataSolicitacao;
+    private LocalDateTime dataSolicitacao;
 
     @Column
     private LocalDate dataAgendada;
