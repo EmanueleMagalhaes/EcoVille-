@@ -5,7 +5,7 @@ import com.ecoville.enums.Tipo;
 
 public record ItemResponseDto (
 
-    Long Id,
+    Long id,
     Tipo tipo,
     double quantEstimada,
     double quantReal,

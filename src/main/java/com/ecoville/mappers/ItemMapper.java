@@ -22,7 +22,13 @@ public class ItemMapper {
     };
 
     public static ItemResponseDto praDto(ItemColeta item){
-        return new ItemResponseDto();
+        return new ItemResponseDto(
+            item.getId(),
+            item.getTipo(),
+            item.getQuantEstimada(),
+            item.getQuantReal(),
+            item.getEstado()
+        );
     };
 
     public static List<ItemResponseDto> praLista(List<ItemColeta>lista){

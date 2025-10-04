@@ -1,6 +1,5 @@
 package com.ecoville.entities;
 
-import java.util.List;
 
 import com.ecoville.enums.Perfil;
 
@@ -12,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -34,14 +32,8 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100, nullable = false)
-    private String nome;
-
     @Column(name = "nome_usuario", length = 50, unique = true)
     private String nomeUsuario;
-
-    @Column(nullable = false, length = 64)
-    private String email;
 
     @Column(nullable =  false)
     private String senha;
@@ -54,6 +46,4 @@ public class Usuario {
     @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
     private Endereco endereco;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemColeta> itemColeta;
 }
