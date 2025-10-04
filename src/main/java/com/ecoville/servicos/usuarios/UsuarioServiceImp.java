@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 
 import com.ecoville.dtos.usuario.UsuarioRequestDto;
 import com.ecoville.dtos.usuario.UsuarioResponseDto;
-import com.ecoville.entities.Endereco;
 import com.ecoville.entities.Usuario;
 import com.ecoville.exceptions.BadRequestException;
 import com.ecoville.exceptions.NotFoundException;
 import com.ecoville.mappers.UsuarioMapper;
 import com.ecoville.repositories.UsuarioRepositorio;
-import com.ecoville.servicos.enderecos.EnderecosService;
+// ...existing code...
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -22,22 +22,19 @@ public class UsuarioServiceImp implements UsuarioServices{
 
     private final UsuarioRepositorio repositorio;
     private final UsuarioMapper mapper;
-    private final EnderecosService enderecosService;
 
     @Override
+    @Transactional
     public UsuarioResponseDto criar(UsuarioRequestDto dto){
 
         if(dto == null){
             throw new BadRequestException("Usuario nulo não permitido");
         }
 
-        Usuario usuario = mapper.praEntidade(dto);
+    Usuario usuario = mapper.praEntidade(dto);
 
-        Endereco endereco = enderecosService.criar(dto.endereco());
-
-        usuario.setEndereco(endereco);
-
-        usuario = repositorio.save(usuario);
+    // O Endereco é mapeado no próprio mapper (usa EnderecoMapper) e, com cascade=ALL, será persistido junto ao Usuario
+    usuario = repositorio.save(usuario);
 
         return mapper.praDto(usuario);
     }
