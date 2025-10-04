@@ -13,10 +13,10 @@ import com.ecoville.entities.Usuario;
 public interface UsuarioMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "itemColeta", ignore = true)
     public Usuario praEntidade(UsuarioRequestDto dto);
 
     public UsuarioResponseDto praDto(Usuario usuario);
 
     public List<UsuarioResponseDto> listaDto(List<Usuario> usuarios);
 }
+ 

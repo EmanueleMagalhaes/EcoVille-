@@ -12,7 +12,7 @@ import com.ecoville.entities.ItemColeta;
 public interface ItemMapper {
     
     public ItemColeta praEntidade(ItemRequestDto item);
-
+ 
     public ItemResponseDto praDto(ItemColeta item);
 
     public List<ItemResponseDto> praLista(List<ItemColeta>lista);
