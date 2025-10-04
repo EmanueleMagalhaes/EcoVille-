@@ -12,6 +12,7 @@ import com.ecoville.exceptions.BadRequestException;
 import com.ecoville.exceptions.NotFoundException;
 import com.ecoville.mappers.UsuarioMapper;
 import com.ecoville.repositories.UsuarioRepositorio;
+//import com.ecoville.servicos.enderecos.EnderecosService;
 import com.ecoville.servicos.enderecos.EnderecosService;
 
 
@@ -73,7 +74,7 @@ public class UsuarioServiceImp implements UsuarioServices{
 
         usuario.setId(id);
 
-        usuario.setEndereco(repositorio.findById(id).get().getEndereco());
+        //usuario.setEndereco(repositorio.findById(id).get().getEndereco());
 
         usuario = repositorio.save(usuario);
 

@@ -53,6 +53,6 @@ public class Endereco {
     @Column(nullable = false)
     private double longitude;
 
-    @OneToOne(mappedBy = "endereco")
+    @OneToOne(mappedBy = "endereco") 
     private Usuario usuario;
 }

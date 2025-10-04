@@ -43,7 +43,7 @@ public class Usuario {
     private Perfil perfil;
     
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     private Endereco endereco;
 
 }
