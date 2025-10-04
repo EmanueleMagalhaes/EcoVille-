@@ -14,7 +14,6 @@ public class UsuarioMapper {
     public static Usuario praEntidade(UsuarioRequestDto dto){
 
         Usuario usuario = new Usuario();
-
         usuario.setNomeUsuario(dto.nomeUsuario());
         usuario.setSenha(dto.senha());
         usuario.setPerfil(dto.perfil());
@@ -26,8 +25,9 @@ public class UsuarioMapper {
         return new UsuarioResponseDto(
             usuario.getId(),
             usuario.getNomeUsuario(),
+
             usuario.getPerfil()
-           // EnderecoMapper.praDto(usuario.getEndereco())
+        
         );
     
     }
