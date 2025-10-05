@@ -5,6 +5,7 @@ import com.ecoville.enums.Tipo;
 
 import jakarta.persistence.*;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
