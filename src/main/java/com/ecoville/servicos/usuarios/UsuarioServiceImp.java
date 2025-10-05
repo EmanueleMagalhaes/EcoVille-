@@ -2,6 +2,8 @@ package com.ecoville.servicos.usuarios;
 
 import java.util.List;
 
+import com.ecoville.entities.Endereco;
+import com.ecoville.mappers.EnderecoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +21,11 @@ import com.ecoville.servicos.enderecos.EnderecosService;
 @Service
 public class UsuarioServiceImp implements UsuarioServices{
 
-    @Autowired
+   @Autowired
     private EnderecosService enderecoService;
 
     @Autowired
     private UsuarioRepositorio repositorio;
-
-   
 
     @Override
     public UsuarioResponseDto criar(UsuarioRequestDto dto){
@@ -34,13 +34,16 @@ public class UsuarioServiceImp implements UsuarioServices{
             throw new BadRequestException("Usuario nulo não permitido");
         }
 
-    Usuario usuario = UsuarioMapper.praEntidade(dto);
+        Usuario usuario = UsuarioMapper.praEntidade(dto);
 
-    usuario.setEndereco(enderecoService.criar(dto.endereco()));
+        Endereco endereco = enderecoService.criar(dto.endereco());
 
-    usuario = repositorio.save(usuario);
+        usuario.setEndereco(endereco);
+
+        usuario = repositorio.save(usuario);
 
         return UsuarioMapper.praDto(usuario);
+
     }
 
     @Override
@@ -62,7 +65,6 @@ public class UsuarioServiceImp implements UsuarioServices{
     @Override
     public UsuarioResponseDto editar(UsuarioRequestDto dto, Long id){
 
-
         if(dto == null){
             throw new BadRequestException("Usuario nulo não permitido");
         }
@@ -75,6 +77,9 @@ public class UsuarioServiceImp implements UsuarioServices{
         usuario.setId(id);
 
         //usuario.setEndereco(repositorio.findById(id).get().getEndereco());
+
+        Endereco endereco = EnderecoMapper.praEntidade(dto.endereco());
+        usuario.setEndereco(endereco);
 
         usuario = repositorio.save(usuario);
 

@@ -25,9 +25,9 @@ public class UsuarioMapper {
         return new UsuarioResponseDto(
             usuario.getId(),
             usuario.getNomeUsuario(),
+            usuario.getPerfil(),
+           EnderecoMapper.praDto(usuario.getEndereco())
 
-            usuario.getPerfil()
-        
         );
     
     }
@@ -37,7 +37,6 @@ public class UsuarioMapper {
         return usuarios.stream()
         .map(UsuarioMapper::praDto)
         .toList();
-
 } 
 
 }

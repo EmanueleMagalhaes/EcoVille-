@@ -1,16 +1,18 @@
 package com.ecoville.dtos.endereco;
 
+import java.math.BigDecimal;
+
 public record EnderecoResponseDto (
 
     Long id,
-    int cep,
+    String cep,
     String logradouro,
     String estado,
     String cidade,
     String bairro,
-    int numero,
+    String numero,
     String complemento,
-    double latitude,
-    double longitude
+    BigDecimal latitude,
+    BigDecimal longitude
 
 ){}

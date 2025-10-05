@@ -24,6 +24,7 @@ public class SolicitacaoColeta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
     @Column
     private LocalDateTime dataSolicitacao = LocalDateTime.now();
