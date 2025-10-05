@@ -35,7 +35,6 @@ public class EnderecoServiceImp implements EnderecosService{
         } catch (Exception e) {
             throw new BadRequestException("problema no endereço");
         }
-        
 
         return endereco;
     }
