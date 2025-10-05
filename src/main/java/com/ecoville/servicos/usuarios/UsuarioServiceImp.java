@@ -3,7 +3,6 @@ package com.ecoville.servicos.usuarios;
 import java.util.List;
 
 import com.ecoville.entities.Endereco;
-import com.ecoville.mappers.EnderecoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +33,10 @@ public class UsuarioServiceImp implements UsuarioServices{
             throw new BadRequestException("Usuario nulo não permitido");
         }
 
+        if(nomeUsuarioExiste(dto, null)){
+            throw new BadRequestException("nome de usuario já existente");
+        }
+
         Usuario usuario = UsuarioMapper.praEntidade(dto);
 
         Endereco endereco = enderecoService.criar(dto.endereco());
@@ -58,7 +61,6 @@ public class UsuarioServiceImp implements UsuarioServices{
 
     @Override
     public List<UsuarioResponseDto> todos(){
-
         return UsuarioMapper.listaDtos(repositorio.findAll());
     }
 
@@ -68,18 +70,20 @@ public class UsuarioServiceImp implements UsuarioServices{
         if(dto == null){
             throw new BadRequestException("Usuario nulo não permitido");
         }
+        
         if(!repositorio.existsById(id)){
             throw new NotFoundException("usuario id " + id + " não encontrado");
+        }
+
+        if(nomeUsuarioExiste(dto, id)){
+            throw new BadRequestException("nome de usuario já registrado");
         }
 
         Usuario usuario = UsuarioMapper.praEntidade(dto);
 
         usuario.setId(id);
 
-        //usuario.setEndereco(repositorio.findById(id).get().getEndereco());
-
-        Endereco endereco = EnderecoMapper.praEntidade(dto.endereco());
-        usuario.setEndereco(endereco);
+        usuario.setEndereco(repositorio.findById(id).get().getEndereco());
 
         usuario = repositorio.save(usuario);
 
@@ -94,7 +98,18 @@ public class UsuarioServiceImp implements UsuarioServices{
 
         repositorio.deleteById(id);
     };
+
+private Boolean nomeUsuarioExiste(UsuarioRequestDto dto, Long id){
+
+    List<UsuarioResponseDto> lista = todos();
+
+    for(int i =0;i<lista.size();i++){
+        if(dto.nomeUsuario().equals(lista.get(i).nomeUsuario()) && lista.get(i).id() != id){
+            return true;
+        }
+    }
+
+    return false;
 }
 
-
-
+}
