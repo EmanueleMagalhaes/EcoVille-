@@ -40,4 +40,10 @@ public class GlobalAdvice {
         ErrorResponse errorResponse = new ErrorResponse(418, ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.I_AM_A_TEAPOT);
     }
+
+    @ExceptionHandler(InternalServerErrorException.class)
+    private ResponseEntity<ErrorResponse> handleInternalServerError(InternalServerErrorException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
