@@ -23,7 +23,6 @@ public record EnderecoRequestDto (
     @NotNull(message = "numero vazio")
     Integer numero,
 
-    @NotBlank(message = "complemento vazio")
     String complemento,
 
     @NotNull(message = "latitude vazio")
@@ -32,4 +31,4 @@ public record EnderecoRequestDto (
     @NotNull(message = "longitude vazio")
     Double longitude
 
-){}
+){} 
