@@ -17,11 +17,8 @@ import com.ecoville.dtos.endereco.EnderecoResponseDto;
 import com.ecoville.entities.Endereco;
 import com.ecoville.servicos.enderecos.EnderecosService;
 
-import lombok.RequiredArgsConstructor;
-
 @CrossOrigin(origins = "*")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/enderecos")
 public class EnderecoController {
 
