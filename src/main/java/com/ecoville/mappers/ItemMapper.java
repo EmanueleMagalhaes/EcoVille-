@@ -13,10 +13,10 @@ public class ItemMapper {
     public static ItemColeta praEntidade(ItemRequestDto dto){
         ItemColeta item = new ItemColeta();
 
-        item.setEstado(dto.estado());
-        item.setQuantEstimada(dto.quantEstimada());
-        item.setQuantReal(dto.quantReal());
-        item.setTipo(dto.tipo());
+        item.setEstado(dto.getEstado());
+        item.setQuantEstimada(dto.getQuantEstimada());
+        item.setQuantReal(dto.getQuantReal());
+        item.setTipo(dto.getTipo());
 
         return item;
     };

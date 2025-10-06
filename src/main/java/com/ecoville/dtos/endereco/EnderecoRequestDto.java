@@ -2,35 +2,39 @@ package com.ecoville.dtos.endereco;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-public record EnderecoRequestDto (
-
+@Getter
+@Setter
+@NoArgsConstructor
+public class EnderecoRequestDto {
     @NotNull(message = "cep vazio")
-    String cep,
-    
+    private String cep;
+
     @NotNull(message = "logradouro vazio")
-    String logradouro,
+    private String logradouro;
 
     @NotBlank(message = "estado vazio")
-    String estado,
+    private String estado;
 
     @NotBlank(message = "cidade vazio")
-    String cidade,
+    private String cidade;
 
     @NotBlank(message = "bairro vazio")
-    String bairro,
+    private String bairro;
 
     @NotNull(message = "numero vazio")
-    String numero,
+    private String numero;
 
-    String complemento,
+    private String complemento;
 
     @NotNull(message = "latitude vazio")
-    BigDecimal latitude,
+    private BigDecimal latitude;
 
     @NotNull(message = "longitude vazio")
-    BigDecimal longitude
-
-){} 
+    private BigDecimal longitude;
+}

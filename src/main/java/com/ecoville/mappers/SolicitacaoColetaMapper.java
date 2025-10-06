@@ -17,12 +17,12 @@ public class SolicitacaoColetaMapper {
     public static SolicitacaoColeta praEntidade(SolicitacaoColetaRequest dto, Usuario usuarioResidencial) {
         SolicitacaoColeta entidade = new SolicitacaoColeta();
 
-        entidade.setDataAgendada(dto.dataAgendada());
-        entidade.setObservacoes(dto.observacoes());
+        entidade.setDataAgendada(dto.getDataAgendada());
+        entidade.setObservacoes(dto.getObservacoes());
         entidade.setStatus(Status.AGUARDANDO);
         entidade.setUsuarioResidencial(usuarioResidencial);
 
-        List<ItemColeta> itens = dto.itensColeta().stream()
+        List<ItemColeta> itens = dto.getItensColeta().stream()
                 .map(itemDto -> {
                     ItemColeta item = ItemMapper.praEntidade(itemDto);
                     item.setSolicitacaoColeta(entidade); // garante vínculo bidirecional

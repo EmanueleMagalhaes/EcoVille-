@@ -54,7 +54,6 @@ public class EnderecoServiceImp implements EnderecosService{
         throw new NotFoundException("endereço id " + id + " não encontrado");
     }
 
-
     @Override
     public EnderecoResponseDto editar(EnderecoRequestDto dto, Long id){
         if(dto == null){
@@ -69,7 +68,6 @@ public class EnderecoServiceImp implements EnderecosService{
         return EnderecoMapper.praDto(endereco);
         
     }
-
 
     @Override
     public void excluir(Long id){

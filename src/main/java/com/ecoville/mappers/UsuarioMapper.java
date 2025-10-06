@@ -14,9 +14,9 @@ public class UsuarioMapper {
     public static Usuario praEntidade(UsuarioRequestDto dto){
 
         Usuario usuario = new Usuario();
-        usuario.setNomeUsuario(dto.nomeUsuario());
-        usuario.setSenha(dto.senha());
-        usuario.setPerfil(dto.perfil());
+        usuario.setNomeUsuario(dto.getNomeUsuario());
+        usuario.setSenha(dto.getSenha());
+        usuario.setPerfil(dto.getPerfil());
 
         return usuario;
     }

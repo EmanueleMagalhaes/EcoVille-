@@ -14,14 +14,12 @@ public class GlobalAdvice {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         String message= ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
 
     @ExceptionHandler(NotFoundException.class)
     private ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
