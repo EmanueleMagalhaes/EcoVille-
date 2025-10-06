@@ -1,0 +1,39 @@
+package com.ecoville.mappers;
+
+import java.util.List;
+
+import com.ecoville.dtos.itemColeta.ItemRequestDto;
+import com.ecoville.dtos.itemColeta.ItemResponseDto;
+import com.ecoville.entities.ItemColeta;
+
+public class ItemMapper {
+
+    private ItemMapper(){};
+    
+    public static ItemColeta praEntidade(ItemRequestDto dto){
+        ItemColeta item = new ItemColeta();
+
+        item.setEstado(dto.getEstado());
+        item.setQuantEstimada(dto.getQuantEstimada());
+        item.setQuantReal(dto.getQuantReal());
+        item.setTipo(dto.getTipo());
+
+        return item;
+    };
+
+    public static ItemResponseDto praDto(ItemColeta item){
+        return new ItemResponseDto(
+            item.getId(),
+            item.getTipo(),
+            item.getQuantEstimada(),
+            item.getQuantReal(),
+            item.getEstado()
+        );
+    };
+
+    public static List<ItemResponseDto> praLista(List<ItemColeta>lista){
+        return lista.stream()
+        .map(ItemMapper::praDto)
+        .toList();
+    };
+}
