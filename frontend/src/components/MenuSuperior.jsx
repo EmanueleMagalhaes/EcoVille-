@@ -31,6 +31,9 @@ const MenuSuperior = () => {
         <Button color="inherit" onClick={handleLogout}>
           Sair
         </Button>
+        <Button color="inherit" onClick={() => navigate("/perfil")}>
+          Meu Perfil
+        </Button>
       </Toolbar>
     </AppBar>
   );
