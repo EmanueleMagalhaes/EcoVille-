@@ -3,16 +3,7 @@ package com.ecoville.entities;
 
 import com.ecoville.enums.Perfil;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,14 +23,14 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome_usuario", length = 50, unique = true)
+    @Column(name = "nome_usuario", length = 150, unique = true)
     private String nomeUsuario;
 
     @Column(nullable =  false)
     private String senha;
 
     @Column(nullable = false)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Perfil perfil;
     
     @OneToOne(cascade = CascadeType.ALL)

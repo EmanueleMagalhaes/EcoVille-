@@ -2,6 +2,7 @@ package com.ecoville.servicos.usuarios;
 
 import java.util.List;
 
+import com.ecoville.entities.Endereco;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,11 @@ import com.ecoville.servicos.enderecos.EnderecosService;
 @Service
 public class UsuarioServiceImp implements UsuarioServices{
 
-    @Autowired
+   @Autowired
     private EnderecosService enderecoService;
 
     @Autowired
     private UsuarioRepositorio repositorio;
-
-   
 
     @Override
     public UsuarioResponseDto criar(UsuarioRequestDto dto){
@@ -34,13 +33,20 @@ public class UsuarioServiceImp implements UsuarioServices{
             throw new BadRequestException("Usuario nulo não permitido");
         }
 
-    Usuario usuario = UsuarioMapper.praEntidade(dto);
+        if(nomeUsuarioExiste(dto, null)){
+            throw new BadRequestException("nome de usuario já existente");
+        }
 
-    usuario.setEndereco(enderecoService.criar(dto.endereco()));
+        Usuario usuario = UsuarioMapper.praEntidade(dto);
 
-    usuario = repositorio.save(usuario);
+        Endereco endereco = enderecoService.criar(dto.endereco());
+
+        usuario.setEndereco(endereco);
+
+        usuario = repositorio.save(usuario);
 
         return UsuarioMapper.praDto(usuario);
+
     }
 
     @Override
@@ -55,26 +61,29 @@ public class UsuarioServiceImp implements UsuarioServices{
 
     @Override
     public List<UsuarioResponseDto> todos(){
-
         return UsuarioMapper.listaDtos(repositorio.findAll());
     }
 
     @Override
     public UsuarioResponseDto editar(UsuarioRequestDto dto, Long id){
 
-
         if(dto == null){
             throw new BadRequestException("Usuario nulo não permitido");
         }
+        
         if(!repositorio.existsById(id)){
             throw new NotFoundException("usuario id " + id + " não encontrado");
+        }
+
+        if(nomeUsuarioExiste(dto, id)){
+            throw new BadRequestException("nome de usuario já registrado");
         }
 
         Usuario usuario = UsuarioMapper.praEntidade(dto);
 
         usuario.setId(id);
 
-        //usuario.setEndereco(repositorio.findById(id).get().getEndereco());
+        usuario.setEndereco(repositorio.findById(id).get().getEndereco());
 
         usuario = repositorio.save(usuario);
 
@@ -89,7 +98,18 @@ public class UsuarioServiceImp implements UsuarioServices{
 
         repositorio.deleteById(id);
     };
+
+private Boolean nomeUsuarioExiste(UsuarioRequestDto dto, Long id){
+
+    List<UsuarioResponseDto> lista = todos();
+
+    for(int i =0;i<lista.size();i++){
+        if(dto.nomeUsuario().equals(lista.get(i).nomeUsuario()) && lista.get(i).id() != id){
+            return true;
+        }
+    }
+
+    return false;
 }
 
-
-
+}

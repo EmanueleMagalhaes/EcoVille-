@@ -1,6 +1,8 @@
 package com.ecoville.dtos.solicitacaoColetas;
 
 import com.ecoville.dtos.itemColeta.ItemRequestDto;
+import com.ecoville.entities.ItemColeta;
+
 
 import java.time.LocalDate;
 import java.util.List;

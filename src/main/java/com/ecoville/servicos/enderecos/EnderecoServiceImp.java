@@ -11,7 +11,6 @@ import com.ecoville.exceptions.BadRequestException;
 import com.ecoville.exceptions.NotFoundException;
 import com.ecoville.mappers.EnderecoMapper;
 import com.ecoville.repositories.EnderecoRepositorio;
-
 import lombok.RequiredArgsConstructor;
 
 
@@ -35,7 +34,6 @@ public class EnderecoServiceImp implements EnderecosService{
         } catch (Exception e) {
             throw new BadRequestException("problema no endereço");
         }
-        
 
         return endereco;
     }

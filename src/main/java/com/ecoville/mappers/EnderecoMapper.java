@@ -13,10 +13,12 @@ public class EnderecoMapper {
     public static Endereco praEntidade(EnderecoRequestDto dto){
         Endereco endereco = new Endereco();
 
-        endereco.setBairro(dto.bairro());
         endereco.setCep(dto.cep());
+        endereco.setLogradouro(dto.logradouro());
+        endereco.setBairro(dto.bairro());
         endereco.setCidade(dto.cidade());
         endereco.setEstado(dto.estado());
+        endereco.setComplemento(dto.complemento());
         endereco.setLatitude(dto.latitude());
         endereco.setLongitude(dto.longitude());
         endereco.setNumero(dto.numero());
