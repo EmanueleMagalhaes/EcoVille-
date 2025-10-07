@@ -26,8 +26,8 @@ public class UsuarioMapper {
             usuario.getId(),
             usuario.getNomeUsuario(),
             usuario.getPerfil(),
-           EnderecoMapper.praDto(usuario.getEndereco())
-
+           EnderecoMapper.praDto(usuario.getEndereco()),
+           SolicitacaoColetaMapper.praListaDto(usuario.getSolicitacoes())
         );
     
     }
