@@ -13,15 +13,15 @@ public class EnderecoMapper {
     public static Endereco praEntidade(EnderecoRequestDto dto){
         Endereco endereco = new Endereco();
 
-        endereco.setCep(dto.cep());
-        endereco.setLogradouro(dto.logradouro());
-        endereco.setBairro(dto.bairro());
-        endereco.setCidade(dto.cidade());
-        endereco.setEstado(dto.estado());
-        endereco.setComplemento(dto.complemento());
-        endereco.setLatitude(dto.latitude());
-        endereco.setLongitude(dto.longitude());
-        endereco.setNumero(dto.numero());
+        endereco.setCep(dto.getCep());
+        endereco.setLogradouro(dto.getLogradouro());
+        endereco.setBairro(dto.getBairro());
+        endereco.setCidade(dto.getCidade());
+        endereco.setEstado(dto.getEstado());
+        endereco.setComplemento(dto.getComplemento());
+        endereco.setLatitude(dto.getLatitude());
+        endereco.setLongitude(dto.getLongitude());
+        endereco.setNumero(dto.getNumero());
 
         return endereco;
     }

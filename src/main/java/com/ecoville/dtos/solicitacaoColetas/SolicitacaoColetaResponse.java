@@ -2,8 +2,7 @@ package com.ecoville.dtos.solicitacaoColetas;
 
 import com.ecoville.dtos.itemColeta.ItemResponseDto;
 import com.ecoville.dtos.usuario.UsuarioResponseDto;
-import com.ecoville.entities.ItemColeta;
-import com.ecoville.entities.Usuario;
+
 import com.ecoville.enums.Status;
 
 import java.time.LocalDate;

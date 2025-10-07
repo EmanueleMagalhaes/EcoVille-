@@ -2,6 +2,7 @@ package com.ecoville.controlles;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,7 +41,9 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioResponseDto criar(@RequestBody UsuarioRequestDto usuario){
+    public UsuarioResponseDto criar(@RequestBody @Valid UsuarioRequestDto usuario){
+
+        System.out.println("Recebi DTO: " + usuario);
         return servico.criar(usuario);
     }
 
