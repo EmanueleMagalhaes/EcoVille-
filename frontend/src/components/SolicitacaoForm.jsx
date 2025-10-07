@@ -211,10 +211,10 @@ const SolicitacaoForm =  () => {
         type="submit"
         variant="contained"
         sx={{
-          bgcolor: "#C242F2",
+          bgcolor: "#3B3B1A",
           color: "#fff",
           fontWeight: "bold",
-          "&:hover": { bgcolor: "#a832cc" },
+          "&:hover": { bgcolor: "#8A784E" },
           alignSelf: "center",
           mt: 2,
           px: 4,

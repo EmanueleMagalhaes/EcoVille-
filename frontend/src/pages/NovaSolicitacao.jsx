@@ -6,13 +6,13 @@ import { ThemeProvider, createTheme, CssBaseline, Container, Box } from "@mui/ma
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#3B3B1A", // Verde escuro EcoVille
+      main: "#3B3B1A", 
     },
     secondary: {
-      main: "#C242F2", // Roxo EcoVille
+      main: "#84784E", 
     },
     background: {
-      default: "#F5F5F5",
+      default: "#ffffff",
     },
     text: {
       primary: "#333",
