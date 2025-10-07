@@ -1,6 +1,8 @@
 package com.ecoville.entities;
 
 
+import java.util.List;
+
 import com.ecoville.enums.Perfil;
 
 import jakarta.persistence.*;
@@ -36,5 +38,8 @@ public class Usuario {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     private Endereco endereco;
+
+    @OneToMany(mappedBy = "coletor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SolicitacaoColeta> solicitacoes;
 
 }

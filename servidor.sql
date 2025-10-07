@@ -9,6 +9,11 @@ DROP TABLE usuarios;
 DROP TABLE solicitacoes_coleta;
 
 
+
+
+
+
+
 SELECT * FROM usuarios;
 
 SELECT * FROM enderecos;
