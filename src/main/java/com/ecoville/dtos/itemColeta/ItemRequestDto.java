@@ -2,11 +2,16 @@ package com.ecoville.dtos.itemColeta;
 
 import com.ecoville.enums.Estado;
 import com.ecoville.enums.Tipo;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public record ItemRequestDto (
-
-    Tipo tipo,
-    double quantEstimada,
-    double quantReal,
-    Estado estado
-){}
+@Getter
+@Setter
+@NoArgsConstructor
+public class ItemRequestDto{
+    private Tipo tipo;
+    private double quantEstimada;
+    private double quantReal;
+    private Estado estado;
+}
