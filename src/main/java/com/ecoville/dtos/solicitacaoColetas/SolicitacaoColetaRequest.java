@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class SolicitacaoColetaRequest{
+    private Long id;
     private LocalDate dataAgendada;
     private String observacoes;
     private List<ItemRequestDto> itensColeta;

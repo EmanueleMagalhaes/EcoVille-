@@ -73,7 +73,7 @@ public class UsuarioServiceImp implements UsuarioServices{
 
         //usuario.setEndereco(repositorio.findById(id).get().getEndereco());
 
-        Endereco endereco = EnderecoMapper.praEntidade(dto.getEndereco());
+        Endereco endereco = repositorio.findById(id).get().getEndereco();
         usuario.setEndereco(endereco);
 
         usuario = repositorio.save(usuario);
