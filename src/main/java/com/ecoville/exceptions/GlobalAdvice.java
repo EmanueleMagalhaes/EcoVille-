@@ -1,7 +1,10 @@
 package com.ecoville.exceptions;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -14,14 +17,14 @@ public class GlobalAdvice {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        String message= ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message);
+        List<ObjectError> errors = ex.getBindingResult().getAllErrors();
+String msg = errors.isEmpty() ? "Erro desconhecido" : errors.get(0).getDefaultMessage();
+
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), msg);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
 
     @ExceptionHandler(NotFoundException.class)
     private ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
