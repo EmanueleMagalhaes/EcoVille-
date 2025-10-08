@@ -46,7 +46,11 @@ String msg = errors.isEmpty() ? "Erro desconhecido" : errors.get(0).getDefaultMe
 
     @ExceptionHandler(InternalServerErrorException.class)
     private ResponseEntity<ErrorResponse> handleInternalServerError(InternalServerErrorException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "erro interno de servidor desconhecido");
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+
+    
 }

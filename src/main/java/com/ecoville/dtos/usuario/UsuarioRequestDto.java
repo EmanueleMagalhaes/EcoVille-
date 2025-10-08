@@ -1,7 +1,6 @@
 package com.ecoville.dtos.usuario;
 
 import com.ecoville.dtos.endereco.EnderecoRequestDto;
-import com.ecoville.enums.Perfil;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,8 +19,8 @@ public class UsuarioRequestDto {
     @NotBlank(message = "A senha é obrigatória.")
     private String senha;
 
-    @NotNull(message = "O perfil é obrigatório.")
-    private Perfil perfil;
+    @NotBlank(message = "O perfil é obrigatório.")
+    private String perfil;
 
     @NotNull(message = "O endereço é obrigatório.")
     @Valid
