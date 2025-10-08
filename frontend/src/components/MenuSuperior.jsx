@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const MenuSuperior = () => {
     const navigate = useNavigate();
-
+    
     const perfil = localStorage.getItem('perfil'); // "Resid" ou "coletor"
 
     const handleLogout = () => {
@@ -14,7 +14,7 @@ const MenuSuperior = () => {
     };
 
     return (
-    <AppBar position="static" sx={{ bgcolor: "#3B3B1A" }}>
+    <AppBar position="static" sx={{ bgcolor: "#8A784E" }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box>
           {perfil === "RESIDENCIAL" && (
