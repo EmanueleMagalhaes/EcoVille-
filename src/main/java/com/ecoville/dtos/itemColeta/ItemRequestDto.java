@@ -1,7 +1,5 @@
 package com.ecoville.dtos.itemColeta;
 
-import com.ecoville.enums.Estado;
-import com.ecoville.enums.Tipo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,8 +8,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ItemRequestDto{
-    private Tipo tipo;
+    private String tipo;
     private double quantEstimada;
     private double quantReal;
-    private Estado estado;
+    private String estado;
 }

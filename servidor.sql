@@ -9,9 +9,16 @@ DROP TABLE usuarios;
 DROP TABLE solicitacoes_coleta;
 
 
+
+
+
+
+
 SELECT * FROM usuarios;
 
 SELECT * FROM enderecos;
 
+SELECT * FROM solicitacoes_coleta;
 
-DELETE FROM usuarios WHERE id = 2;
+
+delete FROM usuarios WHERE id = 7;
