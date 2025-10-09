@@ -16,4 +16,5 @@ public interface UsuarioServices {
     public UsuarioResponseDto editar(UsuarioRequestDto usuario, Long id);
 
     public void excluir(Long id);
+
 }

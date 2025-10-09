@@ -20,5 +20,7 @@ SELECT * FROM enderecos;
 
 SELECT * FROM solicitacoes_coleta;
 
+SELECT * FROM item_coleta;
+
 
 delete FROM usuarios WHERE id = 7;
