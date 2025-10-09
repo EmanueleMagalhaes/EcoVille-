@@ -3,13 +3,16 @@ import { getSolicitacoes, cancelarSolicitacao } from "../services/solicitacoesSe
 import CardSolicitacao from "../components/CardSolicitacao";
 import MenuSuperior from "../components/MenuSuperior";
 import ModalFeedback from "../components/ModalFeedback";
-import { Container, Typography } from "@mui/material";
+import { Container, Typography, Grid, Button, Box } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
 
 
 const MinhasSolicitacoes = () => {
     const [solicitacoes, setSolicitacoes] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         loadSolicitacoes();
@@ -43,23 +46,68 @@ const MinhasSolicitacoes = () => {
         setOpenModal(true);
     };
 
+      const handleNovaSolicitacao = () => {
+    navigate("/nova-solicitacao");
+  };
+
     return (
         <>
             <MenuSuperior />
 
-            <Container sx={{ mt: 4 }}>
-                <Typography variant="h4" gutterBottom>
+            <Container sx={{ mt: 4, mb: 6 }}>
+       
+                <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                flexWrap="wrap"
+                mb={3}
+                >
+                <Typography
+                    variant="h4"
+                    fontWeight="bold"
+                    sx={{ mb: { xs: 2, sm: 0 } }}
+                >
                     Minhas Solicitações
                 </Typography>
-                {solicitacoes.map((solicitacao) => (
-                    <CardSolicitacao
-                        key={solicitacao.id}
+
+                <Button
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={handleNovaSolicitacao}
+                    sx={{
+                    backgroundColor: "#5B4BFF",
+                    textTransform: "none",
+                    fontWeight: 600,
+                    px: 3,
+                    "&:hover": {
+                        backgroundColor: "#483AE2",
+                    },
+                    }}
+                >
+                    Novo
+                </Button>
+                </Box>
+
+                {/* Cards de solicitações */}
+                <Grid container spacing={3}>
+                {solicitacoes.length > 0 ? (
+                    solicitacoes.map((solicitacao) => (
+                    <Grid item xs={12} sm={6} md={4} key={solicitacao.id}>
+                        <CardSolicitacao
                         solicitacao={solicitacao}
                         onCancelar={handleCancelar}
                         onEditar={handleEditar}
                         onFeedback={handleFeedback}
-                    />
-                ))}
+                        />
+                    </Grid>
+                    ))
+                ) : (
+                    <Typography color="text.secondary" sx={{ mt: 4 }}>
+                    Você ainda não possui solicitações registradas.
+                    </Typography>
+                )}
+                </Grid>
 
             <ModalFeedback
                 open={openModal}

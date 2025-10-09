@@ -1,7 +1,6 @@
 package com.ecoville.dtos.solicitacaoColetas;
 
 import com.ecoville.dtos.itemColeta.ItemRequestDto;
-import com.ecoville.entities.ItemColeta;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
