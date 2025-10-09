@@ -196,6 +196,12 @@ const SolicitacaoForm =  () => {
         onChange={(e) => setDataColeta(e.target.value)}
         InputLabelProps={{ shrink: true }}
         required
+        InputProps={{
+          sx: {
+            backgroundColor: "#fff",
+          },
+        }}
+
       />
 
       <TextField
@@ -205,6 +211,12 @@ const SolicitacaoForm =  () => {
         fullWidth
         value={observacao}
         onChange={(e) => setObservacao(e.target.value)}
+        InputProps={{
+          sx: {
+            backgroundColor: "#fff",
+          },
+        }}
+
       />
 
       <Button
