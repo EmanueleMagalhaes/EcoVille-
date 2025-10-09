@@ -5,7 +5,7 @@ function SolicitacoesColetor() {
   const [filtroData, setFiltroData] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("TODOS");
 
-  // Exemplo de dados simulados
+
   const solicitacoes = [
     { id: "#154545", status: "AGUARDANDO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
     { id: "#1545345", status: "COLETADO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },

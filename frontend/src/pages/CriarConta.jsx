@@ -20,6 +20,7 @@ function CriarConta() {
 
   const [mapUrl, setMapUrl] = useState("");
 
+  // Atualiza o estado do formulário
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -28,11 +29,13 @@ function CriarConta() {
     });
   };
 
+  // 🔍 Busca o endereço via CEP
   const buscarCep = async () => {
-    if (formData.cep.length !== 8) return;
+    const cepLimpo = formData.cep.replace(/\D/g, ""); // remove caracteres não numéricos
+    if (cepLimpo.length !== 8) return;
 
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${formData.cep}/json/`);
+      const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
       const data = await response.json();
 
       if (data.erro) {
@@ -40,6 +43,7 @@ function CriarConta() {
         return;
       }
 
+      // Preenche automaticamente os campos
       setFormData((prev) => ({
         ...prev,
         logradouro: data.logradouro,
@@ -52,6 +56,7 @@ function CriarConta() {
     }
   };
 
+  // Atualiza mapa com base em latitude e longitude
   const atualizarMapa = () => {
     if (formData.latitude && formData.longitude) {
       const url = `https://maps.google.com/maps?q=${formData.latitude},${formData.longitude}&z=15&output=embed`;
@@ -59,6 +64,7 @@ function CriarConta() {
     }
   };
 
+  // Envio do formulário
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Dados do formulário:", formData);
@@ -72,34 +78,119 @@ function CriarConta() {
       <form onSubmit={handleSubmit}>
         {/* Dados da conta */}
         <h3>Dados da conta</h3>
-        <input type="text" placeholder="Nome de usuário" name="nomeUsuario" value={formData.nomeUsuario} onChange={handleChange} required />
-   
-        <input type="password" placeholder="Senha" name="senha" value={formData.senha} onChange={handleChange} required />
+        <input
+          type="text"
+          placeholder="Nome de usuário"
+          name="nomeUsuario"
+          value={formData.nomeUsuario}
+          onChange={handleChange}
+          required
+        />
 
-        <input type="password" placeholder="Confirmar senha" name="confirmarSenha" value={formData.confirmarSenha} onChange={handleChange} required />
+        <input
+          type="password"
+          placeholder="Senha"
+          name="senha"
+          value={formData.senha}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          type="password"
+          placeholder="Confirmar senha"
+          name="confirmarSenha"
+          value={formData.confirmarSenha}
+          onChange={handleChange}
+          required
+        />
 
         {/* Endereço */}
         <h3 className="end">Endereço</h3>
-        
-        <input type="text" placeholder="CEP" name="cep" value={formData.cep} onChange={handleChange} onBlur={buscarCep} required />
 
-        <input type="text" placeholder="Logradouro" name="logradouro" value={formData.logradouro} onChange={handleChange} />
+        <input
+          type="text"
+          placeholder="CEP"
+          name="cep"
+          value={formData.cep}
+          onChange={handleChange}
+          onBlur={buscarCep}
+          required
+        />
 
-        <input type="text" placeholder="Estado" name="estado" value={formData.estado} onChange={handleChange} />
+        <input
+          type="text"
+          placeholder="Logradouro"
+          name="logradouro"
+          value={formData.logradouro}
+          onChange={handleChange}
+          required
+        />
 
-        <input type="text" placeholder="Cidade" name="cidade" value={formData.cidade} onChange={handleChange} />
+        {/* 🔒 BLOQUEADOS: estado, cidade, bairro */}
+        <input
+          type="text"
+          placeholder="Estado"
+          name="estado"
+          value={formData.estado}
+          disabled
+        />
 
-        <input type="text" placeholder="Bairro" name="bairro" value={formData.bairro} onChange={handleChange} />
+        <input
+          type="text"
+          placeholder="Cidade"
+          name="cidade"
+          value={formData.cidade}
+          disabled
+        />
 
-        <input type="text" placeholder="Número" name="numero" value={formData.numero} onChange={handleChange} required />
+        <input
+          type="text"
+          placeholder="Bairro"
+          name="bairro"
+          value={formData.bairro}
+          disabled
+        />
 
-        <input type="text" placeholder="Complemento" name="complemento" value={formData.complemento} onChange={handleChange} />
+        <input
+          type="text"
+          placeholder="Número"
+          name="numero"
+          value={formData.numero}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          type="text"
+          placeholder="Complemento"
+          name="complemento"
+          value={formData.complemento}
+          onChange={handleChange}
+        />
 
         {/* GeoLocalização */}
         <h3>GeoLocalização</h3>
-        <input type="text" placeholder="Latitude" name="latitude" value={formData.latitude} onChange={handleChange} onBlur={atualizarMapa} required />
 
-        <input type="text" placeholder="Longitude" name="longitude" value={formData.longitude} onChange={handleChange} onBlur={atualizarMapa} required />
+        <input
+          type="text"
+          placeholder="Latitude"
+          name="latitude"
+          value={formData.latitude}
+          onChange={handleChange}
+          onBlur={atualizarMapa}
+          required
+        />
+
+        <input
+          type="text"
+          placeholder="Longitude"
+          name="longitude"
+          value={formData.longitude}
+          onChange={handleChange}
+          onBlur={atualizarMapa}
+          required
+        />
 
         {mapUrl && (
           <iframe
@@ -113,12 +204,19 @@ function CriarConta() {
         )}
 
         <div className="checkbox-group">
-          <input type="checkbox" name="confirmarLocalizacao" checked={formData.confirmarLocalizacao} onChange={handleChange} />
+          <input
+            type="checkbox"
+            name="confirmarLocalizacao"
+            checked={formData.confirmarLocalizacao}
+            onChange={handleChange}
+          />
           <label>Confirmo que essa é a localização informada</label>
         </div>
 
         <div className="botoes">
-          <button type="button" onClick={() => alert("Cancelado!")}>Cancelar</button>
+          <button type="button" onClick={() => alert("Cancelado!")}>
+            Cancelar
+          </button>
           <button type="submit">Cadastrar</button>
         </div>
       </form>
