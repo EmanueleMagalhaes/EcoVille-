@@ -20,43 +20,126 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SolicitacaoColetaImpl implements SolicitacaoColetaService {
 
+    private final SolicitacaoColetaRepository solicitacaoRepositorio;
+    private final UsuarioRepositorio usuarioRepositorio;
+
     @Override
     public SolicitacaoColetaResponse criar(SolicitacaoColetaRequest dto, Long usuarioId) {
-        return null;
+        if (dto == null) throw new BadRequestException("Dados inválidos");
+
+        Usuario usuario = usuarioRepositorio.findById(usuarioId)
+                .orElseThrow(() -> new NotFoundException("Usuário residencial não encontrado"));
+
+        if (usuario.getPerfil() != Perfil.RESIDENCIAL)
+            throw new BadRequestException("Apenas usuário residencial podem criar solicitações");
+
+        SolicitacaoColeta coleta = SolicitacaoColetaMapper.praEntidade(dto, usuario);
+        coleta.setStatus(Status.AGUARDANDO);
+
+        coleta = solicitacaoRepositorio.save(coleta);
+
+        return SolicitacaoColetaMapper.praDto(coleta);
     }
 
     @Override
     public List<SolicitacaoColetaResponse> listarMinhas(Long usuarioId) {
-        return List.of();
+        Usuario usuario = usuarioRepositorio.findById(usuarioId)
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+        List<SolicitacaoColeta> lista = solicitacaoRepositorio.findByUsuarioResidencial(usuario);
+        return SolicitacaoColetaMapper.praListaDto(lista);
     }
 
     @Override
     public SolicitacaoColetaResponse editar(Long id, SolicitacaoColetaRequest dto, Long usuarioId) {
-        return null;
+        SolicitacaoColeta existente = solicitacaoRepositorio.findById(id)
+                .orElseThrow(() -> new NotFoundException("Solicitação não encontrada"));
+
+        if (!existente.getUsuarioResidencial().getId().equals(usuarioId))
+            throw new BadRequestException("Usuário não autorizado a editar esta solicitação");
+
+        if (existente.getStatus() != Status.AGUARDANDO)
+            throw new BadRequestException("Apenas solicitações com status AGUARDANDO podem ser editadas");
+
+        existente.setDataAgendada(dto.getDataAgendada());
+        existente.setObservacoes(dto.getObservacoes());
+
+        if (dto.getItensColeta() != null) {
+            existente.getItensColeta().clear();
+            existente.getItensColeta().addAll(
+                    SolicitacaoColetaMapper.praEntidade(dto, existente.getUsuarioResidencial()).getItensColeta()
+            );
+        }
+
+        solicitacaoRepositorio.save(existente);
+        return SolicitacaoColetaMapper.praDto(existente);
     }
 
     @Override
     public List<SolicitacaoColetaResponse> listarDisponiveis() {
-        return List.of();
+        List<SolicitacaoColeta> lista = solicitacaoRepositorio.findByStatus(Status.AGUARDANDO);
+        return SolicitacaoColetaMapper.praListaDto(lista);
     }
 
     @Override
     public SolicitacaoColetaResponse aceitar(Long id, Long coletorId) {
-        return null;
+        SolicitacaoColeta coleta = solicitacaoRepositorio.findById(id)
+                .orElseThrow(() -> new NotFoundException("Solicitação não encontrada"));
+
+        Usuario coletor = usuarioRepositorio.findById(coletorId)
+                .orElseThrow(() -> new NotFoundException("Coletor não encontrado"));
+
+        if (coletor.getPerfil() != Perfil.COLETOR)
+            throw new BadRequestException("Somente coletores podem aceitar solicitações");
+
+        coleta.setColetor(coletor);
+        coleta.setStatus(Status.ACEITA);
+        solicitacaoRepositorio.save(coleta);
+
+        return SolicitacaoColetaMapper.praDto(coleta);
     }
 
     @Override
     public SolicitacaoColetaResponse cancelar(Long id, Long usuarioId) {
-        return null;
+        SolicitacaoColeta coleta = solicitacaoRepositorio.findById(id)
+                .orElseThrow(() -> new NotFoundException("Solicitação não encontrada"));
+
+        if (!coleta.getUsuarioResidencial().getId().equals(usuarioId))
+            throw new BadRequestException("Usuário não autorizado a cancelar esta solicitação");
+
+        if (coleta.getStatus() != Status.AGUARDANDO)
+            throw new BadRequestException("Somente solicitações AGUARDANDO podem ser canceladas");
+
+        coleta.setStatus(Status.CANCELADA);
+        solicitacaoRepositorio.save(coleta);
+
+        return SolicitacaoColetaMapper.praDto(coleta);
     }
 
     @Override
     public SolicitacaoColetaResponse finalizar(Long id) {
-        return null;
+        SolicitacaoColeta coleta = solicitacaoRepositorio.findById(id)
+                .orElseThrow(() -> new NotFoundException("Solicitação não encontrada"));
+
+        if (coleta.getStatus() != Status.ACEITA && coleta.getStatus() != Status.COLETADA)
+            throw new BadRequestException("Somente solicitações ACEITAS e COLETADAS podem ser finalizadas");
+
+        coleta.setStatus(Status.FINALIZADA);
+        solicitacaoRepositorio.save(coleta);
+
+        return SolicitacaoColetaMapper.praDto(coleta);
     }
 
     @Override
     public SolicitacaoColetaResponse adicionarFeedback(Long id, String feedback) {
-        return null;
+        SolicitacaoColeta coleta = solicitacaoRepositorio.findById(id)
+                .orElseThrow(() -> new NotFoundException("solicitação não encontrada"));
+
+        if (coleta.getStatus() != Status.FINALIZADA)
+            throw new BadRequestException("Feedback só pode ser adicionado após a finalização");
+
+        coleta.setFeedback(feedback);
+        solicitacaoRepositorio.save(coleta);
+
+        return SolicitacaoColetaMapper.praDto(coleta);
     }
 }
