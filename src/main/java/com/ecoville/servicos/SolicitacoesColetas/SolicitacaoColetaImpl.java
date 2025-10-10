@@ -2,12 +2,14 @@ package com.ecoville.servicos.SolicitacoesColetas;
 
 import com.ecoville.dtos.solicitacaoColetas.SolicitacaoColetaRequest;
 import com.ecoville.dtos.solicitacaoColetas.SolicitacaoColetaResponse;
+import com.ecoville.entities.ItemColeta;
 import com.ecoville.entities.SolicitacaoColeta;
 import com.ecoville.entities.Usuario;
 import com.ecoville.enums.Perfil;
 import com.ecoville.enums.Status;
 import com.ecoville.exceptions.BadRequestException;
 import com.ecoville.exceptions.NotFoundException;
+import com.ecoville.mappers.ItemMapper;
 import com.ecoville.mappers.SolicitacaoColetaMapper;
 import com.ecoville.repositories.SolicitacaoColetaRepository;
 import com.ecoville.repositories.UsuarioRepositorio;
@@ -65,9 +67,15 @@ public class SolicitacaoColetaImpl implements SolicitacaoColetaService {
 
         if (dto.getItensColeta() != null) {
             existente.getItensColeta().clear();
-            existente.getItensColeta().addAll(
-                    SolicitacaoColetaMapper.praEntidade(dto, existente.getUsuarioResidencial()).getItensColeta()
-            );
+            List<ItemColeta> novosItens = dto.getItensColeta().stream()
+                    .map(itemDto -> {
+                        ItemColeta item = ItemMapper.praEntidade(itemDto);
+                        item.setSolicitacaoColeta(existente);
+                        return item;
+                    })
+                    .toList();
+
+            existente.getItensColeta().addAll(novosItens);
         }
 
         solicitacaoRepositorio.save(existente);
