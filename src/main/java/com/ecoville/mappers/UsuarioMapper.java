@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ecoville.dtos.usuario.UsuarioRequestDto;
 import com.ecoville.dtos.usuario.UsuarioResponseDto;
+import com.ecoville.dtos.usuario.UsuarioResponseSimples;
 import com.ecoville.entities.SolicitacaoColeta;
 import com.ecoville.entities.Usuario;
 import com.ecoville.enums.Perfil;
@@ -58,6 +59,15 @@ public class UsuarioMapper {
         return usuarios.stream()
         .map(UsuarioMapper::praDto)
         .toList();
-} 
+    }
+
+    public static UsuarioResponseSimples praDtoColeta(Usuario usuario){
+        return new UsuarioResponseSimples(
+                usuario.getId(),
+                usuario.getNomeUsuario(),
+                usuario.getPerfil(),
+                EnderecoMapper.praDto(usuario.getEndereco())
+        );
+    }
 
 }

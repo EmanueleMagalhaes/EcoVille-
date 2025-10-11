@@ -46,6 +46,6 @@ public class SolicitacaoColeta {
     @JoinColumn(name = "coletor_id")
     private Usuario coletor;
 
-    @OneToMany(mappedBy = "solicitacaoColeta", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "solicitacaoColeta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemColeta> itensColeta;
 }
