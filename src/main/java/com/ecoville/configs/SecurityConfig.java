@@ -11,6 +11,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.ecoville.enums.Perfil;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -23,16 +25,56 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/organizations").hasAnyAuthority(
-                                "ADMIN", "USER"
-                        )
-                        .requestMatchers("/organizations", "/users").hasAuthority("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+
+                        .requestMatchers("/api/usuarios/*").hasAnyAuthority(Perfil.COLETOR.name(), Perfil.RESIDENCIAL.name())
+
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios/*").hasAnyAuthority(Perfil.COLETOR.name(), Perfil.RESIDENCIAL.name())
+
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios").hasAnyAuthority(Perfil.COLETOR.name())
+
+                        .requestMatchers(HttpMethod.PUT, "/api/usuarios/*").hasAnyAuthority(Perfil.COLETOR.name(), Perfil.RESIDENCIAL.name())
+
+                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/*").hasAnyAuthority(Perfil.COLETOR.name(), Perfil.RESIDENCIAL.name())
+
+
+
+
+
+                        /* COLETAS */
+
+                        // Criar solicitação: apenas usuário residencial
+                        .requestMatchers(HttpMethod.POST, "/api/coletas").hasAuthority(Perfil.RESIDENCIAL.name())
+
+                        // Operações nas próprias solicitações do usuário residencial
+                        .requestMatchers(HttpMethod.GET, "/api/coletas/minhas/**").hasAuthority(Perfil.RESIDENCIAL.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/coletas/minhas/**").hasAuthority(Perfil.RESIDENCIAL.name())
+
+                        // Listar solicitações disponíveis: apenas coletor
+                        .requestMatchers(HttpMethod.GET, "/api/coletas/disponiveis").hasAuthority(Perfil.COLETOR.name())
+
+                        // Aceitar solicitação: apenas coletor
+                        .requestMatchers(HttpMethod.PATCH, "/api/coletas/*/aceitar").hasAuthority(Perfil.COLETOR.name())
+
+                        // Cancelar solicitação: somente usuário residencial (criador)
+                        .requestMatchers(HttpMethod.PATCH, "/api/coletas/*/cancelar").hasAuthority(Perfil.RESIDENCIAL.name())
+
+                        // Finalizar: apenas coletor
+                        .requestMatchers(HttpMethod.PATCH, "/api/coletas/*/finalizar").hasAuthority(Perfil.COLETOR.name())
+
+                        // Feedback: tipicamente o usuário residencial deixa feedback após finalização
+                        .requestMatchers(HttpMethod.PATCH, "/api/coletas/*/feedback").hasAuthority(Perfil.COLETOR.name())
+
                         .anyRequest().authenticated()
+                        
                 );
         return http.build();
     }
