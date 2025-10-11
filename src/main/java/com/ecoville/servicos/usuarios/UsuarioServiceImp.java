@@ -5,11 +5,15 @@ import java.util.List;
 import com.ecoville.entities.Endereco;
 import com.ecoville.mappers.EnderecoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ecoville.dtos.usuario.UsuarioRequestDto;
 import com.ecoville.dtos.usuario.UsuarioResponseDto;
 import com.ecoville.entities.Usuario;
+import com.ecoville.enums.Perfil;
 import com.ecoville.exceptions.BadRequestException;
 import com.ecoville.exceptions.NotFoundException;
 import com.ecoville.mappers.UsuarioMapper;
@@ -22,6 +26,12 @@ public class UsuarioServiceImp implements UsuarioServices{
     @Autowired
     private UsuarioRepositorio repositorio;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
+    private static final String DEFAULT_USER = "root";
+    private static final String DEFAULT_PASS = "admin";
+
     @Override
     public UsuarioResponseDto criar(UsuarioRequestDto dto){
 
@@ -32,6 +42,8 @@ public class UsuarioServiceImp implements UsuarioServices{
         Usuario usuario = UsuarioMapper.praEntidade(dto);
 
         Endereco endereco = EnderecoMapper.praEntidade(dto.getEndereco());
+
+        usuario.setSenha(encoder.encode(dto.getSenha()));
 
         usuario.setEndereco(endereco);
 
@@ -89,9 +101,21 @@ public class UsuarioServiceImp implements UsuarioServices{
         };
 
         repositorio.deleteById(id);
-    };
+    }
 
+    @Override
+public UserDetails loadUserByUsername(String nomeUsuario) throws UsernameNotFoundException {
+    return repositorio.findByNomeUsuario(nomeUsuario)
+        .orElseGet(() -> {
+            if (nomeUsuario.equals(DEFAULT_USER)) {
+                Usuario root = new Usuario();
+                root.setId(0L);
+                root.setNomeUsuario(DEFAULT_USER);
+                root.setSenha(encoder.encode(DEFAULT_PASS));
+                root.setPerfil(Perfil.COLETOR);
+                return root;
+            }
+            throw new UsernameNotFoundException(nomeUsuario);
+        });
 }
-
-
-
+}

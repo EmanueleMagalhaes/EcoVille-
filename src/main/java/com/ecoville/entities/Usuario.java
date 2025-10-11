@@ -1,7 +1,11 @@
 package com.ecoville.entities;
 
 
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ecoville.enums.Perfil;
 
@@ -19,7 +23,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +45,43 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuarioResidencial", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SolicitacaoColeta> solicitacoes;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+       return List.of(() -> perfil.toString());
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return isEnabled();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isEnabled();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isEnabled();
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.nomeUsuario;
+    }
+
+
 
 }
