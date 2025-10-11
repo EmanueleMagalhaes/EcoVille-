@@ -1,7 +1,6 @@
 package com.ecoville.dtos.solicitacaoColetas;
 
 import com.ecoville.dtos.itemColeta.ItemResponseDto;
-import com.ecoville.dtos.usuario.UsuarioResponseDto;
 
 import com.ecoville.dtos.usuario.UsuarioResponseSimples;
 import com.ecoville.enums.Status;
