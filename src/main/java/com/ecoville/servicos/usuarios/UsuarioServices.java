@@ -3,11 +3,12 @@ package com.ecoville.servicos.usuarios;
 import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.ecoville.dtos.usuario.UsuarioRequestDto;
 import com.ecoville.dtos.usuario.UsuarioResponseDto;
 
-public interface UsuarioServices {
+public interface UsuarioServices extends UserDetailsService{
     
     public UsuarioResponseDto criar(UsuarioRequestDto usuario);
 
