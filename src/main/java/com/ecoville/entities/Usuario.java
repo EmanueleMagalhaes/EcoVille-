@@ -39,7 +39,7 @@ public class Usuario {
     @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     private Endereco endereco;
 
-    @OneToMany(mappedBy = "coletor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuarioResidencial", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SolicitacaoColeta> solicitacoes;
 
 }

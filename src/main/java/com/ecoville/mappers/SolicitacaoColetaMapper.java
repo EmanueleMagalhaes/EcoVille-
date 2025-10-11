@@ -6,7 +6,6 @@ import com.ecoville.entities.ItemColeta;
 import com.ecoville.entities.SolicitacaoColeta;
 import com.ecoville.entities.Usuario;
 import com.ecoville.enums.Status;
-import com.ecoville.exceptions.BadRequestException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,8 +43,8 @@ public class SolicitacaoColetaMapper {
                 entidade.getDataAgendada(),
                 entidade.getObservacoes(),
                 entidade.getFeedback(),
-                UsuarioMapper.praDto(entidade.getUsuarioResidencial()),
-                entidade.getColetor() != null ? UsuarioMapper.praDto(entidade.getColetor()) : null,
+                UsuarioMapper.praDtoColeta(entidade.getUsuarioResidencial()),
+                entidade.getColetor() != null ? UsuarioMapper.praDtoColeta(entidade.getColetor()) : null,
                 ItemMapper.praLista(entidade.getItensColeta())
         );
     }
@@ -57,16 +56,5 @@ public class SolicitacaoColetaMapper {
     }
 
 
-    private static Status traduzStatus(String novoStatus){
-
-        Status status = null;
-        try {
-            status = Status.valueOf(novoStatus.toUpperCase());
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new BadRequestException("status errado" + e);
-        }
-
-
-        return status;
-    }
+    
 }
