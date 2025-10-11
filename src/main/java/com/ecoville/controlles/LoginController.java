@@ -8,9 +8,10 @@ import com.ecoville.dtos.login.LoginRequestDto;
 import com.ecoville.dtos.login.LoginResponseDto;
 import com.ecoville.servicos.login.LoginService;
 
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("login")
+@RequestMapping("api/login")
 public class LoginController {
 
     private final LoginService service;

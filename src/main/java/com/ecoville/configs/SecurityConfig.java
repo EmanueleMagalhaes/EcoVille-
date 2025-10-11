@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/api/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/organizations").hasAnyAuthority(
                                 "ADMIN", "USER"
                         )

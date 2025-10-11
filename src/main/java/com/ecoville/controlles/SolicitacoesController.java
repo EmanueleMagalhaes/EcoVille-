@@ -26,7 +26,7 @@ public class SolicitacoesController {
 
     @GetMapping("/minhas")
     public List<SolicitacaoColetaResponse> listarMinhas(@RequestParam Long usuarioId) {
-        return service.listarMinhas(usuarioId);
+        return service.listarMinhas(usuarioId); 
     }
 
     @PutMapping("/minhas")

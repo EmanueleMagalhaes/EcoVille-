@@ -21,12 +21,14 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public LoginResponseDto authenticate(LoginRequestDto dto) {
-        UserDetails usuario = usuarioServices.loadUserByUsername(dto.getUsername());
-        if (!encoder.matches(dto.getPassword(), usuario.getPassword())) {
+
+        UserDetails usuario = usuarioServices.loadUserByUsername(dto.getNomeUsuario());
+
+        if (!encoder.matches(dto.getSenha(), usuario.getPassword())) {
             throw new UsernameNotFoundException(usuario.getUsername());
         }
 
-        String token = dto.getUsername() + ":" + dto.getPassword();
+        String token = dto.getNomeUsuario() + ":" + dto.getSenha();
         token = Base64.getEncoder().encodeToString(token.getBytes());
 
         return LoginResponseDto.builder().type("Basic").token(token).build();

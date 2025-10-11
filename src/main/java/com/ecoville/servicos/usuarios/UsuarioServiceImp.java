@@ -103,36 +103,6 @@ public class UsuarioServiceImp implements UsuarioServices{
         repositorio.deleteById(id);
     }
 
-    /* 
-    @Override
-    public UserDetails loadUserByUsername(String nomeUsuario) throws UsernameNotFoundException {
-        Optional<Usuario> usuario = repositorio.findByNomeUsuario(nomeUsuario).orElseThrow();
-        if (usuario.isPresent()) {
-            return usuario.get();
-        }
-
-        if (nomeUsuario.equals(DEFAULT_USER)) {
-
-            Usuario novo = usuario.get().orE;
-
-            Perfil perfil = Perfil.valueOf("COLETOR");
-
-            novo.setId(0L);
-            novo.setNomeUsuario(DEFAULT_USER);
-            novo.setSenha(encoder.encode(DEFAULT_PASS));
-            novo.setPerfil(perfil);
-            return Usuario.builder()
-                    .id(0L)
-                    .name("ROOT")
-                    .username(DEFAULT_USER)
-                    .password(encoder.encode(DEFAULT_PASS))
-                    .role("ADMIN")
-                    .build();
-        }
-
-        throw new UsernameNotFoundException(nomeUsuario);
-    }*/
-
     @Override
 public UserDetails loadUserByUsername(String nomeUsuario) throws UsernameNotFoundException {
     return repositorio.findByNomeUsuario(nomeUsuario)

@@ -74,12 +74,12 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getPassword() {
-        return getPassword();
+        return this.senha;
     }
 
     @Override
     public String getUsername() {
-        return getUsername();
+        return this.nomeUsuario;
     }
 
 
