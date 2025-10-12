@@ -1,0 +1,99 @@
+*, *::before, *::after {
+ box-sizing: border-box;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+
+ }
+
+.login-container {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+   
+}
+
+.login-container h2 {
+  font-size: 30px;
+  color: #3B3B1A;
+  margin-bottom: 55px;
+}
+
+.login-box {
+  background-color: #AEC8A4; 
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 15px #3B3B1A;
+  width: 350px;
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 300px;
+}
+
+.login-form input {
+  padding: 10px;
+  border-radius: 18px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  
+}
+
+.login-form input:focus {
+  border-color: #3B3B1A;
+  box-shadow: 0 0 5px E7EFC7(123, 47, 247, 0.3);
+ 
+}
+
+.btn-logar {
+  background-color: #8A784E;
+  color: #3B3B1A;
+  border: none;
+  border-radius: 18px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 22px;
+  width: 200px;
+  border: 1px solid #E7EFC7;
+border-radius: 26px;
+}
+
+.btn-logar:hover {
+  background-color: #E7EFC7;
+}
+
+.error-message {
+  color: red;
+  font-size: 13px;
+  text-align: center;
+}
+
+
+.criar-conta-texto {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #3B3B1A;
+}
+
+.link-criar-conta {
+  color: #8A784E;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.link-criar-conta:hover {
+  text-decoration: underline;
+}
