@@ -11,5 +11,4 @@ import com.ecoville.entities.Usuario;
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByNomeUsuario(String username);
-    
 }

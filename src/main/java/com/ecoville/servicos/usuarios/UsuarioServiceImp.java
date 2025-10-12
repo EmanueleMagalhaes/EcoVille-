@@ -1,6 +1,7 @@
 package com.ecoville.servicos.usuarios;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.ecoville.entities.Endereco;
 import com.ecoville.mappers.EnderecoMapper;
@@ -15,6 +16,7 @@ import com.ecoville.dtos.usuario.UsuarioResponseDto;
 import com.ecoville.entities.Usuario;
 import com.ecoville.enums.Perfil;
 import com.ecoville.exceptions.BadRequestException;
+import com.ecoville.exceptions.ImATeapotException;
 import com.ecoville.exceptions.NotFoundException;
 import com.ecoville.mappers.UsuarioMapper;
 import com.ecoville.repositories.UsuarioRepositorio;
@@ -35,8 +37,12 @@ public class UsuarioServiceImp implements UsuarioServices{
     @Override
     public UsuarioResponseDto criar(UsuarioRequestDto dto){
 
+        
+
         if(dto == null){
             throw new BadRequestException("Usuario nulo não permitido");
+        }else if(dto.getNomeUsuario().equals("café")){
+            throw new ImATeapotException("eu sou um bule de café por acaso?");
         }
 
         Usuario usuario = UsuarioMapper.praEntidade(dto);
@@ -85,6 +91,8 @@ public class UsuarioServiceImp implements UsuarioServices{
 
         usuario.setId(id);
 
+        usuario.setSenha(encoder.encode(dto.getSenha()));
+
         usuario.setEndereco(antigo.getEndereco());
 
         usuario.setSolicitacoes(antigo.getSolicitacoes());
@@ -117,5 +125,10 @@ public UserDetails loadUserByUsername(String nomeUsuario) throws UsernameNotFoun
             }
             throw new UsernameNotFoundException(nomeUsuario);
         });
-}
-}
+        }
+
+            public Optional<Usuario> porNomeUsuario(String nome){
+                return repositorio.findByNomeUsuario(nome);
+            }
+
+        }
