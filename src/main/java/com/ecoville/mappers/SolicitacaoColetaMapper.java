@@ -43,8 +43,8 @@ public class SolicitacaoColetaMapper {
                 entidade.getDataAgendada(),
                 entidade.getObservacoes(),
                 entidade.getFeedback(),
-                UsuarioMapper.praDto(entidade.getUsuarioResidencial()),
-                entidade.getColetor() != null ? UsuarioMapper.praDto(entidade.getColetor()) : null,
+                UsuarioMapper.praDtoColeta(entidade.getUsuarioResidencial()),
+                entidade.getColetor() != null ? UsuarioMapper.praDtoColeta(entidade.getColetor()) : null,
                 ItemMapper.praLista(entidade.getItensColeta())
         );
     }
@@ -54,4 +54,7 @@ public class SolicitacaoColetaMapper {
                 .map(SolicitacaoColetaMapper::praDto)
                 .toList();
     }
+
+
+    
 }
