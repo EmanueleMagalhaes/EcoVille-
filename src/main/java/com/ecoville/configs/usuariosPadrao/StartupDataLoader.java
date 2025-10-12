@@ -3,6 +3,7 @@ package com.ecoville.configs.usuariosPadrao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,15 +18,15 @@ import jakarta.transaction.Transactional;
 @Component
 public class StartupDataLoader implements ApplicationRunner {
 
-    private final UsuarioRepositorio usuarioRepositorio;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private UsuarioRepositorio usuarioRepositorio;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     private static final String DEFAULT_PASS = "administrador";
 
-    public StartupDataLoader(UsuarioRepositorio usuarioRepositorio, PasswordEncoder passwordEncoder) {
-        this.usuarioRepositorio = usuarioRepositorio;
-        this.passwordEncoder = passwordEncoder;
-    }
+    
 
     @Override
     @Transactional
@@ -42,21 +43,26 @@ public class StartupDataLoader implements ApplicationRunner {
 
         for(int i=0;i<pessoas.size();i++){
 
-            boolean exists = usuarioRepositorio.findByNomeUsuario(pessoas.get(i)).isPresent();
+            String nome = pessoas.get(i).toLowerCase().trim();
 
-        if (!exists) {
+            boolean exists = usuarioRepositorio.findByNomeUsuario(nome).isPresent();
 
-            Usuario root = new Usuario();
-            root.setNomeUsuario(pessoas.get(i));
-            root.setSenha(passwordEncoder.encode(DEFAULT_PASS));
-            root.setPerfil(Perfil.COLETOR);
-            usuarioRepositorio.save(root);
+            if (!exists) {
 
-            System.out.println("Usuário padrão " +pessoas.get(i)+ " criado.");
+                Usuario root = new Usuario();
+                root.setNomeUsuario(nome);
+                root.setSenha(encoder.encode(DEFAULT_PASS));
+                root.setPerfil(Perfil.COLETOR);
+                try {
+                    usuarioRepositorio.save(root);
+                    System.out.println("Usuário padrão '" + nome + "' criado com senha padrão.");
+                } catch (Exception e) {
+                    System.err.println("Falha ao criar usuário padrão '" + nome + "': " + e.getMessage());
+                }
 
-        } else {
-            System.out.println("Usuário padrão " +pessoas.get(i)+ " já existe.");
-        }
+            } else {
+                System.out.println("Usuário padrão '" + nome + "' já existe.");
+            }
         }
     }
 

@@ -91,6 +91,8 @@ public class UsuarioServiceImp implements UsuarioServices{
 
         usuario.setId(id);
 
+        usuario.setSenha(encoder.encode(dto.getSenha()));
+
         usuario.setEndereco(antigo.getEndereco());
 
         usuario.setSolicitacoes(antigo.getSolicitacoes());
