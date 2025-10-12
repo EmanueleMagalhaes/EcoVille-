@@ -21,6 +21,14 @@ function CriarConta() {
   const [mapUrl, setMapUrl] = useState("");
 
   useEffect(() => {
+    const atualizarMapa =  (lat, lon) => {
+      
+    if (lat && lon) {
+          const url = `https://maps.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
+          setMapUrl(url);
+        }
+      };
+
     const buscarCep = async () => {
       if (formData.cep.length !== 8) return;
 
@@ -55,14 +63,12 @@ function CriarConta() {
           longitude: lon,
         }));
         atualizarMapa(lat, lon);
-      } else {
-        console.warn("Nenhum dado de geolocalização encontrado para o endereço.");
       }
-
     } catch (error) {
       console.error("Erro ao buscar CEP:", error);
     }
   };
+
   if (/^\d{8}$/.test(formData.cep)) {
       buscarCep();
     }
