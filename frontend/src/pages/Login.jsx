@@ -7,7 +7,7 @@ function Login() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    usuario: "",
+    nomeUsuario: "",
     senha: "",
   });
 
@@ -18,19 +18,48 @@ function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
    
-    if (formData.usuario === "residencial" && formData.senha === "123") {
-      navigate("/home"); 
-    } else if (formData.usuario === "funcionario" && formData.senha === "123") {
-      navigate("/solicitacoes"); 
-    } else {
+    
+    try {
+      const response = await fetch("http://localhost:8080/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        setError("Conta não encontrada.");
+        return;
+      }
+
+      const data = await response.json();
+
+      console.log("Dados recebidos no login:", data);
+
+      // Salvar token no localStorage
+      localStorage.setItem("token", data.token);
+
+      // Verificar perfil e redirecionar
+      const perfil = typeof data.perfil === "string" ? data.perfil : data.perfil?.name;
+      if (perfil === "RESIDENCIAL") {
+        navigate("/solicitacoes");
+      } else if (perfil === "COLETOR") {
+        navigate("/solicitacoes-coletor");
+      } else {
+        setError("Perfil de usuário não reconhecido.");
+      }
+    } catch (err) {
+      console.error("Erro ao fazer login:", err);
       setError("Conta não encontrada.");
     }
   };
+
 
   return (
     <div className="login-container">
@@ -41,10 +70,10 @@ function Login() {
        
         <input
           type="text"
-          id="usuario"
-          name="usuario"
+          id="nomeUsuario"
+          name="nomeUsuario"
           placeholder="Digite seu usuário"
-          value={formData.usuario}
+          value={formData.nomeUsuario}
           onChange={handleChange}
           required
         />

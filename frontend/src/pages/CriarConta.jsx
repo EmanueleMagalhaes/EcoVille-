@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./CriarConta.css";
 
 function CriarConta() {
@@ -20,36 +20,43 @@ function CriarConta() {
 
   const [mapUrl, setMapUrl] = useState("");
 
+  useEffect(() => {
+    const buscarCep = async () => {
+      if (formData.cep.length !== 8) return;
+
+      try {
+        const response = await fetch(`https://viacep.com.br/ws/${formData.cep}/json/`);
+        const data = await response.json();
+
+        console.log("Resposta da API ViaCEP:", data);
+
+        if (data.erro) {
+          alert("CEP não encontrado!");
+          return;
+        }
+
+        setFormData((prev) => ({
+          ...prev,
+          logradouro: data.logradouro,
+          bairro: data.bairro,
+          cidade: data.localidade,
+          estado: data.uf,
+        }));
+      } catch (error) {
+        console.error("Erro ao buscar CEP:", error);
+      }
+    };
+    if (/^\d{8}$/.test(formData.cep)) {
+      buscarCep();
+    }
+  }, [formData.cep]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
-  };
-
-  const buscarCep = async () => {
-    if (formData.cep.length !== 8) return;
-
-    try {
-      const response = await fetch(`https://viacep.com.br/ws/${formData.cep}/json/`);
-      const data = await response.json();
-
-      if (data.erro) {
-        alert("CEP não encontrado!");
-        return;
-      }
-
-      setFormData((prev) => ({
-        ...prev,
-        logradouro: data.logradouro,
-        bairro: data.bairro,
-        cidade: data.localidade,
-        estado: data.uf,
-      }));
-    } catch (error) {
-      console.error("Erro ao buscar CEP:", error);
-    }
   };
 
   const atualizarMapa = () => {
@@ -59,10 +66,72 @@ function CriarConta() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    
     e.preventDefault();
-    console.log("Dados do formulário:", formData);
-    alert("Conta criada com sucesso!");
+
+      if (formData.senha.length < 10) {
+        alert("A senha deve ter no mínimo 10 caracteres.");
+        return;
+      }
+
+      if (formData.senha !== formData.confirmarSenha) {
+        alert("As senhas não coincidem.");
+        return;
+      }
+
+      
+      const usuario = {
+        nomeUsuario: formData.nomeUsuario,
+        senha: formData.senha,
+        perfil: "RESIDENCIAL",
+        endereco: {
+          cep: formData.cep,
+          logradouro: formData.logradouro,
+          estado: formData.estado,
+          cidade: formData.cidade,
+          bairro: formData.bairro,
+          numero: formData.numero,
+          complemento: formData.complemento,
+          latitude: formData.latitude,
+          longitude: formData.longitude,
+        },
+      };
+    
+    try {
+      const response = await fetch("http://localhost:8080/api/usuarios", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(usuario),
+      });
+
+      if (response.ok) {
+        alert("Conta criada com sucesso!");
+        // Redirecionar ou limpar formulário
+        window.location.href = "/";
+        return;
+      }
+
+    const text = await response.text();
+    let errorMessage = "Erro ao criar conta.";
+
+    if (text) {
+      try {
+        const errorData = JSON.parse(text);
+        errorMessage = errorData.message || errorMessage;
+      } catch {
+        console.warn("Resposta não era JSON:", text);
+      }
+    }
+
+    alert(errorMessage);
+
+    } catch (error) {
+      console.error("Erro ao enviar dados:", error);
+      alert("Erro ao enviar dados.");
+    }
   };
 
   return (
@@ -81,7 +150,7 @@ function CriarConta() {
         {/* Endereço */}
         <h3 className="end">Endereço</h3>
         
-        <input type="text" placeholder="CEP" name="cep" value={formData.cep} onChange={handleChange} onBlur={buscarCep} required />
+        <input type="text" placeholder="CEP" name="cep" value={formData.cep} onChange={handleChange} required />
 
         <input type="text" placeholder="Logradouro" name="logradouro" value={formData.logradouro} onChange={handleChange} />
 
