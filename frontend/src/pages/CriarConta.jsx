@@ -42,11 +42,28 @@ function CriarConta() {
           cidade: data.localidade,
           estado: data.uf,
         }));
-      } catch (error) {
-        console.error("Erro ao buscar CEP:", error);
+
+      const enderecoCompleto = `${data.logradouro}, ${data.bairro}, ${data.localidade}, ${data.uf}, Brasil`;
+      const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoCompleto)}`);
+      const geoData = await geoResponse.json();
+
+      if (geoData && geoData.length > 0) {
+        const { lat, lon } = geoData[0];
+        setFormData((prev) => ({
+          ...prev,
+          latitude: lat,
+          longitude: lon,
+        }));
+        atualizarMapa();
+      } else {
+        console.warn("Nenhum dado de geolocalização encontrado para o endereço.");
       }
-    };
-    if (/^\d{8}$/.test(formData.cep)) {
+      
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+    }
+  };
+  if (/^\d{8}$/.test(formData.cep)) {
       buscarCep();
     }
   }, [formData.cep]);
