@@ -54,11 +54,11 @@ function CriarConta() {
           latitude: lat,
           longitude: lon,
         }));
-        atualizarMapa();
+        atualizarMapa(lat, lon);
       } else {
         console.warn("Nenhum dado de geolocalização encontrado para o endereço.");
       }
-      
+
     } catch (error) {
       console.error("Erro ao buscar CEP:", error);
     }
@@ -76,9 +76,9 @@ function CriarConta() {
     });
   };
 
-  const atualizarMapa = () => {
-    if (formData.latitude && formData.longitude) {
-      const url = `https://maps.google.com/maps?q=${formData.latitude},${formData.longitude}&z=15&output=embed`;
+  const atualizarMapa = (lat= formData.latitude, lon= formData.longitude) => {
+    if (lat && lon) {
+      const url = `https://maps.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
       setMapUrl(url);
     }
   };
@@ -188,14 +188,17 @@ function CriarConta() {
         <input type="text" placeholder="Longitude" name="longitude" value={formData.longitude} onChange={handleChange} onBlur={atualizarMapa} required />
 
         {mapUrl && (
-          <iframe
-            src={mapUrl}
-            width="100%"
-            height="300"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-          ></iframe>
+          <div className="map-container">
+            <iframe
+              src={mapUrl}
+              width="100%"
+              height="400"
+              style={{ border: "1px solid #ccc", borderRadius: "8px", marginTop: "20px" }}
+              allowFullScreen
+              loading="lazy"
+              title="Mapa de localização"
+            ></iframe>
+          </div>
         )}
 
         <div className="checkbox-group">
