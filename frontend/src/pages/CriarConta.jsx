@@ -163,54 +163,71 @@ function CriarConta() {
 
       <form onSubmit={handleSubmit}>
         {/* Dados da conta */}
-        <h3>Dados da conta</h3>
-        <input type="text" placeholder="Nome de usuário" name="nomeUsuario" value={formData.nomeUsuario} onChange={handleChange} required />
-   
-        <input type="password" placeholder="Senha" name="senha" value={formData.senha} onChange={handleChange} required />
+        <section>
+          <h3>Dados da conta</h3>
+          <input type="text" placeholder="Nome de usuário" name="nomeUsuario" value={formData.nomeUsuario} onChange={handleChange} required />
+    
+          <input type="password" placeholder="Senha" name="senha" value={formData.senha} onChange={handleChange} required />
 
-        <input type="password" placeholder="Confirmar senha" name="confirmarSenha" value={formData.confirmarSenha} onChange={handleChange} required />
+          <input type="password" placeholder="Confirmar senha" name="confirmarSenha" value={formData.confirmarSenha} onChange={handleChange} required />
 
+        </section>
         {/* Endereço */}
-        <h3 className="end">Endereço</h3>
-        
-        <input type="text" placeholder="CEP" name="cep" value={formData.cep} onChange={handleChange} required />
+        <section>
+          <h3 className="end">Endereço</h3>
 
-        <input type="text" placeholder="Logradouro" name="logradouro" value={formData.logradouro} onChange={handleChange} readOnly />
+          <input type="text" placeholder="CEP" name="cep" value={formData.cep} onChange={handleChange} required />
 
-        <input type="text" placeholder="Estado" name="estado" value={formData.estado} onChange={handleChange} readOnly/>
+          <input type="text" placeholder="Logradouro" name="logradouro" value={formData.logradouro} onChange={handleChange} readOnly />
 
-        <input type="text" placeholder="Cidade" name="cidade" value={formData.cidade} onChange={handleChange} readOnly/>
+          <input type="text" placeholder="Estado" name="estado" value={formData.estado} onChange={handleChange} readOnly/>
 
-        <input type="text" placeholder="Bairro" name="bairro" value={formData.bairro} onChange={handleChange} readOnly/>
+          <input type="text" placeholder="Cidade" name="cidade" value={formData.cidade} onChange={handleChange} readOnly/>
 
-        <input type="text" placeholder="Número" name="numero" value={formData.numero} onChange={handleChange} required />
+          <input type="text" placeholder="Bairro" name="bairro" value={formData.bairro} onChange={handleChange} readOnly/>
 
-        <input type="text" placeholder="Complemento" name="complemento" value={formData.complemento} onChange={handleChange} />
+          <input type="text" placeholder="Número" name="numero" value={formData.numero} onChange={handleChange} required />
+
+          <input type="text" placeholder="Complemento" name="complemento" value={formData.complemento} onChange={handleChange} />
+        </section>
 
         {/* GeoLocalização */}
-        <h3>GeoLocalização</h3>
-        <input type="text" placeholder="Latitude" name="latitude" value={formData.latitude} onChange={handleChange} onBlur={atualizarMapa} required />
 
-        <input type="text" placeholder="Longitude" name="longitude" value={formData.longitude} onChange={handleChange} onBlur={atualizarMapa} required />
+        <section className="geolocalizacao-container">
+          <div className="inputs-geolocalizacao">
+            <h4>GeoLocalização</h4>
+            <input type="text" placeholder="Latitude" name="latitude" value={formData.latitude} onChange={handleChange} onBlur={atualizarMapa} required readOnly/>
 
-        {mapUrl && (
-          <div className="map-container">
-            <iframe
-              src={mapUrl}
-              width="100%"
-              height="400"
-              style={{ border: "1px solid #ccc", borderRadius: "8px", marginTop: "20px" }}
-              allowFullScreen
-              loading="lazy"
-              title="Mapa de localização"
-            ></iframe>
+            <input type="text" placeholder="Longitude" name="longitude" value={formData.longitude} onChange={handleChange} onBlur={atualizarMapa} required readOnly/>
+
+            <div className="checkbox-group">
+              <div className="inputCheck">
+                <input type="checkbox" name="confirmarLocalizacao" checked={formData.confirmarLocalizacao} onChange={handleChange} />
+              </div>
+              <div className="labelCheck">
+                <label>Confirmo que essa é a localização informada</label>
+              </div>
+            </div>
+
           </div>
-        )}
+          
+          <div className="mapa">
+            {mapUrl && (
+                <div className="map-container">
+                  <iframe
+                      src={mapUrl}
+                      width="100%"
+                      height="400"
+                      style={{ border: "1px solid #ccc", borderRadius: "8px" }}
+                      allowFullScreen
+                      loading="lazy"
+                      title="Mapa de localização"
+                  ></iframe>
+                </div>
+            )}
+          </div>
 
-        <div className="checkbox-group">
-          <input type="checkbox" name="confirmarLocalizacao" checked={formData.confirmarLocalizacao} onChange={handleChange} />
-          <label>Confirmo que essa é a localização informada</label>
-        </div>
+        </section>
 
         <div className="botoes">
           <button type="button" onClick={() => alert("Cancelado!")}>Cancelar</button>
