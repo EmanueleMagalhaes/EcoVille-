@@ -21,6 +21,14 @@ function CriarConta() {
   const [mapUrl, setMapUrl] = useState("");
 
   useEffect(() => {
+    const atualizarMapa =  (lat, lon) => {
+      
+    if (lat && lon) {
+          const url = `https://maps.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
+          setMapUrl(url);
+        }
+      };
+
     const buscarCep = async () => {
       if (formData.cep.length !== 8) return;
 
@@ -42,11 +50,26 @@ function CriarConta() {
           cidade: data.localidade,
           estado: data.uf,
         }));
-      } catch (error) {
-        console.error("Erro ao buscar CEP:", error);
+
+      const enderecoCompleto = `${data.logradouro}, ${data.bairro}, ${data.localidade}, ${data.uf}, Brasil`;
+      const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoCompleto)}`);
+      const geoData = await geoResponse.json();
+
+      if (geoData && geoData.length > 0) {
+        const { lat, lon } = geoData[0];
+        setFormData((prev) => ({
+          ...prev,
+          latitude: lat,
+          longitude: lon,
+        }));
+        atualizarMapa(lat, lon);
       }
-    };
-    if (/^\d{8}$/.test(formData.cep)) {
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+    }
+  };
+
+  if (/^\d{8}$/.test(formData.cep)) {
       buscarCep();
     }
   }, [formData.cep]);
@@ -59,9 +82,9 @@ function CriarConta() {
     });
   };
 
-  const atualizarMapa = () => {
-    if (formData.latitude && formData.longitude) {
-      const url = `https://maps.google.com/maps?q=${formData.latitude},${formData.longitude}&z=15&output=embed`;
+  const atualizarMapa = (lat= formData.latitude, lon= formData.longitude) => {
+    if (lat && lon) {
+      const url = `https://maps.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
       setMapUrl(url);
     }
   };
@@ -152,13 +175,13 @@ function CriarConta() {
         
         <input type="text" placeholder="CEP" name="cep" value={formData.cep} onChange={handleChange} required />
 
-        <input type="text" placeholder="Logradouro" name="logradouro" value={formData.logradouro} onChange={handleChange} />
+        <input type="text" placeholder="Logradouro" name="logradouro" value={formData.logradouro} onChange={handleChange} readOnly />
 
-        <input type="text" placeholder="Estado" name="estado" value={formData.estado} onChange={handleChange} />
+        <input type="text" placeholder="Estado" name="estado" value={formData.estado} onChange={handleChange} readOnly/>
 
-        <input type="text" placeholder="Cidade" name="cidade" value={formData.cidade} onChange={handleChange} />
+        <input type="text" placeholder="Cidade" name="cidade" value={formData.cidade} onChange={handleChange} readOnly/>
 
-        <input type="text" placeholder="Bairro" name="bairro" value={formData.bairro} onChange={handleChange} />
+        <input type="text" placeholder="Bairro" name="bairro" value={formData.bairro} onChange={handleChange} readOnly/>
 
         <input type="text" placeholder="Número" name="numero" value={formData.numero} onChange={handleChange} required />
 
@@ -171,14 +194,17 @@ function CriarConta() {
         <input type="text" placeholder="Longitude" name="longitude" value={formData.longitude} onChange={handleChange} onBlur={atualizarMapa} required />
 
         {mapUrl && (
-          <iframe
-            src={mapUrl}
-            width="100%"
-            height="300"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-          ></iframe>
+          <div className="map-container">
+            <iframe
+              src={mapUrl}
+              width="100%"
+              height="400"
+              style={{ border: "1px solid #ccc", borderRadius: "8px", marginTop: "20px" }}
+              allowFullScreen
+              loading="lazy"
+              title="Mapa de localização"
+            ></iframe>
+          </div>
         )}
 
         <div className="checkbox-group">
