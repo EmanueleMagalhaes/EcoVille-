@@ -1,5 +1,6 @@
 package com.ecoville.configs.usuariosPadrao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +10,12 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.ecoville.dtos.endereco.EnderecoRequestDto;
+import com.ecoville.entities.Endereco;
 import com.ecoville.entities.Usuario;
 import com.ecoville.enums.Perfil;
 import com.ecoville.repositories.UsuarioRepositorio;
+import com.ecoville.servicos.enderecos.EnderecosService;
 
 import jakarta.transaction.Transactional;
 
@@ -23,6 +27,9 @@ public class StartupDataLoader implements ApplicationRunner {
 
     @Autowired
     private PasswordEncoder encoder;
+
+    @Autowired
+    private EnderecosService enderecoService;
 
     private static final String DEFAULT_PASS = "administrador";
 
@@ -43,7 +50,7 @@ public class StartupDataLoader implements ApplicationRunner {
 
         for(int i=0;i<pessoas.size();i++){
 
-            String nome = pessoas.get(i).toLowerCase().trim();
+            String nome = pessoas.get(i).trim();
 
             boolean exists = usuarioRepositorio.findByNomeUsuario(nome).isPresent();
 
@@ -53,8 +60,14 @@ public class StartupDataLoader implements ApplicationRunner {
                 root.setNomeUsuario(nome);
                 root.setSenha(encoder.encode(DEFAULT_PASS));
                 root.setPerfil(Perfil.COLETOR);
+                root.setEndereco(endereco());
+
                 try {
-                    usuarioRepositorio.save(root);
+
+                    root = usuarioRepositorio.save(root);
+
+
+
                     System.out.println("Usuário padrão '" + nome + "' criado com senha padrão.");
                 } catch (Exception e) {
                     System.err.println("Falha ao criar usuário padrão '" + nome + "': " + e.getMessage());
@@ -78,5 +91,26 @@ public class StartupDataLoader implements ApplicationRunner {
 
 
         return nomes;
+    }
+
+
+    private Endereco endereco(){
+
+        EnderecoRequestDto lugar = new EnderecoRequestDto();
+
+        lugar.setCep("89204440");
+        lugar.setLogradouro("Rua Blumenau");
+        lugar.setEstado("SC");
+        lugar.setCidade("Joinville");
+        lugar.setBairro("América");
+        lugar.setNumero("123");
+        lugar.setComplemento("Apartamento 202");
+        lugar.setLatitude(new BigDecimal("-26.304408"));
+        lugar.setLongitude(new BigDecimal("-48.846383"));
+        
+
+        Endereco endereco = enderecoService.criar(lugar);
+
+        return endereco;
     }
 }

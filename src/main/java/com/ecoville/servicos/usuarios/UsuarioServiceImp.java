@@ -131,4 +131,4 @@ public UserDetails loadUserByUsername(String nomeUsuario) throws UsernameNotFoun
                 return repositorio.findByNomeUsuario(nome);
             }
 
-}
+        }
