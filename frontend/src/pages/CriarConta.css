@@ -66,6 +66,27 @@ form input:focus {
     outline: none;
 }
 
+.criacaoConta{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 8px;
+}
+
+.userDatas{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 90%;
+    justify-content: center;
+}
+
+.senhas{
+    display: flex;
+    gap: 5px;
+}
+
 form h3,
 form iframe,
 form .botoes {
@@ -116,6 +137,7 @@ iframe {
     align-items: flex-start;
     justify-content: space-between;
     width: 200%;
+    text-align: start;
 }
 
 .mapa{
@@ -141,6 +163,28 @@ iframe {
     border: 1px solid #8A784E;
     border-radius: 26px;
     font-size: 14px;
+}
+
+.cepBairro{
+    display: flex;
+    gap:  10px;
+}
+
+.estadoLogradouro{
+    display: flex;
+    gap: 10px;
+}
+
+.numeroComplementoCity{
+    display: flex;
+    gap: 10px;
+}
+
+.endereco{
+    display: flex;
+    flex-direction: column;
+    align-items:  start;
+    gap: 5px;
 }
 
 
