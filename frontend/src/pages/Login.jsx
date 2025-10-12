@@ -1,64 +1,69 @@
-import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import MenuSuperior from "../components/MenuSuperior";
+import { useRef } from "react";
 
 function Login() {
+
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    nomeUsuario: "",
-    senha: "",
-  });
+  const nomeUsuario = useRef();
+  const senha = useRef();
 
-  const [error, setError] = useState("");
+  function body(){
+    return {
+      nomeUsuario: nomeUsuario.current.value,
+      senha: senha.current.value
+    }
+  }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
-  const handleSubmit = async (e) => {
+
+  async function handleSubmit(e){
     e.preventDefault();
-    setError("");
 
-   
-    
-    try {
-      const response = await fetch("http://localhost:8080/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    let data = await requisicao(body());
 
-      if (!response.ok) {
-        setError("Conta não encontrada.");
-        return;
-      }
+    let passe = verificacao(data);
 
-      const data = await response.json();
+    if(!passe){return}
 
-      console.log("Dados recebidos no login:", data);
+       // Salvar token no localStorage
+      localStorage.setItem("token", `${data.type} ${data.token}`);
 
-      // Salvar token no localStorage
-      localStorage.setItem("token", data.token);
+      //Salvar usuario na maquina
+      localStorage.setItem("usuario", JSON.stringify(data));
 
       // Verificar perfil e redirecionar
-      const perfil = typeof data.perfil === "string" ? data.perfil : data.perfil?.name;
+      const perfil = data.usuario.perfil;
+
       if (perfil === "RESIDENCIAL") {
         navigate("/solicitacoes");
+
       } else if (perfil === "COLETOR") {
         navigate("/solicitacoes-coletor");
-      } else {
-        setError("Perfil de usuário não reconhecido.");
       }
-    } catch (err) {
-      console.error("Erro ao fazer login:", err);
-      setError("Conta não encontrada.");
-    }
-  };
+    
+
+  }
+
+
+  function verificacao(data){
+
+      if(data === 401){
+        senha.current.setCustomValidity("senha incorreta");
+        senha.current.reportValidity();
+        return null;
+      }
+      if(data === 404){
+        nomeUsuario.current.setCustomValidity("não encontrado");
+        nomeUsuario.current.reportValidity()
+        return null;
+      }
+
+      return true;
+  }
+
 
 
   return (
@@ -68,28 +73,14 @@ function Login() {
 
       <form onSubmit={handleSubmit} className="login-form">
        
-        <input
-          type="text"
-          id="nomeUsuario"
-          name="nomeUsuario"
-          placeholder="Digite seu usuário"
-          value={formData.nomeUsuario}
-          onChange={handleChange}
-          required
-        />
+        <input type="text" id="nomeUsuario"  name="nomeUsuario"
+        placeholder="Digite seu usuário" ref={nomeUsuario} 
+        onInput={limpaSet} required  />
 
         
         <input
-          type="password"
-          id="senha"
-          name="senha"
-          placeholder="Digite sua senha"
-          value={formData.senha}
-          onChange={handleChange}
-          required
-        />
-
-        {error && <p className="error-message">{error}</p>}
+          type="password" id="senha" name="senha" placeholder="Digite sua senha"
+          ref={senha} onInput={limpaSet} required />
 
         <button type="submit" className="btn-logar">Logar</button>
       </form>
@@ -107,3 +98,48 @@ function Login() {
 
 export default Login;
 <MenuSuperior />
+
+function limpaSet(e){
+  e.target.setCustomValidity("");
+}
+
+
+async function requisicao(body){
+  let url = "http://localhost:8080/api/login";
+
+
+  let envio = {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+        "Content-Type" : "application/json"
+      }
+    }
+
+
+  try {
+  const response = await fetch(url, envio);
+
+  if (!response.ok) {
+    switch (response.status) {
+      case 401:
+        return 401;
+
+      case 404:
+        return 404;
+
+      default:
+        throw new Error(`${response.status}, ${response.statusText}`);
+    }
+  }
+
+  const data = await response.json();
+  console.log(data);
+  return data;
+
+} catch (error) {
+  console.error('Erro na requisição:', error);
+  throw error;
+}
+
+}
