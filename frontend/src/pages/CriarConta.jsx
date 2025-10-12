@@ -175,13 +175,13 @@ function CriarConta() {
         
         <input type="text" placeholder="CEP" name="cep" value={formData.cep} onChange={handleChange} required />
 
-        <input type="text" placeholder="Logradouro" name="logradouro" value={formData.logradouro} onChange={handleChange} />
+        <input type="text" placeholder="Logradouro" name="logradouro" value={formData.logradouro} onChange={handleChange} readOnly />
 
-        <input type="text" placeholder="Estado" name="estado" value={formData.estado} onChange={handleChange} />
+        <input type="text" placeholder="Estado" name="estado" value={formData.estado} onChange={handleChange} readOnly/>
 
-        <input type="text" placeholder="Cidade" name="cidade" value={formData.cidade} onChange={handleChange} />
+        <input type="text" placeholder="Cidade" name="cidade" value={formData.cidade} onChange={handleChange} readOnly/>
 
-        <input type="text" placeholder="Bairro" name="bairro" value={formData.bairro} onChange={handleChange} />
+        <input type="text" placeholder="Bairro" name="bairro" value={formData.bairro} onChange={handleChange} readOnly/>
 
         <input type="text" placeholder="Número" name="numero" value={formData.numero} onChange={handleChange} required />
 
