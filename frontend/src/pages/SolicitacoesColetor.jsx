@@ -8,9 +8,9 @@ function SolicitacoesColetor() {
   // Exemplo de dados simulados
   const solicitacoes = [
     { id: "#154545", status: "AGUARDANDO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
-    { id: "#1545345", status: "COLETADO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
-    { id: "#1545345", status: "FINALIZADO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
-    { id: "#1545345", status: "CANCELADO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
+    { id: "#1545346", status: "COLETADO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
+    { id: "#1545347", status: "FINALIZADO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
+    { id: "#1545348", status: "CANCELADO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
   ];
 
   const filtrarSolicitacoes = solicitacoes.filter((item) => {
@@ -75,3 +75,35 @@ function SolicitacoesColetor() {
 }
 
 export default SolicitacoesColetor;
+
+
+async function requisicao(body){
+  let url = "http://localhost:8080/api/login";
+
+
+  let envio = {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+        "Content-Type" : "application/json"
+      }
+    }
+
+
+  try {
+  const response = await fetch(url, envio);
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const json = await response.json();
+  console.log(json);
+  return json;
+
+} catch (error) {
+  console.error('Erro na requisição:', error);
+  throw error;
+}
+
+}
