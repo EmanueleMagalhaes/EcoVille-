@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import {Add, Remove} from "@mui/icons-material";
 import { postSolicitacao } from "../services/solicitacoesService";
+import { useNavigate } from "react-router-dom";
 
 const materiaisReciclaveis = [
   { tipo: "PLASTICO", imagem: "/src/assets/plastico.png" },
@@ -23,6 +24,8 @@ const materiaisReciclaveis = [
 ];
 
 const SolicitacaoForm =  () => {
+  const navigate = useNavigate();
+
       const [materiais, setMateriais] = useState(
     materiaisReciclaveis.map((m) => ({
       ...m,
@@ -78,6 +81,7 @@ const SolicitacaoForm =  () => {
       setEnviando(true);
       await postSolicitacao(novaSolicitacao);
       alert("Solicitação cadastrada com sucesso!");
+      navigate("/solicitacoes");
       setDataColeta("");
       setObservacao("");
       setMateriais(
