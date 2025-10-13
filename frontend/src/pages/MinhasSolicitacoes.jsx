@@ -71,22 +71,29 @@ const MinhasSolicitacoes = () => {
                     Minhas Solicitações
                 </Typography>
 
+                
                 <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    onClick={handleNovaSolicitacao}
-                    sx={{
-                    backgroundColor: "#5B4BFF",
-                    textTransform: "none",
-                    fontWeight: 600,
-                    px: 3,
+                onClick={handleNovaSolicitacao}
+                sx={{
+                    flex: 1,
+                    padding: "8px 16px",
+                    maxWidth: { xs: "100%", sm: "150px" },
+                    display: "flex",
+                    border: "1px solid #8A784E",
+                    borderRadius: "26px",
+                    fontSize: "14px",
+                    color: "#E7EFC7",
+                    backgroundColor: "#8A784E",
+                    cursor: "pointer",
+                    transition: "background-color 0.3s",
                     "&:hover": {
-                        backgroundColor: "#483AE2",
+                    backgroundColor: "#6f623f",
                     },
-                    }}
+                }}
                 >
-                    Novo
+                Novo
                 </Button>
+
                 </Box>
 
                 {/* Cards de solicitações */}

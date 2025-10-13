@@ -134,24 +134,42 @@ const CardSolicitacao = ({ solicitacao, onCancelar, onEditar, onFeedback }) => {
         <Box sx={{ mt: 1, display: "flex", gap: 1, flexWrap: "wrap" }}>
           {status === "AGUARDANDO" && (
             <>
-              <Button
+              
+<Button
                 variant="contained"
-                color="error"
                 size="small"
                 onClick={() => onCancelar?.(id)}
+                sx={{
+                  backgroundColor: "#AEC8A4",
+                  color: "#fff",
+                  textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "#96b48d",
+                  },
+                }}
               >
                 Cancelar
               </Button>
+
+              
               <Button
                 variant="contained"
-                color="secondary"
                 size="small"
                 onClick={() => onEditar?.(solicitacao)}
+                sx={{
+                  backgroundColor: "#E7EFC7",
+                  color: "#3B3B1A",
+                  textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "#d4e3b0",
+                  },
+                }}
               >
                 Editar
               </Button>
             </>
           )}
+
 
           {status === "COLETADA" && (
             <Button
