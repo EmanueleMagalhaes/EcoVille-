@@ -10,7 +10,7 @@ const MenuSuperior = () => {
 
     const handleLogout = () => {
         localStorage.clear();
-        navigate('/login');
+        navigate('/');
     };
 
     return (

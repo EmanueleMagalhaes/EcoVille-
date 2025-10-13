@@ -1,25 +1,62 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: 'http://localhost:8080/api/coletas',
 });
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = token;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
 // Busca as solicitações do usuário
 export const getSolicitacoes = () => {
-  return api.get('/solicitacoes');
+  const usuarioData = JSON.parse(localStorage.getItem("usuario"));
+  const usuarioId = usuarioData.usuario.id;
+
+  return api.get(`/minhas`, {
+    params: { usuarioId }
+  });
+
 };
 
 // Cria uma nova solicitação
 export const postSolicitacao = (data) => {
-  return api.post("/solicitacoes", data);
+  
+const usuarioData = JSON.parse(localStorage.getItem("usuario"));
+  const usuarioId = usuarioData.usuario.id;
+
+  return api.post('', data, {
+    params: { usuarioId }
+  });
+
 };
 
 // cancela uma solicitação existente
 export const cancelarSolicitacao = (id) => {
-  return api.put(`/solicitacoes/${id}/cancelar`);
+  const usuarioData = JSON.parse(localStorage.getItem("usuario"));
+  const usuarioId = usuarioData.usuario.id;
+
+  return api.patch(`/${id}/cancelar`, null, {
+    params: { usuarioId }
+  });
+
 };
 
 export const editarSolicitacao = (id, data) => {
-  return api.put(`/solicitacoes/${id}`, data);
+  
+const usuarioData = JSON.parse(localStorage.getItem("usuario"));
+  const usuarioId = usuarioData.usuario.id;
+
+  return api.put(`/minhas`, {...data, id }, {
+    params: { usuarioId }
+  });
+
 };
 
 export default api;
