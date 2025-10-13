@@ -82,7 +82,10 @@ function Login() {
           type="password" id="senha" name="senha" placeholder="Digite sua senha"
           ref={senha} onInput={limpaSet} required />
 
-        <button type="submit" className="btn-logar">Logar</button>
+
+        <div className="button-container">
+          <button type="submit" className="btn-logar">Logar</button>
+        </div>
       </form>
 
       <p className="criar-conta-texto">

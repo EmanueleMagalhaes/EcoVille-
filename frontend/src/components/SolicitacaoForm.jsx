@@ -16,10 +16,10 @@ import {Add, Remove} from "@mui/icons-material";
 import { postSolicitacao } from "../services/solicitacoesService";
 
 const materiaisReciclaveis = [
-  { tipo: "Plástico", imagem: "/src/assets/plastico.png" },
-  { tipo: "Metal", imagem: "/src/assets/metal.png" },
-  { tipo: "Papel", imagem: "/src/assets/papel.png" },
-  { tipo: "Vidro", imagem: "/src/assets/vidro.png" },
+  { tipo: "PLASTICO", imagem: "/src/assets/plastico.png" },
+  { tipo: "METAL", imagem: "/src/assets/metal.png" },
+  { tipo: "PAPEL", imagem: "/src/assets/papel.png" },
+  { tipo: "VIDRO", imagem: "/src/assets/vidro.png" },
 ];
 
 const SolicitacaoForm =  () => {
@@ -57,7 +57,8 @@ const SolicitacaoForm =  () => {
       .filter((m) => m.estado !== "")
       .map((m) => ({
         tipo: m.tipo,
-        quantidade: m.quantidade,
+        quantEstimada: m.quantidade,
+        quantReal: m.quantidade,
         estado: m.estado,
       }));
 
@@ -67,11 +68,12 @@ const SolicitacaoForm =  () => {
     }
 
     const novaSolicitacao = {
-      materiais: materiaisSelecionados,
-      dataColeta,
-      observacao,
+      dataAgendada: dataColeta,
+      observacoes: observacao,
+      itensColeta: materiaisSelecionados
     };
 
+    console.log(novaSolicitacao);
     try {
       setEnviando(true);
       await postSolicitacao(novaSolicitacao);
@@ -174,9 +176,11 @@ const SolicitacaoForm =  () => {
                   onChange={(e) => handleEstado(index, e.target.value)}
                   sx={{ justifyContent: "center" }}
                 >
+                  
                   <FormControlLabel value="RUIM" control={<Radio />} label="Ruim" />
                   <FormControlLabel value="BOM" control={<Radio />} label="Bom" />
                   <FormControlLabel value="OTIMO" control={<Radio />} label="Ótimo" />
+
                 </RadioGroup>
               </CardContent>
             </Card>
