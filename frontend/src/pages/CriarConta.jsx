@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 import "./CriarConta.css";
 
 function CriarConta() {
@@ -17,6 +19,8 @@ const [formData, setFormData] = useState({
   longitude: "",
   confirmarLocalizacao: false,
 });
+
+const navigate = useNavigate();
 
 const [mapUrl, setMapUrl] = useState("");
 
@@ -133,7 +137,7 @@ const handleSubmit = async (e) => {
     if (response.ok) {
       alert("Conta criada com sucesso!");
       // Redirecionar ou limpar formulário
-      window.location.href = "/";
+      navigate("/");
       return;
     }
 
@@ -153,9 +157,33 @@ const handleSubmit = async (e) => {
 
   } catch (error) {
     console.error("Erro ao enviar dados:", error);
-    alert("Erro ao enviar dados.");
+    ("Erro ao enviar dados.");
   }
 };
+
+
+function cancelar(){
+  setFormData({
+    nomeUsuario: "",
+    senha: "",
+    confirmarSenha: "",
+    cep: "",
+    logradouro: "",
+    estado: "",
+    cidade: "",
+    bairro: "",
+    numero: "",
+    complemento: "",
+    latitude: "",
+    longitude: "",
+    confirmarLocalizacao: false,
+  }); 
+  toast.warning("Criação de conta cancelada!");
+  setTimeout(() => {
+    navigate( "/");
+  }, 2500);
+
+}
 
 return (
   <div className="criar-conta-container">
@@ -247,10 +275,11 @@ return (
         </section>
 
         <div className="botoes">
-          <button type="button" onClick={() => alert("Cancelado!")}>Cancelar</button>
+          <button type="button" onClick={() => cancelar()}>Cancelar</button>
           <button type="submit">Cadastrar</button>
         </div>
       </form>
+      <ToastContainer/>
   </div>
 );
 }
