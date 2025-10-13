@@ -1,23 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./SolicitacoesColetor.css";
 
 function SolicitacoesColetor() {
   const [filtroData, setFiltroData] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("TODOS");
 
-  // Exemplo de dados simulados
-  const solicitacoes = [
-    { id: "#154545", status: "AGUARDANDO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
-    { id: "#1545346", status: "COLETADO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
-    { id: "#1545347", status: "FINALIZADO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
-    { id: "#1545348", status: "CANCELADO", materiais: ["12 kg de plástico", "1 kg de metal"], data: "05/10/2025" },
-  ];
+  const [solicitacoes, setSolicitacoes] = useState([]);
+  const [usuario, setUsuario] = useState({});
 
-  const filtrarSolicitacoes = solicitacoes.filter((item) => {
-    const filtroPorData = !filtroData || item.data === filtroData;
-    const filtroPorStatus = filtroStatus === "TODOS" || item.status === filtroStatus;
-    return filtroPorData && filtroPorStatus;
-  });
+  useEffect(()=>{
+
+    disponiveis();
+
+let usuario = JSON.parse(localStorage.getItem("usuario"));
+
+    setUsuario(usuario);
+
+  }, [])
+
+  async function disponiveis(){
+
+    let url = "http://localhost:8080/api/coletas/disponiveis";
+
+    let token = localStorage.getItem("token");
+
+    let solicitacoes = await requisicao(url, "get", null, token);
+
+    setSolicitacoes(solicitacoes);
+
+
+  }
 
   const handleAcao = (status) => {
     if (status === "AGUARDANDO") return "Coletar";
@@ -32,7 +44,7 @@ function SolicitacoesColetor() {
         <a href="#" className="sair">Sair</a>
       </div>
 
-      <h2>Bem-vindos, Coletor Henrique Douglas</h2>
+      <h2>Bem-vindo, {usuario.usuario.nomeUsuario}</h2>
 
       <div className="filtros">
         <input
@@ -52,24 +64,26 @@ function SolicitacoesColetor() {
         </select>
       </div>
 
-      <div className="cards-container">
-        {filtrarSolicitacoes.map((sol) => (
-          <div key={sol.id} className="card-solicitacao">
-            <div className={`status-tag ${sol.status.toLowerCase()}`}>{sol.status}</div>
-            <h4>{sol.id}</h4>
-            <ul>
-              {sol.materiais.map((mat, index) => (
-                <li key={index}>🗑 {mat}</li>
-              ))}
-            </ul>
-            <p className="data">Data: {sol.data}</p>
+<div className="cards-container">
+  {(solicitacoes.length && solicitacoes.map((sol) => (
+    
+    <div key={sol.id} className="card-solicitacao">
 
-            {handleAcao(sol.status) && (
+      <div className={`status-tag ${sol.status.toLowerCase()}`}>{sol.status}</div>
+      <h4>{`#${sol.id}`}</h4>
+
+            {itens(sol.itensColeta)}
+            
+        <p className="data">Data solicitada: {sol.dataSolicitacao}</p>
+        <p className="data">Data agendada: {sol.dataAgendada}</p>
+        <p className="feedback">Feedback: {sol.feedback || <p>nenhum comentário</p>}</p>
+
+      {handleAcao(sol.status) && (
               <button className="btn-acao">{handleAcao(sol.status)}</button>
             )}
-          </div>
-        ))}
-      </div>
+    </div>
+  ))) || <p className="mensagem-vazia">Nenhuma solicitação disponível.</p>}
+</div>
     </div>
   );
 }
@@ -77,16 +91,27 @@ function SolicitacoesColetor() {
 export default SolicitacoesColetor;
 
 
-async function requisicao(body){
-  let url = "http://localhost:8080/api/login";
+async function requisicao(url, method, body, autorizacao){
 
+  method = method.toUpperCase();
 
   let envio = {
-        method: "POST",
+        method: method,
         body: JSON.stringify(body),
         headers: {
-        "Content-Type" : "application/json"
+        "Content-Type" : "application/json", 
+        "Authorization" : autorizacao
       }
+    }
+
+    if(method === "GET"){
+       envio = {
+        method: method.toUpperCase(),
+        headers: {
+        "Content-Type" : "application/json", 
+        "Authorization" : autorizacao
+      }
+    }
     }
 
 
@@ -94,16 +119,47 @@ async function requisicao(body){
   const response = await fetch(url, envio);
 
   if (!response.ok) {
-    return null;
+
+    if(response.status == 401){
+      alert("voce não tem autorização pra fazer isso");
+    }
+    throw new Error(`${response.status}, ${response.statusText}`);
   }
 
-  const json = await response.json();
+  let json = await response.json();
   console.log(json);
   return json;
 
 } catch (error) {
   console.error('Erro na requisição:', error);
-  throw error;
 }
 
+return null;
+}
+
+
+
+function itens(lista){
+  return (
+          <ul>
+            {lista.map((item) => (
+                <li key={item.id}>
+
+                  <div>
+                    {item.tipo}
+                  </div>
+                  <div>
+                    {item.quantEstimada}
+                  </div>
+                  <div>
+                    {item.quantReal}
+                  </div>
+                  <div>
+                    {item.estado}
+                  </div>
+
+                  </li>
+              ))}
+            </ul>
+  );
 }
