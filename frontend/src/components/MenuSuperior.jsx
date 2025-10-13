@@ -5,12 +5,13 @@ import { useNavigate } from 'react-router-dom';
 
 const MenuSuperior = () => {
     const navigate = useNavigate();
-    
-    const perfil = localStorage.getItem('perfil'); // "Resid" ou "coletor"
+
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    const perfil = usuario?.perfil;
 
     const handleLogout = () => {
-        localStorage.clear();
-        navigate('/');
+      localStorage.clear();
+      navigate('/');
     };
 
     return (
