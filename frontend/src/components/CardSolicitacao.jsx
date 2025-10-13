@@ -26,12 +26,17 @@ const CardSolicitacao = ({ solicitacao, onCancelar, onEditar, onFeedback }) => {
     
   const formatarData = (data) => {
     if (!data) return "Data não informada";
-    return new Date(data).toLocaleDateString("pt-BR", {
+    
+    const [ano, mes, dia] = data.split("-");
+    const dataLocal = new Date(ano, mes - 1, dia); 
+
+    return dataLocal.toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
     });
   };
+
 
   const calcularDiferencaDias = (data) => {
     if (!data) return "";
