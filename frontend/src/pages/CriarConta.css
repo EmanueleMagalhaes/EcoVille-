@@ -37,8 +37,8 @@ body {
 }
 
 form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
@@ -72,6 +72,7 @@ form input:focus {
     align-items: start;
     justify-content: start;
     gap: 8px;
+    width: 100%;
 }
 
 .userDatas{
@@ -136,8 +137,9 @@ iframe {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    width: 200%;
+    max-width: 100%;
     text-align: start;
+    gap: 20px;
 }
 
 .mapa{
@@ -145,7 +147,7 @@ iframe {
     flex-direction: column;
     align-content:  center;
     justify-content: start;
-    width: 55%;
+    width: 100%;
 }
 
 .inputs-geolocalizacao{
@@ -153,7 +155,7 @@ iframe {
     flex-direction: column;
     align-content:  center;
     justify-content: start;
-    width: 40%;
+    width: 45%;
     gap: 10px;
 }
 
@@ -185,34 +187,126 @@ iframe {
     flex-direction: column;
     align-items:  start;
     gap: 5px;
+    width: 100%;
 }
 
+.geolocalizacao{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px 0 20px 0;
+}
 
-/* Responsividade */
+.userAddress{
+    display: flex;
+    width: 100%;
+    
+}
+
 @media (max-width: 768px) {
+
+  .criar-conta-container {
+    width: 94%;
+    padding: 24px 18px;
+    margin: 20px auto;
+    border-radius: 10px;
+  }
+
+  .criar-conta-container h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
   form {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .criacaoConta {
+    width: 100%;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .userDatas {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .senhas {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .endereco {
+    width: 100%;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .cepBairro,
+  .estadoLogradouro,
+  .numeroComplementoCity {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .userAddress {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .geolocalizacao-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 20px;
+    padding: 20px;
+    background-color: #d9e6d2;
+    border-radius: 10px;
+  }
+
+  .inputs-geolocalizacao {
+    width: 100%;
+    order: 1;
+  }
+
+  .mapa {
+    width: 100%;
+    order: 2;
+  }
+
+  iframe {
+    height: 280px;
+    border-radius: 10px;
   }
 
   .botoes {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 10px;
   }
 
   .botoes button {
     width: 100%;
   }
-}
 
-@media (max-width: 480px) {
-  .criar-conta-container {
-    padding: 20px;
+  .checkbox-group {
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .labelCheck {
+    font-size: 13px;
   }
 
   form input {
-    font-size: 16px;
+    font-size: 15px;
+    padding: 12px;
   }
 
-  iframe {
-    height: 300px;
-  }
 }

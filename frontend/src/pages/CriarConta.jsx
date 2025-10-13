@@ -163,6 +163,8 @@ return (
 
     <form onSubmit={handleSubmit}>
       {/* Dados da conta */}
+
+      <div className="userAddress">
       <section className="criacaoConta">
         <h3>Dados da conta</h3>
         <div className="userDatas">
@@ -193,7 +195,6 @@ return (
         <div className="estadoLogradouro">
           <input type="text" placeholder="Estado" name="estado" value={formData.estado} onChange={handleChange} readOnly/>
           <input type="text" placeholder="Logradouro" name="logradouro" value={formData.logradouro} onChange={handleChange} readOnly />
-
         </div>
 
         <div  className="numeroComplementoCity">
@@ -204,49 +205,52 @@ return (
           <input type="text" placeholder="Complemento" name="complemento" value={formData.complemento} onChange={handleChange} />
         </div>
       </section>
+      </div>
 
       {/* GeoLocalização */}
-      <section className="geolocalizacao-container">
-        <div className="inputs-geolocalizacao">
-          <h4>GeoLocalização</h4>
-          <input type="text" placeholder="Latitude" name="latitude" value={formData.latitude} onChange={handleChange} onBlur={atualizarMapa} required readOnly/>
+      <section className="geolocalizacao">
+        <div className="geolocalizacao-container">
+          <div className="inputs-geolocalizacao">
+            <h4>GeoLocalização</h4>
+            <input type="text" placeholder="Latitude" name="latitude" value={formData.latitude} onChange={handleChange} onBlur={atualizarMapa} required readOnly/>
 
-          <input type="text" placeholder="Longitude" name="longitude" value={formData.longitude} onChange={handleChange} onBlur={atualizarMapa} required readOnly/>
+            <input type="text" placeholder="Longitude" name="longitude" value={formData.longitude} onChange={handleChange} onBlur={atualizarMapa} required readOnly/>
 
-          <div className="checkbox-group">
-            <div className="inputCheck">
-              <input type="checkbox" name="confirmarLocalizacao" checked={formData.confirmarLocalizacao} onChange={handleChange} />
+            <div className="checkbox-group">
+              <div className="inputCheck">
+                <input type="checkbox" name="confirmarLocalizacao" checked={formData.confirmarLocalizacao} onChange={handleChange} />
+              </div>
+              <div className="labelCheck">
+                <label>Confirmo que essa é a localização informada</label>
+              </div>
             </div>
-            <div className="labelCheck">
-              <label>Confirmo que essa é a localização informada</label>
-            </div>
+
+          </div>
+
+          <div className="mapa">
+            {mapUrl && (
+                <div className="map-container">
+                  <iframe
+                      src={mapUrl}
+                      width="100%"
+                      height="400"
+                      style={{ border: "1px solid #ccc", borderRadius: "8px" }}
+                      allowFullScreen
+                      loading="lazy"
+                      title="Mapa de localização"
+                  ></iframe>
+                </div>
+            )}
           </div>
 
         </div>
+        </section>
 
-        <div className="mapa">
-          {mapUrl && (
-              <div className="map-container">
-                <iframe
-                    src={mapUrl}
-                    width="100%"
-                    height="400"
-                    style={{ border: "1px solid #ccc", borderRadius: "8px" }}
-                    allowFullScreen
-                    loading="lazy"
-                    title="Mapa de localização"
-                ></iframe>
-              </div>
-          )}
+        <div className="botoes">
+          <button type="button" onClick={() => alert("Cancelado!")}>Cancelar</button>
+          <button type="submit">Cadastrar</button>
         </div>
-
-      </section>
-
-      <div className="botoes">
-        <button type="button" onClick={() => alert("Cancelado!")}>Cancelar</button>
-        <button type="submit">Cadastrar</button>
-      </div>
-    </form>
+      </form>
   </div>
 );
 }
