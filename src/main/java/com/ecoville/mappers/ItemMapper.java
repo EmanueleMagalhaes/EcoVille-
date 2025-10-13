@@ -43,7 +43,7 @@ public class ItemMapper {
 
 
 
-    private static Tipo traduzTipo(String dto){
+    public static Tipo traduzTipo(String dto){
 
         Tipo tipo = null;
 
@@ -56,7 +56,7 @@ public class ItemMapper {
         return tipo;
     }
 
-    private static Estado traduzEstado(String dto){
+    public static Estado traduzEstado(String dto){
 
         Estado estado = null;
 
@@ -68,4 +68,5 @@ public class ItemMapper {
 
         return estado;
     }
+
 }

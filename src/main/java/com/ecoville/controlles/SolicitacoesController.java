@@ -1,7 +1,9 @@
 package com.ecoville.controlles;
 
+import com.ecoville.dtos.itemColeta.ItemRequestAtualiza;
 import com.ecoville.dtos.solicitacaoColetas.SolicitacaoColetaRequest;
 import com.ecoville.dtos.solicitacaoColetas.SolicitacaoColetaResponse;
+import com.ecoville.servicos.ItemServices;
 import com.ecoville.servicos.SolicitacoesColetas.SolicitacaoColetaImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.List;
 public class SolicitacoesController {
 
     private final SolicitacaoColetaImpl service;
+    private final ItemServices itemServices;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,6 +43,13 @@ public class SolicitacoesController {
 
         return service.listarDisponiveis();
     }
+
+    @PatchMapping("/avaliar")
+    @ResponseStatus(HttpStatus.OK)
+    public List<SolicitacaoColetaResponse> avaliarEstado(@RequestBody List<ItemRequestAtualiza>lista){
+        return itemServices.atualizarLista(lista);
+    }
+
 
     @PatchMapping("/{id}/aceitar")
     @ResponseStatus(HttpStatus.OK)

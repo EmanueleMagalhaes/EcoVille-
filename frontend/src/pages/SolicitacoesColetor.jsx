@@ -25,8 +25,10 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
     let token = localStorage.getItem("token");
 
     let solicitacoes = await requisicao(url, "get", null, token);
+    let usuario = JSON.parse(localStorage.getItem("usuario"));
 
     setSolicitacoes(solicitacoes);
+    setUsuario(usuario);
 
 
   }
@@ -44,7 +46,7 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
         <a href="#" className="sair">Sair</a>
       </div>
 
-      <h2>Bem-vindo, {usuario.usuario.nomeUsuario}</h2>
+      <h2>Bem-vindo, {usuario.nomeUsuario}</h2>
 
       <div className="filtros">
         <input
@@ -76,7 +78,7 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
             
         <p className="data">Data solicitada: {sol.dataSolicitacao}</p>
         <p className="data">Data agendada: {sol.dataAgendada}</p>
-        <p className="feedback">Feedback: {sol.feedback || <p>nenhum comentário</p>}</p>
+        <p className="feedback">Feedback: {sol.feedback || <i>nenhum comentário</i>}</p>
 
       {handleAcao(sol.status) && (
               <button className="btn-acao">{handleAcao(sol.status)}</button>
@@ -136,7 +138,6 @@ async function requisicao(url, method, body, autorizacao){
 
 return null;
 }
-
 
 
 function itens(lista){
