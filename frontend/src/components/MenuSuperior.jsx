@@ -15,9 +15,9 @@ const MenuSuperior = () => {
     };
 
     return (
-    <AppBar position="static" sx={{ bgcolor: "#8A784E" }}>
+    <AppBar position="static" elevation={2} sx={{ bgcolor: '#ffffff', textColor: '#333', paddingY: 1 }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Box>
+        <Box sx={{ display: "flex", gap: 2 }}>
           {perfil === "RESIDENCIAL" && (
             <Button color="inherit" onClick={() => navigate("/solicitacoes")}>
               Minhas Solicitações

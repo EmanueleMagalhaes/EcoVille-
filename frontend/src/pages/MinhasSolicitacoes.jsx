@@ -68,7 +68,7 @@ const MinhasSolicitacoes = () => {
                     fontWeight="bold"
                     sx={{ mb: { xs: 2, sm: 0 } }}
                 >
-                    Minhas Solicitações - VAI FUNCIONAR
+                    Minhas Solicitações
                 </Typography>
 
                 
