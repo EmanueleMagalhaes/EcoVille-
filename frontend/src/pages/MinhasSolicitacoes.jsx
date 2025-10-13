@@ -37,8 +37,8 @@ const MinhasSolicitacoes = () => {
 
     };
 
-    const handleEditar = (id) => {
-        alert(`Editar solicitação ${id}`);
+    const handleEditar = (solicitacao) => {
+        navigate("/solicitacao", { state: { solicitacao } });
     };
 
     const handleFeedback = (solicitacao) => {
