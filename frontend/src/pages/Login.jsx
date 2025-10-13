@@ -34,6 +34,10 @@ function Login() {
       //Salvar usuario na maquina
       localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
+      localStorage.setItem("identificacao", JSON.stringify(data.usuario.id));
+
+      
+
       // Verificar perfil e redirecionar
       const perfil = data.usuario.perfil;
 
