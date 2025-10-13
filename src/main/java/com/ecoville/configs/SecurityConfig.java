@@ -73,6 +73,8 @@ public class SecurityConfig {
                         // Feedback: tipicamente o usuário residencial deixa feedback após finalização
                         .requestMatchers(HttpMethod.PATCH, "/api/coletas/*/feedback").hasAuthority(Perfil.COLETOR.name())
 
+                        .requestMatchers(HttpMethod.PATCH, "/api/coletas/avaliar").hasAuthority(Perfil.COLETOR.name())
+
                         .anyRequest().authenticated()
                         
                 );
