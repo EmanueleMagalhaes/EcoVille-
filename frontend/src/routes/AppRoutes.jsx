@@ -7,6 +7,8 @@ import Login from '../pages/Login';
 import CriarConta from '../pages/CriarConta';
 import SolicitacoesColetor from '../pages/SolicitacoesColetor';
 import { useState } from 'react';
+import SolicitacaoForm from '../components/SolicitacaoForm';
+
 
 
 
@@ -24,6 +26,9 @@ function AppRoutes() {
         <Route path="/nova-solicitacao" element={<NovaSolicitacao />} />
         <Route path="/criar-conta" element={<CriarConta />} />
         <Route path="/solicitacoes-coletor" element={<SolicitacoesColetor />} />
+        <Route path="/editar-solicitacao" element={<NovaSolicitacao />} />
+        <Route path="/solicitacao" element={<SolicitacaoForm />} />
+        
       </Routes>
     </BrowserRouter>
   );
