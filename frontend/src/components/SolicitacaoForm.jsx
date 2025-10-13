@@ -13,7 +13,9 @@ import {
   Box,
 } from "@mui/material";
 import {Add, Remove} from "@mui/icons-material";
-import { postSolicitacao } from "../services/solicitacoesService";
+import { postSolicitacao, editarSolicitacao } from "../services/solicitacoesService";
+import { useNavigate, useLocation} from "react-router-dom";
+import { useEffect } from "react";
 
 const materiaisReciclaveis = [
   { tipo: "PLASTICO", imagem: "/src/assets/plastico.png" },
@@ -23,7 +25,11 @@ const materiaisReciclaveis = [
 ];
 
 const SolicitacaoForm =  () => {
-      const [materiais, setMateriais] = useState(
+  const navigate = useNavigate();
+  const location = useLocation();
+  const solicitacaoEdicao = location.state?.solicitacao || null;
+
+  const [materiais, setMateriais] = useState(
     materiaisReciclaveis.map((m) => ({
       ...m,
       quantidade: 1,
@@ -33,6 +39,26 @@ const SolicitacaoForm =  () => {
   const [dataColeta, setDataColeta] = useState("");
   const [observacao, setObservacao] = useState("");
   const [enviando, setEnviando] = useState(false);
+
+  useEffect(() => {
+    if (solicitacaoEdicao) {
+      setDataColeta(solicitacaoEdicao.dataAgendada || "");
+      setObservacao(solicitacaoEdicao.observacoes || "");
+
+      if (solicitacaoEdicao.itensColeta) {
+        setMateriais((prev) =>
+          prev.map((m) => {
+            const item = solicitacaoEdicao.itensColeta.find(
+              (i) => i.tipo === m.tipo
+            );
+            return item
+              ? { ...m, quantidade: item.quantEstimada || 1, estado: item.estado || "" }
+              : m;
+          })
+        );
+      }
+    }
+  }, [solicitacaoEdicao]);
 
   const handleQuantidade = (index, delta) => {
     setMateriais((prev) =>
@@ -67,28 +93,27 @@ const SolicitacaoForm =  () => {
       return;
     }
 
-    const novaSolicitacao = {
+    const solicitacao = {
       dataAgendada: dataColeta,
       observacoes: observacao,
       itensColeta: materiaisSelecionados
     };
 
-    console.log(novaSolicitacao);
+    
     try {
+      
       setEnviando(true);
-      await postSolicitacao(novaSolicitacao);
-      alert("Solicitação cadastrada com sucesso!");
-      setDataColeta("");
-      setObservacao("");
-      setMateriais(
-        materiaisReciclaveis.map((m) => ({
-          ...m,
-          quantidade: 1,
-          estado: "",
-        }))
-      );
+      if (solicitacaoEdicao) {
+
+        await editarSolicitacao(solicitacaoEdicao.id, solicitacao);
+        alert("Solicitação atualizada com sucesso!");
+      } else {
+        await postSolicitacao(solicitacao);
+        alert("Solicitação cadastrada com sucesso!");
+      }
+      navigate("/solicitacoes");
     } catch (error) {
-      alert("Erro ao cadastrar solicitação!");
+      alert("Erro ao salvar solicitação!");
       console.error(error);
     } finally {
       setEnviando(false);
@@ -110,6 +135,7 @@ const SolicitacaoForm =  () => {
     >
       <Typography variant="h5" align="center" sx={{ mb: 2 }}>
         Vamos iniciar a sua coleta?
+      {solicitacaoEdicao ? "Editar Solicitação" : "Nova Solicitação"}
       </Typography>
 
       <Grid container spacing={2}>
