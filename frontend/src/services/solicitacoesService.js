@@ -17,7 +17,7 @@ api.interceptors.request.use((config) => {
 // Busca as solicitações do usuário
 export const getSolicitacoes = () => {
   const usuarioData = JSON.parse(localStorage.getItem("usuario"));
-  const usuarioId = usuarioData.usuario.id;
+  const usuarioId = usuarioData.id;
 
   return api.get(`/minhas`, {
     params: { usuarioId }
@@ -29,7 +29,7 @@ export const getSolicitacoes = () => {
 export const postSolicitacao = (data) => {
   
 const usuarioData = JSON.parse(localStorage.getItem("usuario"));
-  const usuarioId = usuarioData.usuario.id;
+  const usuarioId = usuarioData.id;
 
   return api.post('', data, {
     params: { usuarioId }
@@ -40,7 +40,7 @@ const usuarioData = JSON.parse(localStorage.getItem("usuario"));
 // cancela uma solicitação existente
 export const cancelarSolicitacao = (id) => {
   const usuarioData = JSON.parse(localStorage.getItem("usuario"));
-  const usuarioId = usuarioData.usuario.id;
+  const usuarioId = usuarioData.id;
 
   return api.patch(`/${id}/cancelar`, null, {
     params: { usuarioId }
@@ -51,7 +51,7 @@ export const cancelarSolicitacao = (id) => {
 export const editarSolicitacao = (id, data) => {
   
 const usuarioData = JSON.parse(localStorage.getItem("usuario"));
-  const usuarioId = usuarioData.usuario.id;
+  const usuarioId = usuarioData.id;
 
   return api.put(`/minhas`, {...data, id }, {
     params: { usuarioId }
