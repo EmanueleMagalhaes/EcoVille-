@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import "./SolicitacoesColetor.css";
 
 function SolicitacoesColetor() {
-  const [filtroData, setFiltroData] = useState("");
-  const [filtroStatus, setFiltroStatus] = useState("TODOS");
 
   const select = useRef("TODOS");
+  const calendario = useRef("");
 
   const [solicitacoes, setSolicitacoes] = useState([]);
   const [filtrados, setFiltrados] = useState([]);
@@ -28,9 +27,35 @@ function SolicitacoesColetor() {
 
   }
 
+  function rendPorData(){
+
+    let data = calendario.current.value;
+
+    let lista = [];
+
+    for(let i=0;i<solicitacoes.length;i++){
+
+      let dataAgdd = traduzData(solicitacoes[i].dataAgendada);
+
+      data = traduzData(data);
+
+      if(data == dataAgdd){
+        lista.push(solicitacoes[i]);
+      }
+    }
+
+    setFiltrados(lista);
+  }
+
 
 
   useEffect(()=>{
+
+    let data = new Date();
+
+    let hoje = formatData(data);
+
+    calendario.current.value = hoje;
 
     disponiveis();
 
@@ -55,8 +80,6 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
   }
 
   async function aceitar(solicitacaoId){
-
-    console.log(solicitacaoId);
     
     let token = localStorage.getItem("token");
 
@@ -82,10 +105,7 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
       <h2>Bem-vindo, {usuario.nomeUsuario}</h2>
 
       <div className="filtros">
-        <input
-          type="date"
-          value={filtroData}
-          onChange={(e) => setFiltroData(e.target.value)}/>
+        <input type="date" ref={calendario} onInput={rendPorData} />
 
         <select ref={select} onClick={rendporStatus}>
           <option value="TODOS">TODOS</option>
@@ -156,7 +176,6 @@ async function requisicao(url, method, body, autorizacao){
   }
 
   let json = await response.json();
-  console.log(json);
   return json;
 
 } catch (error) {
@@ -216,7 +235,6 @@ async function reqAceitar(solicitacaoId, usuarioId, autorizacao){
   }
 
   let json = await response.json();
-  console.log(json);
   return json;
 
 } catch (error) {
@@ -227,3 +245,19 @@ return null;
 
 }
 
+function formatData(date) {
+  return date.toISOString().split('T')[0];
+}
+
+function traduzData(data){
+
+  data = data.split("T")[0];
+
+  data = data.split("-");
+
+  let dia = data[2];
+  let mes = data[1];
+  let ano = data[0];
+
+  return `${dia}-${mes}-${ano}`;
+}
