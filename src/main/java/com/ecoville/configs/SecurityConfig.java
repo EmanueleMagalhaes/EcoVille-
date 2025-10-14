@@ -51,6 +51,9 @@ public class SecurityConfig {
 
                         /* COLETAS */
 
+                        // Aceitar solicitação: apenas coletor
+                        .requestMatchers(HttpMethod.PATCH, "/api/coletas/*/aceitar").hasAuthority(Perfil.COLETOR.name())
+
                         // Criar solicitação: apenas usuário residencial
                         .requestMatchers(HttpMethod.POST, "/api/coletas").hasAuthority(Perfil.RESIDENCIAL.name())
 
@@ -60,9 +63,6 @@ public class SecurityConfig {
 
                         // Listar solicitações disponíveis: apenas coletor
                         .requestMatchers(HttpMethod.GET, "/api/coletas/disponiveis").hasAuthority(Perfil.COLETOR.name())
-
-                        // Aceitar solicitação: apenas coletor
-                        .requestMatchers(HttpMethod.PATCH, "/api/coletas/*/aceitar").hasAuthority(Perfil.COLETOR.name())
 
                         // Cancelar solicitação: somente usuário residencial (criador)
                         .requestMatchers(HttpMethod.PATCH, "/api/coletas/*/cancelar").hasAuthority(Perfil.RESIDENCIAL.name())
