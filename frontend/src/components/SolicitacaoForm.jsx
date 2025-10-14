@@ -135,10 +135,10 @@ const SolicitacaoForm =  () => {
     >
       <Typography variant="h5" align="center" sx={{ mb: 2 }}>
         Vamos iniciar a sua coleta?
-      {solicitacaoEdicao ? "Editar Solicitação" : "Nova Solicitação"}
+      {solicitacaoEdicao ? "Editar Solicitação" : " Nova Solicitação"}
       </Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} display="flex" justifyContent="center">
         {materiais.map((material, index) => (
           <Grid item xs={12} sm={6} md={6} key={material.tipo}>
             <Card sx={{ p: 2, boxShadow: 3, textAlign: "center" }}>
