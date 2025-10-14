@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import "./CriarConta.css";
 
@@ -178,10 +177,10 @@ function cancelar(){
     longitude: "",
     confirmarLocalizacao: false,
   }); 
-  toast.warning("Criação de conta cancelada!");
   setTimeout(() => {
+    alert("Criação de conta cancelada!");
     navigate( "/");
-  }, 2500);
+  }, 500);
 
 }
 
@@ -279,7 +278,6 @@ return (
           <button type="submit">Cadastrar</button>
         </div>
       </form>
-      <ToastContainer/>
   </div>
 );
 }
