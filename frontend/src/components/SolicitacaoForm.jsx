@@ -32,7 +32,7 @@ const SolicitacaoForm =  () => {
   const [materiais, setMateriais] = useState(
     materiaisReciclaveis.map((m) => ({
       ...m,
-      quantidade: 1,
+      quantidade: 0,
       estado: "",
     }))
   );
@@ -64,7 +64,7 @@ const SolicitacaoForm =  () => {
     setMateriais((prev) =>
       prev.map((m, i) =>
         i === index
-          ? { ...m, quantidade: Math.max(1, m.quantidade + delta) }
+          ? { ...m, quantidade: Math.max(0, m.quantidade + delta) }
           : m
       )
     );
