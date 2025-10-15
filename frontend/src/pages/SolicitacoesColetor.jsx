@@ -67,7 +67,7 @@ function meus(){
   for(let i=0;i<solicitacoes.length;i++){
     let coletorId;
     try{
-      coletorId = solicitacoes[i].coletor.id;
+      coletorId = solicitacoes[i].coletor.id;//apenas evita erro por inexistencia de id
     }catch(e){
       coletorId = null;
     }
