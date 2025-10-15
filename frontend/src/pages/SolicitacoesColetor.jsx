@@ -21,9 +21,12 @@ function SolicitacoesColetor() {
     }
     setFiltrados(lista);
 
-    if(select.current.value == "TODOS"){
-      setFiltrados(solicitacoes);
+    if(select.current.value === "TODOS"){
+      disponiveis();
     }
+
+    if(select.current.value === "MEUS")
+      meus();
 
   }
 
@@ -54,6 +57,28 @@ function SolicitacoesColetor() {
   let response = await requisicao(url, "get", null, token);
 
   return response;
+}
+
+function meus(){
+
+  let list = [];
+
+  for(let i=0;i<solicitacoes.length;i++){
+    let coletorId;
+    try{
+      coletorId = solicitacoes[i].coletor.id;
+    }catch(e){
+      coletorId = null;
+    }
+
+    if(coletorId == usuario.id){
+      list.push(solicitacoes[i]);
+    }
+
+  }
+
+  setFiltrados(list);
+  
 }
 
 
@@ -95,8 +120,6 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
       disponiveis();
     }
 
-
-
   }
 
 
@@ -118,7 +141,9 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
           <option value="COLETADO">COLETADO</option>
           <option value="FINALIZADO">FINALIZADO</option>
           <option value="CANCELADO">CANCELADO</option>
+          <option value="MEUS">MEUS</option>
         </select>
+        
       </div>
 
 <div className="cards-container">
@@ -126,8 +151,8 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
     
     <div key={sol.id} className="card-solicitacao">
 
-      <div className={`status-tag ${sol.status.toLowerCase()}`}>{sol.status}</div>
-      <h4>{`#${sol.id}`}</h4>
+      <div className={`status-tag ${sol.status.toLowerCase()}`}></div>
+      <h4>{`#${sol.id}`}</h4>{sol.status}
 
             {itens(sol.itensColeta)}
             
@@ -192,13 +217,11 @@ return null;
 }
 
 
-
-
 function itens(lista){
   return (
-          <ul>
+          <ul className="itens">
             {lista.map((item) => (
-                <li key={item.id}>
+                <li  key={item.id}>
 
                   <div>
                     {item.tipo}
@@ -269,3 +292,4 @@ function traduzData(data){
 
   return `${dia}-${mes}-${ano}`;
 }
+

@@ -58,7 +58,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/coletas").hasAuthority(Perfil.RESIDENCIAL.name())
 
                         // Operações nas próprias solicitações do usuário residencial
-                        .requestMatchers(HttpMethod.GET, "/api/coletas/minhas/**").hasAuthority(Perfil.RESIDENCIAL.name())
+                        .requestMatchers(HttpMethod.GET, "/api/coletas/minhas/**").hasAnyAuthority(Perfil.RESIDENCIAL.name(), Perfil.COLETOR.name())
                         .requestMatchers(HttpMethod.PUT, "/api/coletas/minhas/**").hasAuthority(Perfil.RESIDENCIAL.name())
 
                         // Listar solicitações disponíveis: apenas coletor

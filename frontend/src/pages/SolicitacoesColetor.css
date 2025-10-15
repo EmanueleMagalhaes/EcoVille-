@@ -130,3 +130,14 @@ h2 {
 .status-tag.cancelado {
   background-color: #d32f2f;
 }
+
+
+.itens{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+}
+
+.itens li{
+  border: 1px solid black;
+}
