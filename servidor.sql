@@ -4,6 +4,7 @@ DROP TABLE enderecos;
 
 DROP TABLE item_coleta;
 
+
 DROP TABLE usuarios;
 
 DROP TABLE solicitacoes_coleta;
