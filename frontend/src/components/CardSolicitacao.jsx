@@ -40,15 +40,25 @@ const CardSolicitacao = ({ solicitacao, onCancelar, onEditar, onFeedback }) => {
 
   const calcularDiferencaDias = (data) => {
     if (!data) return "";
-    const hoje = new Date();
-    const coleta = new Date(data);
-    const diffMs = coleta - hoje;
-    const diffDias = Math.round(diffMs / (1000 * 60 * 60 * 24));
+      
+    const [ano, mes, dia] = data.split("-").map(Number); 
+    const coleta = new Date(ano, mes - 1, dia);
+    coleta.setHours(0, 0, 0, 0); 
 
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0); 
+
+    const diffMs = coleta - hoje;
+    const diffDias = diffMs > 0
+      ? Math.ceil(diffMs / (1000 * 60 * 60 * 24))
+      : Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDias === 0) return "Hoje";
     if (diffDias > 0) return `Daqui ${diffDias} dia${diffDias > 1 ? "s" : ""}`;
-    if (diffDias < 0) return `Há ${Math.abs(diffDias)} dia${Math.abs(diffDias) > 1 ? "s" : ""}`;
-    return "Hoje";
+    return `Há ${Math.abs(diffDias)} dia${Math.abs(diffDias) > 1 ? "s" : ""}`;
   };
+
+
 
   const materiais = {
     PLASTICO: { label: "Plástico", icon: <LocalDrinkIcon sx={{ color: "#2196F3" }} /> },
