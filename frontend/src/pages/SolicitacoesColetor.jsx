@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import MenuSuperior from "../components/MenuSuperior";
 import "./SolicitacoesColetor.css";
+import { useNavigate } from "react-router-dom";
 
 function SolicitacoesColetor() {
 
@@ -60,7 +61,7 @@ function SolicitacoesColetor() {
 
     disponiveis();
 
-let usuario = JSON.parse(localStorage.getItem("usuario"));
+  let usuario = JSON.parse(localStorage.getItem("usuario"));
 
     setUsuario(usuario);
 
@@ -167,7 +168,11 @@ async function requisicao(url, method, body, autorizacao){
   if (!response.ok) {
 
     if(response.status == 401 || response.status == 403){
-      alert("voce não tem autorização pra fazer isso");
+      setTimeout(() => {
+        alert("voce não tem autorização pra fazer isso");
+        localStorage.clear();
+        window.location.href = "/";
+      }, 500);
     }
     throw new Error(`${response.status}, ${response.statusText}`);
   }
