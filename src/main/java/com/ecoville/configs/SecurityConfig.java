@@ -64,6 +64,8 @@ public class SecurityConfig {
                         // Listar solicitações disponíveis: apenas coletor
                         .requestMatchers(HttpMethod.GET, "/api/coletas/disponiveis").hasAuthority(Perfil.COLETOR.name())
 
+                        .requestMatchers(HttpMethod.GET, "/api/coletas/todos").hasAuthority(Perfil.COLETOR.name())
+
                         // Cancelar solicitação: somente usuário residencial (criador)
                         .requestMatchers(HttpMethod.PATCH, "/api/coletas/*/cancelar").hasAuthority(Perfil.RESIDENCIAL.name())
 

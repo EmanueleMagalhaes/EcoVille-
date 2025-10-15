@@ -29,7 +29,7 @@ public class SolicitacoesController {
 
     @GetMapping("/minhas")
     public List<SolicitacaoColetaResponse> listarMinhas(@RequestParam Long usuarioId) {
-        return service.listarMinhas(usuarioId); 
+        return service.listarMinhas(usuarioId);
     }
 
     @PutMapping("/minhas")
@@ -74,5 +74,11 @@ public class SolicitacoesController {
     @ResponseStatus(HttpStatus.OK)
     public SolicitacaoColetaResponse feedback(@PathVariable Long id,@RequestBody String feedback) {
         return service.adicionarFeedback(id, feedback);
+    }
+
+    @GetMapping("/todos")
+    @ResponseStatus(HttpStatus.OK)
+    public List<SolicitacaoColetaResponse> todos(){
+        return service.todos();
     }
 }
