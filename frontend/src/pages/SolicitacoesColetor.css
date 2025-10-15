@@ -1,0 +1,124 @@
+*, *::before, *::after {
+ box-sizing: border-box;
+ margin: 0;
+ padding: 0;
+ }
+
+body {
+  background-color: #f7f8fa;
+  font-family: "Poppins", sans-serif;
+}
+
+.solicitacoes-container {
+  padding: 40px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.filtros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.filtros input,
+.filtros select {
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card-solicitacao {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 6px;
+  position: relative;
+  background: #fff;
+}
+
+.card-solicitacao h4 {
+  margin: 0;
+  font-weight: bold;
+}
+
+.card-solicitacao ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.card-solicitacao li {
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+.data {
+  font-size: 13px;
+  color: #666;
+}
+
+.btn-acao {
+  display: block;
+  margin-top: 15px;
+  background-color: #7b61ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-acao:hover {
+  background-color: #604bdb;
+}
+
+/* Tags de status */
+.status-tag {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: white;
+  font-weight: 500;
+}
+
+.status-tag.aguardando {
+  background-color: #fbc02d;
+}
+
+.status-tag.coletado {
+  background-color: #7b61ff;
+}
+
+.status-tag.finalizado {
+  background-color: #388e3c;
+}
+
+.status-tag.cancelado {
+  background-color: #d32f2f;
+}
+
+
+.itens{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+}
+
+.itens li{
+  border: 1px solid black;
+}

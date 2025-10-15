@@ -1,0 +1,297 @@
+import React, {useState} from "react";
+import {
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  IconButton,
+  TextField,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Button,
+  Box,
+} from "@mui/material";
+import {Add, Remove} from "@mui/icons-material";
+import { postSolicitacao, editarSolicitacao } from "../services/solicitacoesService";
+import { useNavigate, useLocation} from "react-router-dom";
+import { useEffect } from "react";
+
+const materiaisReciclaveis = [
+  { tipo: "PLASTICO", imagem: "/src/assets/plastico.png" },
+  { tipo: "METAL", imagem: "/src/assets/metal.png" },
+  { tipo: "PAPEL", imagem: "/src/assets/papel.png" },
+  { tipo: "VIDRO", imagem: "/src/assets/vidro.png" },
+];
+
+const SolicitacaoForm =  () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const solicitacaoEdicao = location.state?.solicitacao || null;
+
+  const [materiais, setMateriais] = useState(
+    materiaisReciclaveis.map((m) => ({
+      ...m,
+      quantidade: 0,
+      estado: "",
+    }))
+  );
+  const [dataColeta, setDataColeta] = useState("");
+  const [observacao, setObservacao] = useState("");
+  const [enviando, setEnviando] = useState(false);
+
+  useEffect(() => {
+    if (solicitacaoEdicao) {
+      setDataColeta(solicitacaoEdicao.dataAgendada || "");
+      setObservacao(solicitacaoEdicao.observacoes || "");
+
+      if (solicitacaoEdicao.itensColeta) {
+        setMateriais((prev) =>
+          prev.map((m) => {
+            const item = solicitacaoEdicao.itensColeta.find(
+              (i) => i.tipo === m.tipo
+            );
+            return item
+              ? { ...m, quantidade: item.quantEstimada || 1, estado: item.estado || "" }
+              : m;
+          })
+        );
+      }
+    }
+  }, [solicitacaoEdicao]);
+
+  
+  const validarDataColeta = (data) => {
+    if (!data) return false;
+
+    const [ano, mes, dia] = data.split("-").map(Number);
+    const dataSelecionada = new Date(ano, mes - 1, dia);
+    dataSelecionada.setHours(0, 0, 0, 0);
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const diaSeguinte = new Date(hoje);
+    diaSeguinte.setDate(hoje.getDate() + 1);
+
+    return dataSelecionada >= diaSeguinte;
+  };
+
+
+  const handleQuantidade = (index, delta) => {
+    setMateriais((prev) =>
+      prev.map((m, i) =>
+        i === index
+          ? { ...m, quantidade: Math.max(0, m.quantidade + delta) }
+          : m
+      )
+    );
+  };
+
+  const handleEstado = (index, value) => {
+    setMateriais((prev) =>
+      prev.map((m, i) => (i === index ? { ...m, estado: value } : m))
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validarDataColeta(dataColeta)) {
+      alert("A data de coleta deve ser a partir de amanhã.");
+      return;
+    }
+
+    setEnviando(true);
+
+    const materiaisSelecionados = materiais
+      .filter((m) => m.estado !== "")
+      .map((m) => ({
+        tipo: m.tipo,
+        quantEstimada: m.quantidade,
+        quantReal: m.quantidade,
+        estado: m.estado,
+      }));
+
+    if (!dataColeta || materiaisSelecionados.length === 0) {
+      alert("Preencha todos os campos obrigatórios!");
+      return;
+    }
+
+    const solicitacao = {
+      dataAgendada: dataColeta,
+      observacoes: observacao,
+      itensColeta: materiaisSelecionados
+    };
+
+    
+    try {
+      
+      setEnviando(true);
+      if (solicitacaoEdicao) {
+
+        await editarSolicitacao(solicitacaoEdicao.id, solicitacao);
+        alert("Solicitação atualizada com sucesso!");
+      } else {
+        await postSolicitacao(solicitacao);
+        alert("Solicitação cadastrada com sucesso!");
+      }
+      navigate("/solicitacoes");
+    } catch (error) {
+      alert("Erro ao salvar solicitação!");
+      console.error(error);
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  return (
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        maxWidth: 800,
+        mx: "auto",
+        p: { xs: 2, sm: 3 },
+        display: "flex",
+        flexDirection: "column",
+        gap: 3,
+      }}
+    >
+      <Typography variant="h5" align="center" sx={{ mb: 2 }}>
+        Vamos iniciar a sua coleta?
+      {solicitacaoEdicao ? "Editar Solicitação" : " Nova Solicitação"}
+      </Typography>
+
+      <Grid container spacing={2} display="flex" justifyContent="center">
+        {materiais.map((material, index) => (
+          <Grid item xs={12} sm={6} md={6} key={material.tipo}>
+            <Card sx={{ p: 2, boxShadow: 3, textAlign: "center" }}>
+              <CardContent>
+                <Typography variant="h6">{material.tipo}</Typography>
+                <Box
+                  component="img"
+                  src={material.imagem}
+                  alt={material.tipo}
+                  sx={{
+                    width: 60,
+                    height: 60,
+                    objectFit: "contain",
+                    my: 1,
+                  }}
+                />
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 1,
+                    mb: 1,
+                  }}
+                >
+                  <IconButton
+                    onClick={() => handleQuantidade(index, -1)}
+                    sx={{
+                      border: "1px solid #ccc",
+                      color: "#3B3B1A",
+                    }}
+                  >
+                    <Remove />
+                  </IconButton>
+                  <TextField
+                    value={`${material.quantidade} KG`}
+                    size="small"
+                    inputProps={{
+                      readOnly: true,
+                      style: { textAlign: "center", width: "70px" },
+                    }}
+                  />
+                  <IconButton
+                    onClick={() => handleQuantidade(index, +1)}
+                    sx={{
+                      border: "1px solid #ccc",
+                      color: "#3B3B1A",
+                    }}
+                  >
+                    <Add />
+                  </IconButton>
+                </Box>
+
+                <Typography variant="body2" sx={{ mb: 1 }}>
+                  Estado dos materiais
+                </Typography>
+                <RadioGroup
+                  row
+                  value={material.estado}
+                  onChange={(e) => handleEstado(index, e.target.value)}
+                  sx={{ justifyContent: "center" }}
+                >
+                  
+                  <FormControlLabel value="RUIM" control={<Radio />} label="Ruim" />
+                  <FormControlLabel value="BOM" control={<Radio />} label="Bom" />
+                  <FormControlLabel value="OTIMO" control={<Radio />} label="Ótimo" />
+
+                </RadioGroup>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      <Typography variant="h6" sx={{ mt: 3 }}>
+        Qual melhor dia para irmos buscar?
+      </Typography>
+
+      <TextField
+        label="Data"
+        type="date"
+        fullWidth
+        value={dataColeta}
+        onChange={(e) => setDataColeta(e.target.value)}
+        InputLabelProps={{ shrink: true }}
+        required
+        InputProps={{
+          sx: {
+            backgroundColor: "#fff",
+          },
+        }}
+
+      />
+
+      <TextField
+        label="Observação"
+        multiline
+        rows={3}
+        fullWidth
+        value={observacao}
+        onChange={(e) => setObservacao(e.target.value)}
+        InputProps={{
+          sx: {
+            backgroundColor: "#fff",
+          },
+        }}
+
+      />
+
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{
+          bgcolor: "#3B3B1A",
+          color: "#fff",
+          fontWeight: "bold",
+          "&:hover": { bgcolor: "#8A784E" },
+          alignSelf: "center",
+          mt: 2,
+          px: 4,
+        }}
+        disabled={enviando}
+      >
+        {enviando ? "Cadastrando..." : "Cadastrar"}
+      </Button>
+    </Box>
+  );
+};
+
+export default SolicitacaoForm;

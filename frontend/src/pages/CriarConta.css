@@ -1,0 +1,312 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    background-color: #8A784E;
+    font-family: "Poppins", sans-serif;
+    color: #3B3B1A;
+}
+
+
+.criar-conta-container {
+    max-width: 850px;
+    margin: 40px auto;
+    background-color: #AEC8A4;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(39, 87, 27, 0.1);
+}
+
+.criar-conta-container h2 {
+    text-align: center;
+    color: #3B3B1A;
+    font-size: 28px;
+}
+
+
+.criar-conta-container h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #3B3B1A;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #8A784E;
+    border-radius: 26px;
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+
+form input::placeholder {
+    color: #8A784E;
+    opacity: 0.8;
+    font-style: italic;
+}
+
+
+form input:focus {
+    border-color: #3B3B1A;
+    box-shadow: 0 0 5px #3B3B1A;
+    outline: none;
+}
+
+.criacaoConta{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 8px;
+    width: 100%;
+}
+
+.userDatas{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 90%;
+    justify-content: center;
+}
+
+.senhas{
+    display: flex;
+    gap: 5px;
+}
+
+form h3,
+form iframe,
+form .botoes {
+    grid-column: span 2;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 10px;
+}
+
+.labelCheck{
+    font-size: 14px;
+}
+
+/* Botões */
+.botoes {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.botoes button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #8A784E;
+  border-radius: 26px;
+  font-size: 14px;
+  color: #E7EFC7;
+  background-color: #8A784E;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.botoes button:hover {
+  background-color: #6f623f;
+}
+
+iframe {
+    border-radius: 8px;
+    width: 100%;
+    height: 400px;
+    border: 1px solid #ccc;
+}
+
+.geolocalizacao-container{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    max-width: 100%;
+    text-align: start;
+    gap: 20px;
+}
+
+.mapa{
+    display: flex;
+    flex-direction: column;
+    align-content:  center;
+    justify-content: start;
+    width: 100%;
+}
+
+.inputs-geolocalizacao{
+    display: flex;
+    flex-direction: column;
+    align-content:  center;
+    justify-content: start;
+    width: 45%;
+    gap: 10px;
+}
+
+.inputs-geolocalizacao input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #8A784E;
+    border-radius: 26px;
+    font-size: 14px;
+}
+
+.cepBairro{
+    display: flex;
+    gap:  10px;
+}
+
+.estadoLogradouro{
+    display: flex;
+    gap: 10px;
+}
+
+.numeroComplementoCity{
+    display: flex;
+    gap: 10px;
+}
+
+.endereco{
+    display: flex;
+    flex-direction: column;
+    align-items:  start;
+    gap: 5px;
+    width: 100%;
+}
+
+.geolocalizacao{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px 0 20px 0;
+}
+
+.userAddress{
+    display: flex;
+    width: 100%;
+    
+}
+
+@media (max-width: 768px) {
+
+  .criar-conta-container {
+    width: 94%;
+    padding: 24px 18px;
+    margin: 20px auto;
+    border-radius: 10px;
+  }
+
+  .criar-conta-container h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .criacaoConta {
+    width: 100%;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .userDatas {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .senhas {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .endereco {
+    width: 100%;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .cepBairro,
+  .estadoLogradouro,
+  .numeroComplementoCity {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .userAddress {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .geolocalizacao-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 20px;
+    padding: 20px;
+    background-color: #d9e6d2;
+    border-radius: 10px;
+  }
+
+  .inputs-geolocalizacao {
+    width: 100%;
+    order: 1;
+  }
+
+  .mapa {
+    width: 100%;
+    order: 2;
+  }
+
+  iframe {
+    height: 280px;
+    border-radius: 10px;
+  }
+
+  .botoes {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .botoes button {
+    width: 100%;
+  }
+
+  .checkbox-group {
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .labelCheck {
+    font-size: 13px;
+  }
+
+  form input {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+}
