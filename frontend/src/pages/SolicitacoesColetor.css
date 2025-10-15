@@ -13,25 +13,6 @@ body {
   padding: 40px;
 }
 
-.menu-superior {
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid #ddd;
-  padding: 10px 20px;
-  border-radius: 6px;
-  margin-bottom: 20px;
-}
-
-.menu-superior a {
-  text-decoration: none;
-  color: #6c63ff;
-  font-weight: 600;
-}
-
-.menu-superior .sair {
-  color: #000;
-}
-
 h2 {
   font-size: 20px;
   margin-bottom: 20px;

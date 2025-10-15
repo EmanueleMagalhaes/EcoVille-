@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+import MenuSuperior from "../components/MenuSuperior";
 import "./SolicitacoesColetor.css";
+import { useNavigate } from "react-router-dom";
 
 function SolicitacoesColetor() {
 
@@ -68,7 +70,7 @@ function SolicitacoesColetor() {
 
     disponiveis();
 
-let usuario = JSON.parse(localStorage.getItem("usuario"));
+  let usuario = JSON.parse(localStorage.getItem("usuario"));
 
     setUsuario(usuario);
 
@@ -84,28 +86,27 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
     setUsuario(usuario);
   }
 
-  async function aceitar(solicitacaoId){
-    
-    let token = localStorage.getItem("token");
+  async function aceitar(solicitacaoId) {
+    const token = localStorage.getItem("token");
+    const request = await reqAceitar(solicitacaoId, usuario.id, token);
 
+    if (request) {
+      await disponiveis();
+      alert("Solicitação aceita com sucesso!");
+      const usuarioAtualizado = {
+        ...usuario,
+        solicitacoes: [...(usuario.solicitacoes || []), request]
+      };
 
-    let request = await reqAceitar(solicitacaoId, usuario.id, token);
-
-    if(request){
-      disponiveis();
+      setUsuario(usuarioAtualizado);
+      localStorage.setItem("usuario", JSON.stringify(usuarioAtualizado));
     }
-
-
-
   }
 
-
   return (
+    <div>
+      <MenuSuperior />
     <div className="solicitacoes-container">
-      <div className="menu-superior">
-        <a href="#">Solicitações</a>
-        <a href="#" className="sair">Sair</a>
-      </div>
 
       <h2>Bem-vindo, {usuario.nomeUsuario}</h2>
 
@@ -121,24 +122,25 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
         </select>
       </div>
 
-<div className="cards-container">
-  {(filtrados.length && filtrados.map((sol) => (
-    
-    <div key={sol.id} className="card-solicitacao">
+      <div className="cards-container">
+        {(filtrados.length && filtrados.map((sol) => (
+          
+          <div key={sol.id} className="card-solicitacao">
 
-      <div className={`status-tag ${sol.status.toLowerCase()}`}>{sol.status}</div>
-      <h4>{`#${sol.id}`}</h4>
+            <div className={`status-tag ${sol.status.toLowerCase()}`}>{sol.status}</div>
+            <h4>{`#${sol.id}`}</h4>
 
-            {itens(sol.itensColeta)}
-            
-        <p className="data">Data solicitada: {sol.dataSolicitacao}</p>
-        <p className="data">Data agendada: {sol.dataAgendada}</p>
-        <p className="feedback">Feedback: {sol.feedback || <i>nenhum comentário</i>}</p>
-      <button onClick={()=>aceitar(sol.id, sol.usuarioResidencial.id)}>aceitar</button>
+                  {itens(sol.itensColeta)}
+                  
+              <p className="data">Data solicitada: {sol.dataSolicitacao}</p>
+              <p className="data">Data agendada: {sol.dataAgendada}</p>
+              <p className="feedback">Feedback: {sol.feedback || <i>nenhum comentário</i>}</p>
+            <button onClick={()=>aceitar(sol.id, sol.usuarioResidencial.id)}>aceitar</button>
+          </div>
+        ))) || <p className="mensagem-vazia">Nenhuma solicitação disponível.</p>}
+      </div>
     </div>
-  ))) || <p className="mensagem-vazia">Nenhuma solicitação disponível.</p>}
-</div>
-    </div>
+  </div>
   );
 }
 
@@ -175,7 +177,11 @@ async function requisicao(url, method, body, autorizacao){
   if (!response.ok) {
 
     if(response.status == 401 || response.status == 403){
-      alert("voce não tem autorização pra fazer isso");
+      setTimeout(() => {
+        alert("voce não tem autorização pra fazer isso");
+        localStorage.clear();
+        window.location.href = "/";
+      }, 500);
     }
     throw new Error(`${response.status}, ${response.statusText}`);
   }
