@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { getSolicitacoes, cancelarSolicitacao } from "../services/solicitacoesService";
 import CardSolicitacao from "../components/CardSolicitacao";
 import MenuSuperior from "../components/MenuSuperior";
-import ModalFeedback from "../components/ModalFeedback";
+// import ModalFeedback from "../components/ModalFeedback";
 import { Container, Typography, Grid, Button, Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
@@ -10,8 +10,8 @@ import { useNavigate } from "react-router-dom";
 
 const MinhasSolicitacoes = () => {
     const [solicitacoes, setSolicitacoes] = useState([]);
-    const [openModal, setOpenModal] = useState(false);
-    const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
+    // const [openModal, setOpenModal] = useState(false);
+    // const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,10 +41,10 @@ const MinhasSolicitacoes = () => {
         navigate("/solicitacao", { state: { solicitacao } });
     };
 
-    const handleFeedback = (solicitacao) => {
-        setSelectedSolicitacao(solicitacao);
-        setOpenModal(true);
-    };
+    // const handleFeedback = (solicitacao) => {
+    //     setSelectedSolicitacao(solicitacao);
+    //     setOpenModal(true);
+    // };
 
       const handleNovaSolicitacao = () => {
     navigate("/nova-solicitacao");
@@ -105,7 +105,7 @@ const MinhasSolicitacoes = () => {
                         solicitacao={solicitacao}
                         onCancelar={handleCancelar}
                         onEditar={handleEditar}
-                        onFeedback={handleFeedback}
+                        // onFeedback={handleFeedback}
                         />
                     </Grid>
                     ))
@@ -116,11 +116,11 @@ const MinhasSolicitacoes = () => {
                 )}
                 </Grid>
 
-            <ModalFeedback
+            {/* <ModalFeedback
                 open={openModal}
                 handleClose={() => setOpenModal(false)}
                 solicitacao={selectedSolicitacao}
-            />
+            /> */}
             </Container>
         </>
     );
