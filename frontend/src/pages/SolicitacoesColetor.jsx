@@ -86,17 +86,21 @@ function SolicitacoesColetor() {
     setUsuario(usuario);
   }
 
-  async function aceitar(solicitacaoId){
-    
-    let token = localStorage.getItem("token");
+  async function aceitar(solicitacaoId) {
+    const token = localStorage.getItem("token");
+    const request = await reqAceitar(solicitacaoId, usuario.id, token);
 
+    if (request) {
+      await disponiveis();
+      alert("Solicitação aceita com sucesso!");
+      const usuarioAtualizado = {
+        ...usuario,
+        solicitacoes: [...(usuario.solicitacoes || []), request]
+      };
 
-    let request = await reqAceitar(solicitacaoId, usuario.id, token);
-
-    if(request){
-      disponiveis();
+      setUsuario(usuarioAtualizado);
+      localStorage.setItem("usuario", JSON.stringify(usuarioAtualizado));
     }
-
   }
 
   return (
