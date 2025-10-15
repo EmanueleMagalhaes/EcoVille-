@@ -1,4 +1,4 @@
-# EcoVille
+#🌱 EcoVille
 
 ## Sobre o Projeto
 O **EcoVille** é uma aplicação web desenvolvida como parte do **Projeto Integrador** do curso **Desenvolvimento Web – LAB 365/SENAI**.  
