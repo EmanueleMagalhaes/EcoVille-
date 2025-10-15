@@ -41,12 +41,12 @@ const CardSolicitacao = ({ solicitacao, onCancelar, onEditar, onFeedback }) => {
   const calcularDiferencaDias = (data) => {
     if (!data) return "";
       
-    const [ano, mes, dia] = data.split("-").map(Number); // extrai os números
-    const coleta = new Date(ano, mes - 1, dia); // cria a data corretamente no fuso local
-    coleta.setHours(0, 0, 0, 0); // zera horas
+    const [ano, mes, dia] = data.split("-").map(Number); 
+    const coleta = new Date(ano, mes - 1, dia);
+    coleta.setHours(0, 0, 0, 0); 
 
     const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0); // zera horas
+    hoje.setHours(0, 0, 0, 0); 
 
     const diffMs = coleta - hoje;
     const diffDias = diffMs > 0
