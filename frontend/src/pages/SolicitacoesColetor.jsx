@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import MenuSuperior from "../components/MenuSuperior";
 import "./SolicitacoesColetor.css";
 
 function SolicitacoesColetor() {
@@ -90,17 +91,12 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
       disponiveis();
     }
 
-
-
   }
 
-
   return (
+    <div>
+      <MenuSuperior />
     <div className="solicitacoes-container">
-      <div className="menu-superior">
-        <a href="#">Solicitações</a>
-        <a href="#" className="sair">Sair</a>
-      </div>
 
       <h2>Bem-vindo, {usuario.nomeUsuario}</h2>
 
@@ -116,24 +112,25 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
         </select>
       </div>
 
-<div className="cards-container">
-  {(filtrados.length && filtrados.map((sol) => (
-    
-    <div key={sol.id} className="card-solicitacao">
+      <div className="cards-container">
+        {(filtrados.length && filtrados.map((sol) => (
+          
+          <div key={sol.id} className="card-solicitacao">
 
-      <div className={`status-tag ${sol.status.toLowerCase()}`}>{sol.status}</div>
-      <h4>{`#${sol.id}`}</h4>
+            <div className={`status-tag ${sol.status.toLowerCase()}`}>{sol.status}</div>
+            <h4>{`#${sol.id}`}</h4>
 
-            {itens(sol.itensColeta)}
-            
-        <p className="data">Data solicitada: {sol.dataSolicitacao}</p>
-        <p className="data">Data agendada: {sol.dataAgendada}</p>
-        <p className="feedback">Feedback: {sol.feedback || <i>nenhum comentário</i>}</p>
-      <button onClick={()=>aceitar(sol.id, sol.usuarioResidencial.id)}>aceitar</button>
+                  {itens(sol.itensColeta)}
+                  
+              <p className="data">Data solicitada: {sol.dataSolicitacao}</p>
+              <p className="data">Data agendada: {sol.dataAgendada}</p>
+              <p className="feedback">Feedback: {sol.feedback || <i>nenhum comentário</i>}</p>
+            <button onClick={()=>aceitar(sol.id, sol.usuarioResidencial.id)}>aceitar</button>
+          </div>
+        ))) || <p className="mensagem-vazia">Nenhuma solicitação disponível.</p>}
+      </div>
     </div>
-  ))) || <p className="mensagem-vazia">Nenhuma solicitação disponível.</p>}
-</div>
-    </div>
+  </div>
   );
 }
 

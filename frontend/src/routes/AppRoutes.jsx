@@ -6,17 +6,10 @@ import NovaSolicitacao from '../pages/NovaSolicitacao';
 import Login from '../pages/Login';
 import CriarConta from '../pages/CriarConta';
 import SolicitacoesColetor from '../pages/SolicitacoesColetor';
-import { useState } from 'react';
 import SolicitacaoForm from '../components/SolicitacaoForm';
 
 
-
-
-
 function AppRoutes() {
-
-  const [usuario, setUsuario] = useState({});
-
 
   return (
     <BrowserRouter>

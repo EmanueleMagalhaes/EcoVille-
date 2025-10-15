@@ -28,7 +28,7 @@ const MenuSuperior = () => {
             </Button>
           )}
           {perfil === "COLETOR" && (
-            <Button color="inherit" onClick={() => navigate("/coletas")}>
+            <Button color="inherit" onClick={() => navigate("/solicitacoes-coletor")}>
               Solicitações
             </Button>
           )}
