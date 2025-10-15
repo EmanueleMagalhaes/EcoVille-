@@ -1,14 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./SolicitacoesColetor.css";
 
 function SolicitacoesColetor() {
-  const [filtroData, setFiltroData] = useState("");
-  const [filtroStatus, setFiltroStatus] = useState("TODOS");
+
+  const select = useRef("TODOS");
+  const calendario = useRef("");
 
   const [solicitacoes, setSolicitacoes] = useState([]);
+  const [filtrados, setFiltrados] = useState([]);
   const [usuario, setUsuario] = useState({});
 
+  function rendporStatus(){
+
+    let lista =[];
+
+    for(let i=0;i<solicitacoes.length;i++){
+      if(solicitacoes[i].status == select.current.value){
+        lista.push(solicitacoes[i]);
+      }
+    }
+    setFiltrados(lista);
+
+    if(select.current.value == "TODOS"){
+      setFiltrados(solicitacoes);
+    }
+
+  }
+
+  function rendPorData(){
+
+    let data = calendario.current.value;
+
+    let lista = [];
+
+    for(let i=0;i<solicitacoes.length;i++){
+
+      let dataAgdd = traduzData(solicitacoes[i].dataAgendada);
+
+      data = traduzData(data);
+
+      if(data == dataAgdd){
+        lista.push(solicitacoes[i]);
+      }
+    }
+
+    setFiltrados(lista);
+  }
+
+
+
   useEffect(()=>{
+
+    let data = new Date();
+
+    let hoje = formatData(data);
+
+    calendario.current.value = hoje;
 
     disponiveis();
 
@@ -28,16 +75,25 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
     let usuario = JSON.parse(localStorage.getItem("usuario"));
 
     setSolicitacoes(solicitacoes);
+    setFiltrados(solicitacoes);
     setUsuario(usuario);
+  }
+
+  async function aceitar(solicitacaoId){
+    
+    let token = localStorage.getItem("token");
+
+
+    let request = await reqAceitar(solicitacaoId, usuario.id, token);
+
+    if(request){
+      disponiveis();
+    }
+
 
 
   }
 
-  const handleAcao = (status) => {
-    if (status === "AGUARDANDO") return "Coletar";
-    if (status === "COLETADO") return "Validar";
-    return null;
-  };
 
   return (
     <div className="solicitacoes-container">
@@ -49,16 +105,10 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
       <h2>Bem-vindo, {usuario.nomeUsuario}</h2>
 
       <div className="filtros">
-        <input
-          type="date"
-          value={filtroData}
-          onChange={(e) => setFiltroData(e.target.value)}
-        />
-        <select
-          value={filtroStatus}
-          onChange={(e) => setFiltroStatus(e.target.value)}
-        >
-          <option value="TODOS">Status</option>
+        <input type="date" ref={calendario} onInput={rendPorData} />
+
+        <select ref={select} onClick={rendporStatus}>
+          <option value="TODOS">TODOS</option>
           <option value="AGUARDANDO">AGUARDANDO</option>
           <option value="COLETADO">COLETADO</option>
           <option value="FINALIZADO">FINALIZADO</option>
@@ -67,7 +117,7 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
       </div>
 
 <div className="cards-container">
-  {(solicitacoes.length && solicitacoes.map((sol) => (
+  {(filtrados.length && filtrados.map((sol) => (
     
     <div key={sol.id} className="card-solicitacao">
 
@@ -79,10 +129,7 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
         <p className="data">Data solicitada: {sol.dataSolicitacao}</p>
         <p className="data">Data agendada: {sol.dataAgendada}</p>
         <p className="feedback">Feedback: {sol.feedback || <i>nenhum comentário</i>}</p>
-
-      {handleAcao(sol.status) && (
-              <button className="btn-acao">{handleAcao(sol.status)}</button>
-            )}
+      <button onClick={()=>aceitar(sol.id, sol.usuarioResidencial.id)}>aceitar</button>
     </div>
   ))) || <p className="mensagem-vazia">Nenhuma solicitação disponível.</p>}
 </div>
@@ -122,14 +169,13 @@ async function requisicao(url, method, body, autorizacao){
 
   if (!response.ok) {
 
-    if(response.status == 401){
+    if(response.status == 401 || response.status == 403){
       alert("voce não tem autorização pra fazer isso");
     }
     throw new Error(`${response.status}, ${response.statusText}`);
   }
 
   let json = await response.json();
-  console.log(json);
   return json;
 
 } catch (error) {
@@ -163,4 +209,55 @@ function itens(lista){
               ))}
             </ul>
   );
+}
+
+async function reqAceitar(solicitacaoId, usuarioId, autorizacao){
+
+  let url = `http://localhost:8080/api/coletas/${solicitacaoId}/aceitar?coletorId=${usuarioId}`;
+
+
+  let envio = {
+        method: "PATCH",
+        headers: {
+        "Content-Type" : "application/json", 
+        "Authorization" : autorizacao
+      }
+    }
+
+  try {
+  const response = await fetch(url, envio);
+
+  if (!response.ok) {
+    if(response.status == 401 || response.status == 403){
+      alert("voce não tem autorização pra fazer isso");
+    }
+    throw new Error(`${response.status}, ${response.statusText}`);
+  }
+
+  let json = await response.json();
+  return json;
+
+} catch (error) {
+  console.error('Erro na requisição:', error);
+}
+
+return null;
+
+}
+
+function formatData(date) {
+  return date.toISOString().split('T')[0];
+}
+
+function traduzData(data){
+
+  data = data.split("T")[0];
+
+  data = data.split("-");
+
+  let dia = data[2];
+  let mes = data[1];
+  let ano = data[0];
+
+  return `${dia}-${mes}-${ano}`;
 }

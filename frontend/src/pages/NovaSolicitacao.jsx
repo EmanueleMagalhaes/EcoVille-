@@ -14,7 +14,7 @@ const theme = createTheme({
       main: "#84784E", 
     },
     background: {
-      default: "#f8f6f4ff",
+      default: "#AEC8A4",
     },
     text: {
       primary: "#333",
@@ -48,15 +48,18 @@ const theme = createTheme({
 });
 const NovaSolicitacao = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+    
+      <div>
         <MenuSuperior />
-        <Container maxWidth="md" sx={{ py: { xs: 3, sm: 5 } }}>
-          <SolicitacaoForm />
-        </Container>
-      </Box>
-    </ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+            <Container maxWidth="md" sx={{ py: { xs: 3, sm: 5 } }}>
+              <SolicitacaoForm />
+            </Container>
+          </Box>
+        </ThemeProvider>
+      </div>
   );
 };
 

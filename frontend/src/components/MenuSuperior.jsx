@@ -14,8 +14,12 @@ const MenuSuperior = () => {
       navigate('/');
     };
 
+    const navbar={
+      backgroundColor: '#3B3B1A'
+    }
+
     return (
-    <AppBar position="static" elevation={2} sx={{ bgcolor: '#ffffff', textColor: '#333', paddingY: 1 }}>
+    <AppBar position="static" elevation={2} sx={ navbar}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box sx={{ display: "flex", gap: 2 }}>
           {perfil === "RESIDENCIAL" && (
