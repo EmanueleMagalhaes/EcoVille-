@@ -10,7 +10,7 @@ function SolicitacoesColetor() {
   const [filtrados, setFiltrados] = useState([]);
   const [usuario, setUsuario] = useState({});
 
-  function rendporStatus(){
+  async function rendporStatus(){
 
     let lista =[];
 
@@ -48,6 +48,15 @@ function SolicitacoesColetor() {
   }
 
 
+  async function todos(){
+  let url = "http://localhost:8080/api/coletas/todos";
+  let token = localStorage.getItem("token");
+  let response = await requisicao(url, "get", null, token);
+
+  return response;
+}
+
+
 
   useEffect(()=>{
 
@@ -67,11 +76,7 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
 
   async function disponiveis(){
 
-    let url = "http://localhost:8080/api/coletas/disponiveis";
-
-    let token = localStorage.getItem("token");
-
-    let solicitacoes = await requisicao(url, "get", null, token);
+    let solicitacoes = await todos();
     let usuario = JSON.parse(localStorage.getItem("usuario"));
 
     setSolicitacoes(solicitacoes);
@@ -176,6 +181,7 @@ async function requisicao(url, method, body, autorizacao){
   }
 
   let json = await response.json();
+
   return json;
 
 } catch (error) {
@@ -184,6 +190,8 @@ async function requisicao(url, method, body, autorizacao){
 
 return null;
 }
+
+
 
 
 function itens(lista){
