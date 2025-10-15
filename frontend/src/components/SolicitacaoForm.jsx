@@ -60,6 +60,24 @@ const SolicitacaoForm =  () => {
     }
   }, [solicitacaoEdicao]);
 
+  
+  const validarDataColeta = (data) => {
+    if (!data) return false;
+
+    const [ano, mes, dia] = data.split("-").map(Number);
+    const dataSelecionada = new Date(ano, mes - 1, dia);
+    dataSelecionada.setHours(0, 0, 0, 0);
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const diaSeguinte = new Date(hoje);
+    diaSeguinte.setDate(hoje.getDate() + 1);
+
+    return dataSelecionada >= diaSeguinte;
+  };
+
+
   const handleQuantidade = (index, delta) => {
     setMateriais((prev) =>
       prev.map((m, i) =>
@@ -78,6 +96,13 @@ const SolicitacaoForm =  () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validarDataColeta(dataColeta)) {
+      alert("A data de coleta deve ser a partir de amanhã.");
+      return;
+    }
+
+    setEnviando(true);
 
     const materiaisSelecionados = materiais
       .filter((m) => m.estado !== "")
