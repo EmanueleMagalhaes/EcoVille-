@@ -176,78 +176,84 @@ function SolicitacoesColetor() {
   // UI render
 
   return (
-    <div>
-      <MenuSuperior />
-      <div className="solicitacoes-container">
-        <h2>Bem-vindo, {usuario.nomeUsuario}</h2>
+    <div>
+      <MenuSuperior />
+      <div className="solicitacoes-container">
+        <h2>Bem-vindo, {usuario.nomeUsuario}</h2>
 
-        <div className="filtros">
-          <input type="date" ref={calendario} onInput={rendPorData} />
-          <select ref={select} onClick={rendporStatus}>
-            <option value="TODOS">TODOS</option>
-            <option value="AGUARDANDO">AGUARDANDO</option>
-            <option value="ACEITA">ACEITAS</option>
-            <option value="COLETADA">COLETADA</option>
-            <option value="FINALIZADA">FINALIZADA</option>
-          </select>
-        </div>
+        <div className="filtros">
+          <input type="date" ref={calendario} onInput={rendPorData} />
+          <select ref={select} onClick={rendporStatus}>
+            <option value="TODOS">TODOS</option>
+            <option value="AGUARDANDO">AGUARDANDO</option>
+            <option value="ACEITA">ACEITAS</option>
+            <option value="COLETADA">COLETADA</option>
+            <option value="FINALIZADA">FINALIZADA</option>
+          </select>
+        </div>
 
-        <div className="cards-container">
-          {(filtrados.length &&
-            filtrados.map((sol) => (
-              <div key={sol.id} className="card-solicitacao">
-                <div className={`status-tag ${sol.status.toLowerCase()}`}></div>
-                <h4>{`#${sol.id}`}</h4> {sol.status}
+        <div className="cards-container">
+          {(filtrados.length &&
+            filtrados.map((sol) => (
+              <div key={sol.id} className="card-solicitacao">
+                {/* Novo Badge de Status no Cantinho */}
+                <div className={`status-badge ${sol.status.toLowerCase()}`}>
+                  <div className={`status-dot ${sol.status.toLowerCase()}`}></div>
+                  <span>{sol.status}</span>
+                </div>
+                
+                <h4>{`#${sol.id}`}</h4>
+                
+                {itens(sol.itensColeta)}
 
-                {itens(sol.itensColeta)}
+                <p className="data">Data solicitada: **{sol.dataSolicitacao}**</p>
+                <p className="data">Data agendada: **{sol.dataAgendada}**</p>
+                <p className="feedback">
+                  Feedback: {sol.feedback || <i>nenhum comentário</i>}
+                </p>
 
-                <p className="data">Data solicitada: {sol.dataSolicitacao}</p>
-                <p className="data">Data agendada: {sol.dataAgendada}</p>
-                <p className="feedback">
-                  Feedback: {sol.feedback || <i>nenhum comentário</i>}
-                </p>
+                {sol.status === "AGUARDANDO" && (
+                  <button onClick={() => aceitar(sol.id)}>Aceitar</button>
+                )}
+                {sol.status === "ACEITA" && (
+                  <button onClick={() => abrirModal(sol)}>Validar</button>
+                )}
 
-                {sol.status === "AGUARDANDO" && (
-                  <button onClick={() => aceitar(sol.id)}>Aceitar</button>
-                )}
-                {sol.status === "ACEITA" && (
-                  <button onClick={() => abrirModal(sol)}>Validar</button>
-                )}
+                {sol.status === "COLETADA" && (
+                  <button onClick={() => finalizar(sol.id)}>Finalizar</button>
+                )}
 
-                {sol.status === "COLETADA" && (
-                  <button onClick={() => finalizar(sol.id)}>Finalizar</button>
-                )}
+                {sol.status === "FINALIZADA" && (
+                  <button onClick={() => abrirModalFeedback(sol)}>Adicionar Feedback</button>
+                )}
 
-                {sol.status === "FINALIZADA" && (
-                  <button onClick={() => abrirModalFeedback(sol)}>Adicionar Feedback</button>
-                )}
+              </div>
+            ))) || (
+            <p className="mensagem-vazia">Nenhuma solicitação disponível.</p>
+          )}
+        </div>
 
-              </div>
-            ))) || (
-            <p className="mensagem-vazia">Nenhuma solicitação disponível.</p>
-          )}
-        </div>
+        {openModal && solicitacaoSelecionada && (
+          <ModalValidar
+            solicitacao={solicitacaoSelecionada}
+            onClose={fecharModal}
+            onValidadorSucesso={validarComSucesso}
+          />
+        )}
 
-        {openModal && solicitacaoSelecionada && (
-          <ModalValidar
-            solicitacao={solicitacaoSelecionada}
-            onClose={fecharModal}
-            onValidadorSucesso={validarComSucesso}
-          />
-        )}
+        {openFeedback && solicitacaoFeedback && (
+            <ModalFeedback
+              solicitacao={solicitacaoFeedback}
+              onClose={fecharModalFeedback}
+              onFeedbackEnviado={disponiveis} // atualiza a lista
+            />
+          )}
 
-        {openFeedback && solicitacaoFeedback && (
-            <ModalFeedback
-              solicitacao={solicitacaoFeedback}
-              onClose={fecharModalFeedback}
-              onFeedbackEnviado={disponiveis} // atualiza a lista
-            />
-          )}
-
-      </div>
-    </div>
-  );
+      </div>
+    </div>
+  );
 }
+
 
 export default SolicitacoesColetor;
 
