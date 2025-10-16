@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -72,7 +73,8 @@ public class SolicitacoesController {
 
     @PatchMapping("/{id}/feedback")
     @ResponseStatus(HttpStatus.OK)
-    public SolicitacaoColetaResponse feedback(@PathVariable Long id,@RequestBody String feedback) {
+    public SolicitacaoColetaResponse feedback(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String feedback = body.get("feedback");
         return service.adicionarFeedback(id, feedback);
     }
 

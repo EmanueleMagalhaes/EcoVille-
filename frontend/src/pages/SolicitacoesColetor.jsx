@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import MenuSuperior from "../components/MenuSuperior";
 import "./SolicitacoesColetor.css";
 import ModalValidar from "../components/ModalValidar";
+import ModalFeedback from "../components/ModalFeedback";
+
 
 function SolicitacoesColetor() {
   const select = useRef("TODOS");
@@ -12,6 +14,10 @@ function SolicitacoesColetor() {
   const [usuario, setUsuario] = useState({});
   const [openModal, setOpenModal] = useState(false);
   const [solicitacaoSelecionada, setSolicitacaoSelecionada] = useState(null);
+
+  const [openFeedback, setOpenFeedback] = useState(false);
+  const [solicitacaoFeedback, setSolicitacaoFeedback] = useState(null);
+
 
   // filtros
   async function rendporStatus() {
@@ -31,6 +37,10 @@ function SolicitacoesColetor() {
     if (select.current.value === "COLETADA") {
       coletadas();
     }
+    if (select.current.value === "FINALIZADA") {
+      finalizadas();
+    }
+
   }
 
   function rendPorData() {
@@ -63,10 +73,49 @@ function SolicitacoesColetor() {
     setFiltrados(list);
   }
 
+  function finalizadas() {
+    let list = solicitacoes.filter(
+      (s) => s.coletor && s.coletor.id === usuario.id && s.status === "FINALIZADA"
+    );
+    setFiltrados(list);
+  }
+
+
   async function validarComSucesso() {
     await disponiveis();
     select.current.value = "COLETADA";
     coletadas();
+  }
+
+  async function finalizar(solicitacaoId) {
+    const token = localStorage.getItem("token");
+    const url = `http://localhost:8080/api/coletas/${solicitacaoId}/finalizar`;
+    try {
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: token },
+      });
+      if (response.ok) {
+        alert("Coleta finalizada com sucesso!");
+        await disponiveis(); // atualiza tudo
+        select.current.value = "FINALIZADA";
+      } else {
+        alert("Erro ao finalizar coleta");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao finalizar coleta.");
+    }
+  }
+
+  function abrirModalFeedback(solicitacao) {
+    setSolicitacaoFeedback(solicitacao);
+    setOpenFeedback(true);
+  }
+
+  function fecharModalFeedback() {
+    setOpenFeedback(false);
+    setSolicitacaoFeedback(null);
   }
 
 
@@ -139,6 +188,7 @@ function SolicitacoesColetor() {
             <option value="AGUARDANDO">AGUARDANDO</option>
             <option value="ACEITA">ACEITAS</option>
             <option value="COLETADA">COLETADA</option>
+            <option value="FINALIZADA">FINALIZADA</option>
           </select>
         </div>
 
@@ -163,6 +213,15 @@ function SolicitacoesColetor() {
                 {sol.status === "ACEITA" && (
                   <button onClick={() => abrirModal(sol)}>Validar</button>
                 )}
+
+                {sol.status === "COLETADA" && (
+                  <button onClick={() => finalizar(sol.id)}>Finalizar</button>
+                )}
+
+                {sol.status === "FINALIZADA" && (
+                  <button onClick={() => abrirModalFeedback(sol)}>Adicionar Feedback</button>
+                )}
+
               </div>
             ))) || (
             <p className="mensagem-vazia">Nenhuma solicitação disponível.</p>
@@ -176,6 +235,14 @@ function SolicitacoesColetor() {
             onValidadorSucesso={validarComSucesso}
           />
         )}
+
+        {openFeedback && solicitacaoFeedback && (
+            <ModalFeedback
+              solicitacao={solicitacaoFeedback}
+              onClose={fecharModalFeedback}
+              onFeedbackEnviado={disponiveis} // atualiza a lista
+            />
+          )}
 
       </div>
     </div>
