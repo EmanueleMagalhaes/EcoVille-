@@ -16,12 +16,16 @@ import {Add, Remove} from "@mui/icons-material";
 import { postSolicitacao, editarSolicitacao } from "../services/solicitacoesService";
 import { useNavigate, useLocation} from "react-router-dom";
 import { useEffect } from "react";
+import metal from '../assets/metal.png';
+import papel from '../assets/papel.png';
+import plastico from '../assets/plastico.png';
+import vidro from '../assets/vidro.png';
 
 const materiaisReciclaveis = [
-  { tipo: "PLASTICO", imagem: "/src/assets/plastico.png" },
-  { tipo: "METAL", imagem: "/src/assets/metal.png" },
-  { tipo: "PAPEL", imagem: "/src/assets/papel.png" },
-  { tipo: "VIDRO", imagem: "/src/assets/vidro.png" },
+  { tipo: "PLASTICO", imagem: plastico },
+  { tipo: "METAL", imagem: metal },
+  { tipo: "PAPEL", imagem: papel },
+  { tipo: "VIDRO", imagem: vidro },
 ];
 
 const SolicitacaoForm =  () => {
