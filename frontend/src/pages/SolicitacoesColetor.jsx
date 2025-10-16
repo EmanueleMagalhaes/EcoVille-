@@ -27,6 +27,10 @@ function SolicitacoesColetor() {
     if (select.current.value === "ACEITA") {
       aceitas();
     }
+
+    if (select.current.value === "COLETADA") {
+      coletadas();
+    }
   }
 
   function rendPorData() {
@@ -51,6 +55,21 @@ function SolicitacoesColetor() {
     );
     setFiltrados(list);
   }
+
+  function coletadas() {
+    let list = solicitacoes.filter(
+      (s) => s.coletor && s.coletor.id === usuario.id && s.status === "COLETADA"
+    );
+    setFiltrados(list);
+  }
+
+  async function validarComSucesso() {
+    await disponiveis();
+    select.current.value = "COLETADA";
+    coletadas();
+  }
+
+
 
   useEffect(() => {
     let hoje = formatData(new Date());
@@ -119,6 +138,7 @@ function SolicitacoesColetor() {
             <option value="TODOS">TODOS</option>
             <option value="AGUARDANDO">AGUARDANDO</option>
             <option value="ACEITA">ACEITAS</option>
+            <option value="COLETADA">COLETADA</option>
           </select>
         </div>
 
@@ -153,7 +173,7 @@ function SolicitacoesColetor() {
           <ModalValidar
             solicitacao={solicitacaoSelecionada}
             onClose={fecharModal}
-            onValidadorSucesso={disponiveis}
+            onValidadorSucesso={validarComSucesso}
           />
         )}
 

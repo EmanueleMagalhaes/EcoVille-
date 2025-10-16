@@ -49,18 +49,8 @@ function ModalValidar({ solicitacao, onClose, onValidadorSucesso }) {
 
       if (response.ok) {
         alert("Materiais validados com sucesso!");
-
-        const usuario = JSON.parse(localStorage.getItem("usuario"));
-        const novasSolicitacoes = (usuario.solicitacoes || []).map((s) =>
-          s.id === solicitacao.id ? { ...s, status: "COLETADA" } : s
-        );
-        localStorage.setItem(
-          "usuario",
-          JSON.stringify({ ...usuario, solicitacoes: novasSolicitacoes })
-        );
-
-        onValidadorSucesso();
-        onClose();
+        await onValidadorSucesso(); // atualiza dados do backend
+        onClose(); // fecha modal
       } else {
         const erro = await response.text();
         alert("Erro ao validar materiais: " + erro);
