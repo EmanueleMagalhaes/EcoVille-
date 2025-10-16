@@ -292,7 +292,7 @@ const SolicitacaoForm =  () => {
         }}
         disabled={enviando}
       >
-        {enviando ? "Cadastrando..." : "Cadastrar"}
+        {enviando ? "Enviando..." : "Enviar"}
       </Button>
     </Box>
   );

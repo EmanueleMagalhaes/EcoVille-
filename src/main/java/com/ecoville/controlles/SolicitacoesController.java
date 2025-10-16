@@ -39,12 +39,6 @@ public class SolicitacoesController {
         return service.editar(dto.getId(), dto, usuarioId);
     }
 
-    @GetMapping("/disponiveis")
-    public List<SolicitacaoColetaResponse> listarDisponiveis() {
-
-        return service.listarDisponiveis();
-    }
-
     @PatchMapping("/avaliar")
     @ResponseStatus(HttpStatus.OK)
     public List<SolicitacaoColetaResponse> avaliarEstado(@RequestBody List<ItemRequestAtualiza>lista){

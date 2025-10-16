@@ -126,6 +126,8 @@ function SolicitacoesColetor() {
     let solicitacoes = await todos();
     let usuario = JSON.parse(localStorage.getItem("usuario"));
 
+    solicitacoes = invertLista(solicitacoes);
+
     setSolicitacoes(solicitacoes);
     setFiltrados(solicitacoes);
     setUsuario(usuario);
@@ -162,6 +164,15 @@ function SolicitacoesColetor() {
   function fecharModal() {
     setOpenModal(false);
     setSolicitacaoSelecionada(null);
+  }
+
+    function invertLista(lista){
+    let array = [];
+    for(let i = lista.length-1;i>-1;i=i-1){
+      array.push(lista[i]);
+    }
+
+    return array;
   }
 
   return (
