@@ -4,7 +4,6 @@ import "./SolicitacoesColetor.css";
 import ModalValidar from "../components/ModalValidar";
 import ModalFeedback from "../components/ModalFeedback";
 
-
 function SolicitacoesColetor() {
   const select = useRef("TODOS");
   const calendario = useRef("");
@@ -18,8 +17,6 @@ function SolicitacoesColetor() {
   const [openFeedback, setOpenFeedback] = useState(false);
   const [solicitacaoFeedback, setSolicitacaoFeedback] = useState(null);
 
-
-  // filtros
   async function rendporStatus() {
     let lista = solicitacoes.filter(
       (s) => s.status === select.current.value
@@ -50,7 +47,6 @@ function SolicitacoesColetor() {
     setFiltrados(lista);
   }
 
-  // requisições
   async function todos() {
     let url = "http://localhost:8080/api/coletas/todos";
     let token = localStorage.getItem("token");
@@ -96,7 +92,7 @@ function SolicitacoesColetor() {
       });
       if (response.ok) {
         alert("Coleta finalizada com sucesso!");
-        await disponiveis(); // atualiza tudo
+        await disponiveis();
         select.current.value = "FINALIZADA";
       } else {
         alert("Erro ao finalizar coleta");
@@ -117,8 +113,6 @@ function SolicitacoesColetor() {
     setSolicitacaoFeedback(null);
   }
 
-
-
   useEffect(() => {
     let hoje = formatData(new Date());
     calendario.current.value = hoje;
@@ -136,8 +130,6 @@ function SolicitacoesColetor() {
     setFiltrados(solicitacoes);
     setUsuario(usuario);
   }
-
-  // ações
 
   async function aceitar(solicitacaoId) {
     const token = localStorage.getItem("token");
@@ -172,8 +164,6 @@ function SolicitacoesColetor() {
     setSolicitacaoSelecionada(null);
   }
 
-  // UI render
-
   return (
     <div>
       <MenuSuperior />
@@ -195,8 +185,8 @@ function SolicitacoesColetor() {
         <div className="cards-container">
           {(filtrados.length &&
             filtrados.map((sol) => (
-              <div key={sol.id} className="card-solicitacao">
-                {/* Novo Badge de Status no Cantinho */}
+              <div key={sol.id} className="card-solicitacao">
+
                 <div className={`status-badge ${sol.status.toLowerCase()}`}>
                   <div className={`status-dot ${sol.status.toLowerCase()}`}></div>
                   <span>{sol.status}</span>
@@ -246,7 +236,7 @@ function SolicitacoesColetor() {
             <ModalFeedback
               solicitacao={solicitacaoFeedback}
               onClose={fecharModalFeedback}
-              onFeedbackEnviado={disponiveis} // atualiza a lista
+              onFeedbackEnviado={disponiveis}
             />
           )}
 

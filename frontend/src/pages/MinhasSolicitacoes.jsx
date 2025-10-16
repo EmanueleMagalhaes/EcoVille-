@@ -12,7 +12,6 @@ const MinhasSolicitacoes = () => {
   const [selectedFeedback, setSelectedFeedback] = useState(null);
 
   const navigate = useNavigate();
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
 
   useEffect(() => {
     loadSolicitacoes();
@@ -53,7 +52,6 @@ const MinhasSolicitacoes = () => {
     setOpenModalFeedback(false);
     setSelectedFeedback(null);
   };
-  
 
   return (
     <>

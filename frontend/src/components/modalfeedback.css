@@ -1,29 +1,26 @@
-/* Fundo do modal (overlay) que cobre a tela */
 .modal {
-  position: fixed; /* Fica fixo na tela, mesmo com scroll */
+  position: fixed; 
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Fundo preto semi-transparente */
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Garante que o modal fique sobre todos os outros elementos */
+  z-index: 1000;
 }
 
-/* A caixa de diálogo principal do modal */
 .modal-conteudo {
   background-color: #ffffff;
   padding: 25px 30px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   width: 90%;
-  max-width: 500px; /* Largura máxima para não ficar muito grande em telas maiores */
-  animation: fadeIn 0.3s ease-out; /* Animação suave de entrada */
+  max-width: 500px;
+  animation: fadeIn 0.3s ease-out;
 }
 
-/* Animação para o modal aparecer suavemente */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -35,7 +32,6 @@
   }
 }
 
-/* Estilo do título */
 .modal-conteudo h3 {
   margin-top: 0;
   margin-bottom: 10px;
@@ -44,32 +40,28 @@
   font-weight: 600;
 }
 
-/* Estilo do parágrafo de instrução */
 .modal-conteudo p {
   margin-bottom: 20px;
   color: #666;
   font-size: 1rem;
 }
 
-/* Estilo da área de texto */
 .modal-conteudo textarea {
-  box-sizing: border-box; /* Garante que padding e borda não alterem a largura final */
+  box-sizing: border-box; 
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-family: inherit; /* Usa a mesma fonte do resto da página */
+  font-family: inherit; 
   font-size: 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Efeito ao focar na área de texto */
 .modal-conteudo textarea:focus {
   outline: none;
-  border-color: #007bff; /* Cor azul vibrante */
+  border-color: #007bff;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
 
-/* Estilo geral dos botões */
 .modal-conteudo button {
   padding: 10px 20px;
   border: none;
@@ -81,20 +73,18 @@
 }
 
 .modal-conteudo button:active {
-  transform: scale(0.98); /* Efeito de clique */
+  transform: scale(0.98);
 }
 
-/* Botão de Enviar (ação primária) */
 .modal-conteudo button:last-child {
-  background-color: #28a745; /* Verde de sucesso */
+  background-color: #28a745; 
   color: white;
 }
 
 .modal-conteudo button:last-child:hover {
-  background-color: #218838; /* Verde um pouco mais escuro */
+  background-color: #218838;
 }
 
-/* Botão de Cancelar (ação secundária) */
 .modal-conteudo button:first-child {
   background-color: #f1f1f1;
   color: #333;

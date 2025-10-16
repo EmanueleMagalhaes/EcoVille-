@@ -1,4 +1,3 @@
-/* ===== CONTAINER PRINCIPAL ===== */
 .solicitacoes-container {
   max-width: 1100px;
   margin: 2rem auto;
@@ -16,7 +15,6 @@
   margin-bottom: 2rem;
 }
 
-/* ===== FILTROS ===== */
 .filtros {
   display: flex;
   justify-content: center;
@@ -43,7 +41,6 @@
   box-shadow: 0 0 6px rgba(184, 156, 111, 0.3);
 }
 
-/* ===== CARDS ===== */
 .cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
@@ -65,7 +62,6 @@
   box-shadow: 0 6px 20px rgba(90, 70, 50, 0.12);
 }
 
-/* ===== BADGE DE STATUS ===== */
 .status-badge {
   position: absolute;
   top: 12px;
@@ -89,7 +85,6 @@
   background-color: rgba(255, 255, 255, 0.9);
 }
 
-/* ===== STATUS - PALETA MARROM ===== */
 .status-badge.aguardando {
   background: linear-gradient(135deg, #d4a15a, #b6863e);
 }
@@ -106,7 +101,6 @@
   background: linear-gradient(135deg, #9e5a4a, #7d3e2f);
 }
 
-/* ===== TEXTOS ===== */
 .card-solicitacao h4 {
   font-weight: 600;
   margin-bottom: 1rem;
@@ -146,7 +140,6 @@
   font-style: italic;
 }
 
-/* ===== BOTÕES ===== */
 .card-solicitacao button {
   margin-top: 1rem;
   width: 100%;
@@ -160,7 +153,6 @@
   transition: all 0.2s ease;
 }
 
-/* ===== CORES DE BOTÕES (MARROM VIVO) ===== */
 .status-badge.aguardando ~ button {
   background-color: #d4a15a;
 }
@@ -196,7 +188,6 @@
   background-color: #7d3e2f;
 }
 
-/* ===== MENSAGEM VAZIA ===== */
 .mensagem-vazia {
   grid-column: 1 / -1;
   text-align: center;
@@ -205,7 +196,6 @@
   margin-top: 2rem;
 }
 
-/* ===== RESPONSIVIDADE ===== */
 @media (max-width: 600px) {
   .solicitacoes-container {
     padding: 1rem;
