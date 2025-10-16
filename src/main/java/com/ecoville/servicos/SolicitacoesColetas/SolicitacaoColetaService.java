@@ -23,4 +23,6 @@ public interface SolicitacaoColetaService {
 
     SolicitacaoColetaResponse adicionarFeedback(Long id, String feedback);
 
+    List<SolicitacaoColetaResponse> todos();
+
 }

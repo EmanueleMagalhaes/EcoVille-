@@ -150,4 +150,15 @@ public class SolicitacaoColetaImpl implements SolicitacaoColetaService {
 
         return SolicitacaoColetaMapper.praDto(coleta);
     }
+
+    @Override
+    public List<SolicitacaoColetaResponse> todos(){
+        return SolicitacaoColetaMapper.praListaDto(solicitacaoRepositorio.findAll());
+    }
+
+
+    public SolicitacaoColeta salvarSolicitacao(SolicitacaoColeta coleta) {
+        return solicitacaoRepositorio.save(coleta);
+    }
+
 }
