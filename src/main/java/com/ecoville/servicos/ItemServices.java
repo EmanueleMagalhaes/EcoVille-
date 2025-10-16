@@ -28,29 +28,34 @@ public class ItemServices {
             () -> new NotFoundException("Item não encontrado"));
     }
 
-    public List<SolicitacaoColetaResponse> atualizarLista(List<ItemRequestAtualiza>estados){
+    public List<SolicitacaoColetaResponse> atualizarLista(List<ItemRequestAtualiza> estados) {
+        List<ItemColeta> lista = new ArrayList<>();
 
-        List<ItemColeta> lista = new ArrayList<ItemColeta>();
+        try {
+            for (ItemRequestAtualiza dto : estados) {
+                ItemColeta item = porId(dto.getId());
+                item.setEstado(ItemMapper.traduzEstado(dto.getEstado()));
+                item.setQuantEstimada(dto.getQuantEstimada());
+                item.setQuantReal(dto.getQuantReal());
+                item.setTipo(ItemMapper.traduzTipo(dto.getTipo()));
+                item = repositorio.save(item);
+                lista.add(item);
+            }
 
-        try{
+            // 🟢 Atualiza o status da solicitação vinculada
+            if (!lista.isEmpty()) {
+                var solicitacao = lista.get(0).getSolicitacaoColeta();
+                solicitacao.setStatus(com.ecoville.enums.Status.COLETADA);
+                servicoSolicitacao.salvarSolicitacao(solicitacao);
+            }
 
-        for(int i=0;i<estados.size();i++){
-            ItemColeta item = porId(estados.get(i).getId());
-
-            item.setEstado(ItemMapper.traduzEstado(estados.get(i).getEstado()));
-            item.setQuantEstimada(estados.get(i).getQuantEstimada());
-            item.setQuantReal(estados.get(i).getQuantReal());
-            item.setTipo(ItemMapper.traduzTipo(estados.get(i).getTipo()));
-
-            item = repositorio.save(item);
-
-            lista.add(item);
-        }}catch(NullPointerException e){
-            throw new InternalServerErrorException("não foi possivel avaliar os itens" + e);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao avaliar os itens: " + e.getMessage());
         }
 
-        return servicoSolicitacao.listarDisponiveis();
+        return servicoSolicitacao.todos(); // ou listarMinhas(usuarioId) se preferir
     }
 
-    
+
+
 }

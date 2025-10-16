@@ -155,4 +155,10 @@ public class SolicitacaoColetaImpl implements SolicitacaoColetaService {
     public List<SolicitacaoColetaResponse> todos(){
         return SolicitacaoColetaMapper.praListaDto(solicitacaoRepositorio.findAll());
     }
+
+
+    public SolicitacaoColeta salvarSolicitacao(SolicitacaoColeta coleta) {
+        return solicitacaoRepositorio.save(coleta);
+    }
+
 }
