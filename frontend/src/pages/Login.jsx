@@ -17,8 +17,6 @@ function Login() {
     }
   }
 
-
-
   async function handleSubmit(e){
     e.preventDefault();
 
@@ -28,17 +26,12 @@ function Login() {
 
     if(!passe){return}
 
-       // Salvar token no localStorage
       localStorage.setItem("token", `${data.type} ${data.token}`);
 
-      //Salvar usuario na maquina
       localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
       localStorage.setItem("identificacao", JSON.stringify(data.usuario.id));
 
-      
-
-      // Verificar perfil e redirecionar
       const perfil = data.usuario.perfil;
 
       if (perfil === "RESIDENCIAL") {
@@ -48,9 +41,7 @@ function Login() {
         navigate("/solicitacoes-coletor");
       }
     
-
   }
-
 
   function verificacao(data){
 
@@ -68,37 +59,35 @@ function Login() {
       return true;
   }
 
-
-
   return (
     <div className="login-container">
       <div className="login-box">
-      <h2>Login</h2>
+        <h2>Login</h2>
 
-      <form onSubmit={handleSubmit} className="login-form">
-       
-        <input type="text" id="nomeUsuario"  name="nomeUsuario"
-        placeholder="Digite seu usuário" ref={nomeUsuario} 
-        onInput={limpaSet} required  />
-
+        <form onSubmit={handleSubmit} className="login-form">
         
-        <input
-          type="password" id="senha" name="senha" placeholder="Digite sua senha"
-          ref={senha} onInput={limpaSet} required />
+          <input type="text" id="nomeUsuario"  name="nomeUsuario"
+          placeholder="Digite seu usuário" ref={nomeUsuario} 
+          onInput={limpaSet} required  />
+          
+          <input
+            type="password" id="senha" name="senha" placeholder="Digite sua senha"
+            ref={senha} onInput={limpaSet} required />
 
 
-        <div className="button-container">
-          <button type="submit" className="btn-logar">Logar</button>
-        </div>
-      </form>
+          <div className="button-container">
+            <button type="submit" className="btn-logar">Logar</button>
+          </div>
+        </form>
 
-      <p className="criar-conta-texto">
-        Ainda não tem conta?{" "}
-        <span className="link-criar-conta" onClick={() => navigate("/criar-conta")}>
-          Criar conta
-        </span>
-      </p>
-    </div>
+        <p className="criar-conta-texto">
+          Ainda não tem conta?{" "}
+          <span className="link-criar-conta" onClick={() => navigate("/criar-conta")}>
+            Criar conta
+          </span>
+        </p>
+
+      </div>
     </div>
   );
 }
@@ -109,7 +98,6 @@ export default Login;
 function limpaSet(e){
   e.target.setCustomValidity("");
 }
-
 
 async function requisicao(body){
   let url = "http://localhost:8080/api/login";
@@ -123,30 +111,28 @@ async function requisicao(body){
       }
     }
 
-
   try {
-  const response = await fetch(url, envio);
+    const response = await fetch(url, envio);
 
-  if (!response.ok) {
-    switch (response.status) {
-      case 401:
-        return 401;
+    if (!response.ok) {
+      switch (response.status) {
+        case 401:
+          return 401;
 
-      case 404:
-        return 404;
+        case 404:
+          return 404;
 
-      default:
-        throw new Error(`${response.status}, ${response.statusText}`);
+        default:
+          throw new Error(`${response.status}, ${response.statusText}`);
+      }
     }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+    throw error;
   }
-
-  const data = await response.json();
-  console.log(data);
-  return data;
-
-} catch (error) {
-  console.error('Erro na requisição:', error);
-  throw error;
-}
 
 }

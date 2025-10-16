@@ -13,8 +13,6 @@ public interface SolicitacaoColetaService {
 
     SolicitacaoColetaResponse editar(Long id, SolicitacaoColetaRequest dto, Long usuarioId);
 
-    List<SolicitacaoColetaResponse> listarDisponiveis();
-
     SolicitacaoColetaResponse aceitar(Long id, Long coletorId);
 
     SolicitacaoColetaResponse cancelar(Long id, Long usuarioId);

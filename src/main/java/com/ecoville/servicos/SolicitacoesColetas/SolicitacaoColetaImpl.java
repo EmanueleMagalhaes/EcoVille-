@@ -83,12 +83,6 @@ public class SolicitacaoColetaImpl implements SolicitacaoColetaService {
     }
 
     @Override
-    public List<SolicitacaoColetaResponse> listarDisponiveis() {
-        List<SolicitacaoColeta> lista = solicitacaoRepositorio.findByStatus(Status.AGUARDANDO);
-        return SolicitacaoColetaMapper.praListaDto(lista);
-    }
-
-    @Override
     public SolicitacaoColetaResponse aceitar(Long id, Long coletorId) {
         SolicitacaoColeta coleta = solicitacaoRepositorio.findById(id)
                 .orElseThrow(() -> new NotFoundException("Solicitação não encontrada"));
@@ -155,4 +149,10 @@ public class SolicitacaoColetaImpl implements SolicitacaoColetaService {
     public List<SolicitacaoColetaResponse> todos(){
         return SolicitacaoColetaMapper.praListaDto(solicitacaoRepositorio.findAll());
     }
+
+
+    public SolicitacaoColeta salvarSolicitacao(SolicitacaoColeta coleta) {
+        return solicitacaoRepositorio.save(coleta);
+    }
+
 }

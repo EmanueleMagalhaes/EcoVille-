@@ -1,0 +1,102 @@
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.modal-conteudo {
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  animation: slide-down 0.3s ease-out; 
+}
+
+.modal-conteudo h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.modal-conteudo p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.modal-conteudo strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #444;
+  font-weight: 600;
+}
+
+.modal-conteudo input[type="number"],
+.modal-conteudo select {
+  width: 100%; 
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box; 
+}
+
+.modal-conteudo input:focus,
+.modal-conteudo select:focus {
+  border-color: #007bff; 
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+.modal-conteudo button {
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.modal-conteudo button:active {
+  transform: scale(0.98); 
+}
+
+.modal-conteudo button:first-of-type {
+  background-color: #6c757d; 
+  border: 1px solid #6c757d;
+}
+
+.modal-conteudo button:first-of-type:hover {
+  background-color: #5a6268;
+}
+
+.modal-conteudo button:last-of-type {
+  background-color: #28a745; 
+}
+
+.modal-conteudo button:last-of-type:hover {
+  background-color: #218838;
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
