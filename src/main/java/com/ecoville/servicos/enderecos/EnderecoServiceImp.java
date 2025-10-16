@@ -1,7 +1,5 @@
 package com.ecoville.servicos.enderecos;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.ecoville.dtos.endereco.EnderecoRequestDto;
@@ -38,11 +36,6 @@ public class EnderecoServiceImp implements EnderecosService{
         return endereco;
     }
 
-    @Override
-    public List<EnderecoResponseDto> todos(){
-
-        return EnderecoMapper.listaDto(repositorio.findAll());
-    };
 
     @Override
     public EnderecoResponseDto porId(Long id){
@@ -54,28 +47,5 @@ public class EnderecoServiceImp implements EnderecosService{
         throw new NotFoundException("endereço id " + id + " não encontrado");
     }
 
-    @Override
-    public EnderecoResponseDto editar(EnderecoRequestDto dto, Long id){
-        if(dto == null){
-            throw new BadRequestException("endereço vazio não é permitido");
-        }
-
-        Endereco endereco = EnderecoMapper.praEntidade(dto);
-        endereco.setId(id);
-
-        endereco = repositorio.save(endereco);
-
-        return EnderecoMapper.praDto(endereco);
-        
-    }
-
-    @Override
-    public void excluir(Long id){
-        if(repositorio.existsById(id)){
-            repositorio.deleteById(id);
-        }else{
-            throw new NotFoundException("endereço id " + id + " não encontrado");
-        }
-    }
     
 }

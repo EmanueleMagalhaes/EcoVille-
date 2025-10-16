@@ -20,11 +20,20 @@ const MinhasSolicitacoes = () => {
   const loadSolicitacoes = async () => {
     try {
       const response = await getSolicitacoes();
-      setSolicitacoes(response.data);
+      setSolicitacoes(invertLista(response.data));
     } catch (error) {
       console.error("Erro ao carregar solicitações:", error);
     }
   };
+
+  function invertLista(lista){
+    let array = [];
+    for(let i = lista.length-1;i>-1;i=i-1){
+      array.push(lista[i]);
+    }
+
+    return array;
+  }
 
   const handleCancelar = async (id) => {
     try {
