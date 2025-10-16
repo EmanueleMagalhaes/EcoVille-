@@ -1,302 +1,123 @@
-import React, { useEffect, useRef, useState } from "react";
-import MenuSuperior from "../components/MenuSuperior";
+import React, { useEffect, useState } from "react";
 import "./SolicitacoesColetor.css";
 
 function SolicitacoesColetor() {
-
-  const select = useRef("TODOS");
-  const calendario = useRef("");
-
   const [solicitacoes, setSolicitacoes] = useState([]);
-  const [filtrados, setFiltrados] = useState([]);
-  const [usuario, setUsuario] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState("");
 
-  async function rendporStatus(){
-
-    let lista =[];
-
-    for(let i=0;i<solicitacoes.length;i++){
-      if(solicitacoes[i].status == select.current.value){
-        lista.push(solicitacoes[i]);
+  useEffect(() => {
+    const carregarSolicitacoes = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/coletas/todos");
+        if (!response.ok) throw new Error("Erro ao buscar solicitações");
+        const data = await response.json();
+        setSolicitacoes(data);
+      } catch (err) {
+        setErro(err.message);
+      } finally {
+        setLoading(false);
       }
+    };
+    carregarSolicitacoes();
+  }, []);
+
+  const formatarData = (data) => {
+    if (!data) return "Não informada";
+    const d = new Date(data);
+    return d.toLocaleDateString("pt-BR");
+  };
+
+  const calcularDiferencaDias = (data) => {
+    if (!data) return "";
+    const hoje = new Date();
+    const alvo = new Date(data);
+    const diff = Math.floor((alvo - hoje) / (1000 * 60 * 60 * 24));
+    if (diff > 0) return `Daqui ${diff} dias`;
+    if (diff < 0) return `Há ${Math.abs(diff)} dias`;
+    return "Hoje";
+  };
+
+  const getCorStatus = (status) => {
+    switch (status) {
+      case "AGUARDANDO": return "#e6b800"; 
+      case "COLETADO": return "#007bff"; 
+      case "FINALIZADO": return "#28a745"; 
+      case "CANCELADO": return "#dc3545"; 
+      default: return "#999";
     }
-    setFiltrados(lista);
+  };
 
-    if(select.current.value === "TODOS"){
-      disponiveis();
-    }
-
-    if(select.current.value === "MEUS")
-      meus();
-
-  }
-
-  function rendPorData(){
-
-    let data = calendario.current.value;
-
-    let lista = [];
-
-    for(let i=0;i<solicitacoes.length;i++){
-
-      let dataAgdd = traduzData(solicitacoes[i].dataAgendada);
-
-      data = traduzData(data);
-
-      if(data == dataAgdd){
-        lista.push(solicitacoes[i]);
-      }
-    }
-
-    setFiltrados(lista);
-  }
-
-
-  async function todos(){
-  let url = "http://localhost:8080/api/coletas/todos";
-  let token = localStorage.getItem("token");
-  let response = await requisicao(url, "get", null, token);
-
-  return response;
-}
-
-function meus(){
-
-  let list = [];
-
-  for(let i=0;i<solicitacoes.length;i++){
-    let coletorId;
-    try{
-      coletorId = solicitacoes[i].coletor.id;
-    }catch(e){
-      coletorId = null;
-    }
-
-    if(coletorId == usuario.id){
-      list.push(solicitacoes[i]);
-    }
-
-  }
-
-  setFiltrados(list);
-  
-}
-
-
-
-  useEffect(()=>{
-
-    let data = new Date();
-
-    let hoje = formatData(data);
-
-    calendario.current.value = hoje;
-
-    disponiveis();
-
-  let usuario = JSON.parse(localStorage.getItem("usuario"));
-
-    setUsuario(usuario);
-
-  }, [])
-
-  async function disponiveis(){
-
-    let solicitacoes = await todos();
-    let usuario = JSON.parse(localStorage.getItem("usuario"));
-
-    setSolicitacoes(solicitacoes);
-    setFiltrados(solicitacoes);
-    setUsuario(usuario);
-  }
-
-  async function aceitar(solicitacaoId) {
-    const token = localStorage.getItem("token");
-    const request = await reqAceitar(solicitacaoId, usuario.id, token);
-
-    if (request) {
-      await disponiveis();
-      alert("Solicitação aceita com sucesso!");
-      const usuarioAtualizado = {
-        ...usuario,
-        solicitacoes: [...(usuario.solicitacoes || []), request]
-      };
-
-      setUsuario(usuarioAtualizado);
-      localStorage.setItem("usuario", JSON.stringify(usuarioAtualizado));
-    }
-  }
+  if (loading) return <p>Carregando solicitações...</p>;
+  if (erro) return <p style={{ color: "red" }}>Erro: {erro}</p>;
 
   return (
-    <div>
-      <MenuSuperior />
     <div className="solicitacoes-container">
+      <h2>Solicitações de Coleta</h2>
 
-      <h2>Bem-vindo, {usuario.nomeUsuario}</h2>
+      {solicitacoes.length === 0 ? (
+        <p>Nenhuma solicitação encontrada.</p>
+      ) : (
+        <div className="cards-container">
+          {solicitacoes.map((s) => (
+            <div
+              key={s.id}
+              className="card-solicitacao"
+              style={{
+                borderLeft: `6px solid ${getCorStatus(s.status_coleta)}`,
+              }}
+            >
+              <h3>#{s.id} - {s.status_coleta}</h3>
 
-      <div className="filtros">
-        <input type="date" ref={calendario} onInput={rendPorData} />
+              <div className="info-bloco">
+                <strong>Materiais:</strong>
+                <ul>
+                  {s.quantidade_plastico > 0 && (
+                    <li>Plástico: {s.quantidade_plastico} kg ({s.situacao_plastico})</li>
+                  )}
+                  {s.quantidade_papel > 0 && (
+                    <li>Papel: {s.quantidade_papel} kg ({s.situacao_papel})</li>
+                  )}
+                  {s.quantidade_vidro > 0 && (
+                    <li>Vidro: {s.quantidade_vidro} kg ({s.situacao_vidro})</li>
+                  )}
+                  {s.quantidade_metal > 0 && (
+                    <li>Metal: {s.quantidade_metal} kg ({s.situacao_metal})</li>
+                  )}
+                  {s.quantidade_eletronico > 0 && (
+                    <li>Eletrônicos: {s.quantidade_eletronico} kg ({s.situacao_eletronico})</li>
+                  )}
+                </ul>
+              </div>
 
-        <select ref={select} onClick={rendporStatus}>
-          <option value="TODOS">TODOS</option>
-          <option value="AGUARDANDO">AGUARDANDO</option>
-          <option value="COLETADO">COLETADO</option>
-          <option value="FINALIZADO">FINALIZADO</option>
-          <option value="CANCELADO">CANCELADO</option>
-          <option value="MEUS">MEUS</option>
-        </select>
-        
-      </div>
+              <div className="datas">
+                <p><strong>Data Agendada:</strong> {formatarData(s.data_agendada)}</p>
+                {s.data_coletada && (
+                  <p><strong>Data Coletada:</strong> {formatarData(s.data_coletada)}</p>
+                )}
+                <p className="diferenca">{calcularDiferencaDias(s.data_agendada)}</p>
+              </div>
 
-      <div className="cards-container">
-        {(filtrados.length && filtrados.map((sol) => (
-          
-          <div key={sol.id} className="card-solicitacao">
-
-      <div className={`status-tag ${sol.status.toLowerCase()}`}></div>
-      <h4>{`#${sol.id}`}</h4>{sol.status}
-
-                  {itens(sol.itensColeta)}
-                  
-              <p className="data">Data solicitada: {sol.dataSolicitacao}</p>
-              <p className="data">Data agendada: {sol.dataAgendada}</p>
-              <p className="feedback">Feedback: {sol.feedback || <i>nenhum comentário</i>}</p>
-            <button onClick={()=>aceitar(sol.id, sol.usuarioResidencial.id)}>aceitar</button>
-          </div>
-        ))) || <p className="mensagem-vazia">Nenhuma solicitação disponível.</p>}
-      </div>
+              <div className="acoes">
+                {s.status_coleta === "AGUARDANDO" && (
+                  <button className="btn-primario">Confirmar Coleta</button>
+                )}
+                {s.status_coleta === "COLETADO" && (
+                  <button className="btn-secundario">Finalizar</button>
+                )}
+                {s.status_coleta === "FINALIZADO" && (
+                  <button className="btn-visualizar">Ver Feedback</button>
+                )}
+                {s.status_coleta === "CANCELADO" && (
+                  <span className="cancelado">Cancelado</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
-  </div>
   );
 }
 
 export default SolicitacoesColetor;
-
-
-async function requisicao(url, method, body, autorizacao){
-
-  method = method.toUpperCase();
-
-  let envio = {
-        method: method,
-        body: JSON.stringify(body),
-        headers: {
-        "Content-Type" : "application/json", 
-        "Authorization" : autorizacao
-      }
-    }
-
-    if(method === "GET"){
-       envio = {
-        method: method.toUpperCase(),
-        headers: {
-        "Content-Type" : "application/json", 
-        "Authorization" : autorizacao
-      }
-    }
-    }
-
-
-  try {
-  const response = await fetch(url, envio);
-
-  if (!response.ok) {
-
-    if(response.status == 401 || response.status == 403){
-      setTimeout(() => {
-        alert("voce não tem autorização pra fazer isso");
-        localStorage.clear();
-        window.location.href = "/";
-      }, 500);
-    }
-    throw new Error(`${response.status}, ${response.statusText}`);
-  }
-
-  let json = await response.json();
-
-  return json;
-
-} catch (error) {
-  console.error('Erro na requisição:', error);
-}
-
-return null;
-}
-
-
-function itens(lista){
-  return (
-          <ul className="itens">
-            {lista.map((item) => (
-                <li  key={item.id}>
-
-                  <div>
-                    {item.tipo}
-                  </div>
-                  <div>
-                    {item.quantEstimada}
-                  </div>
-                  <div>
-                    {item.quantReal}
-                  </div>
-                  <div>
-                    {item.estado}
-                  </div>
-
-                  </li>
-              ))}
-            </ul>
-  );
-}
-
-async function reqAceitar(solicitacaoId, usuarioId, autorizacao){
-
-  let url = `http://localhost:8080/api/coletas/${solicitacaoId}/aceitar?coletorId=${usuarioId}`;
-
-
-  let envio = {
-        method: "PATCH",
-        headers: {
-        "Content-Type" : "application/json", 
-        "Authorization" : autorizacao
-      }
-    }
-
-  try {
-  const response = await fetch(url, envio);
-
-  if (!response.ok) {
-    if(response.status == 401 || response.status == 403){
-      alert("voce não tem autorização pra fazer isso");
-    }
-    throw new Error(`${response.status}, ${response.statusText}`);
-  }
-
-  let json = await response.json();
-  return json;
-
-} catch (error) {
-  console.error('Erro na requisição:', error);
-}
-
-return null;
-
-}
-
-function formatData(date) {
-  return date.toISOString().split('T')[0];
-}
-
-function traduzData(data){
-
-  data = data.split("T")[0];
-
-  data = data.split("-");
-
-  let dia = data[2];
-  let mes = data[1];
-  let ano = data[0];
-
-  return `${dia}-${mes}-${ano}`;
-}
-
