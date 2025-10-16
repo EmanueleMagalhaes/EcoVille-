@@ -40,7 +40,6 @@ function SolicitacoesColetor() {
     if (select.current.value === "FINALIZADA") {
       finalizadas();
     }
-
   }
 
   function rendPorData() {
@@ -187,8 +186,9 @@ function SolicitacoesColetor() {
             <option value="TODOS">TODOS</option>
             <option value="AGUARDANDO">AGUARDANDO</option>
             <option value="ACEITA">ACEITAS</option>
-            <option value="COLETADA">COLETADA</option>
-            <option value="FINALIZADA">FINALIZADA</option>
+            <option value="COLETADA">COLETADO</option>
+            <option value="FINALIZADA">FINALIZADO</option>
+            <option value="CANCELADA">CANCELADO</option>
           </select>
         </div>
 
@@ -206,8 +206,9 @@ function SolicitacoesColetor() {
                 
                 {itens(sol.itensColeta)}
 
-                <p className="data">Data solicitada: **{sol.dataSolicitacao}**</p>
-                <p className="data">Data agendada: **{sol.dataAgendada}**</p>
+                <p className="data">Data solicitada: <b>{formatarData(sol.dataSolicitacao)}</b></p>
+                <p className="data">Data agendada: <b>{formatarData(sol.dataAgendada)}</b></p>
+
                 <p className="feedback">
                   Feedback: {sol.feedback || <i>nenhum comentário</i>}
                 </p>
@@ -317,4 +318,13 @@ function traduzData(data) {
   data = data.split("T")[0];
   const [ano, mes, dia] = data.split("-");
   return `${dia}-${mes}-${ano}`;
+}
+
+function formatarData(dataStr) {
+  if (!dataStr) return "—";
+  const data = new Date(dataStr);
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const ano = data.getFullYear();
+  return `${dia}/${mes}/${ano}`;
 }
